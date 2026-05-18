@@ -9,7 +9,7 @@ Build and document a Cloudflare-backed application that combines DNS, Cloudflare
 | Artifact | Path |
 | --- | --- |
 | Application report | [`../../docs/REPORT.md`](../../docs/REPORT.md) |
-| GitHub Pages HTML | [`../../docs/index.html`](../../docs/index.html) |
+| Rendered GitHub Pages HTML | <https://mareox.github.io/Cloudflare-Project/> |
 | Origin server | [`../../origin-server/`](../../origin-server/) |
 | Worker application | [`../../worker/`](../../worker/) |
 | Worker asset | [`../../worker/assets/us.svg`](../../worker/assets/us.svg) |
@@ -33,4 +33,3 @@ Build and document a Cloudflare-backed application that combines DNS, Cloudflare
 ## Status
 
 Implemented. Current deliverables live under `docs/`, `origin-server/`, and `worker/`.
-

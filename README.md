@@ -30,12 +30,12 @@ Access policy:
 ## Report and project page
 
 GitHub's normal file view does not render standalone HTML files. It shows
-HTML source code. Use these links depending on the review path:
+HTML source code. Use the GitHub Pages links for rendered HTML review:
 
 - GitHub-rendered report: [`docs/REPORT.md`](docs/REPORT.md)
 - GitHub-rendered docs landing page: [`docs/README.md`](docs/README.md)
-- HTML page source for GitHub Pages: [`docs/index.html`](docs/index.html)
-- Network Services HTML report: [`docs/network.html`](docs/network.html)
+- Rendered Application Services HTML report: <https://mareox.github.io/Cloudflare-Project/>
+- Rendered Network Services HTML report: <https://mareox.github.io/Cloudflare-Project/network.html>
 - Network Services Markdown report: [`docs/network-report.md`](docs/network-report.md)
 - Network Services DOCX report: [`docs/network-report.docx`](docs/network-report.docx)
 
@@ -51,7 +51,7 @@ The Application Services written report is available in Markdown for GitHub
 review and HTML for GitHub Pages:
 
 - Markdown report: [`docs/REPORT.md`](docs/REPORT.md)
-- HTML report source: [`docs/index.html`](docs/index.html)
+- Rendered HTML report: <https://mareox.github.io/Cloudflare-Project/>
 
 It addresses:
 
@@ -63,7 +63,7 @@ It addresses:
 
 The Network Services assignment answers are also published in this repo:
 
-- HTML report: [`docs/network.html`](docs/network.html)
+- Rendered HTML report: <https://mareox.github.io/Cloudflare-Project/network.html>
 - Markdown report: [`docs/network-report.md`](docs/network-report.md)
 - DOCX source: [`docs/network-report.docx`](docs/network-report.docx)
 

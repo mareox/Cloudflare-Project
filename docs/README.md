@@ -15,9 +15,9 @@ Project task tracking is split under [`../_cloudflare-projects/`](../_cloudflare
 | Page | Use this when |
 | --- | --- |
 | [`REPORT.md`](REPORT.md) | You want the GitHub-native rendered report with screenshots inline. |
-| [`index.html`](index.html) | You have GitHub Pages enabled and want the polished HTML web page. |
+| [Application Services HTML](https://mareox.github.io/Cloudflare-Project/) | You want the rendered HTML web page. |
 | [`network-report.md`](network-report.md) | You want the GitHub-native Network Services report. |
-| [`network.html`](network.html) | You want the polished HTML Network Services report. |
+| [Network Services HTML](https://mareox.github.io/Cloudflare-Project/network.html) | You want the rendered HTML Network Services report. |
 | [`network-report.docx`](network-report.docx) | You want the DOCX source for the Network Services report. |
 
 GitHub does not render `index.html` in the normal repository file viewer. It shows the source code. To render the HTML page, enable GitHub Pages for this repository with:
