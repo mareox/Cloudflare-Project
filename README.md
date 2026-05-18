@@ -16,22 +16,27 @@ Access policy:
 - `@cloudflare.com` email addresses are allowed for reviewer access.
 - Unauthenticated users are redirected to Cloudflare Access.
 
-## Project page
+## Report and project page
 
-The GitHub Pages compatible report lives at:
+GitHub's normal file view does not render standalone HTML files. It shows
+HTML source code. Use these links depending on the review path:
 
-- [`docs/index.html`](docs/index.html)
+- GitHub-rendered report: [`docs/REPORT.md`](docs/REPORT.md)
+- GitHub-rendered docs landing page: [`docs/README.md`](docs/README.md)
+- HTML page source for GitHub Pages: [`docs/index.html`](docs/index.html)
 
-If GitHub Pages is enabled for this repo with source set to `docs/`, the public page should be:
+If GitHub Pages is enabled for this repo with source set to `main` and
+`/docs`, the HTML version renders at:
 
 - <https://mareox.github.io/Cloudflare-Project/>
 
 ## Written report
 
-The written report is available in both formats:
+The written report is available in Markdown for GitHub review and HTML for
+GitHub Pages:
 
-- HTML report: [`docs/index.html`](docs/index.html)
 - Markdown report: [`docs/REPORT.md`](docs/REPORT.md)
+- HTML report source: [`docs/index.html`](docs/index.html)
 
 It addresses:
 
@@ -90,4 +95,3 @@ The deployed Worker is `cf-application-secure` with routes:
 
 - `tunnel.mareoxlan.com/secure`
 - `tunnel.mareoxlan.com/secure/*`
-
