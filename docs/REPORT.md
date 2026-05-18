@@ -29,8 +29,9 @@ tunnel.mareoxlan.com -> 7b77445a-fcd5-40ee-a37d-023cf350e51b.cfargotunnel.com
 
 Evidence:
 
-- `docs/screenshots/01_zone_overview.png`
-- `docs/screenshots/02_dns_records.png`
+![Cloudflare zone overview](screenshots/01_zone_overview.png)
+
+![DNS records for the application hostname](screenshots/02_dns_records.png)
 
 ### 2.2 Origin Server
 
@@ -68,7 +69,7 @@ The zone SSL mode was set to Full Strict. This validates the connection between 
 
 Evidence:
 
-- `docs/screenshots/04_ssl_mode.png`
+![Full Strict SSL mode](screenshots/04_ssl_mode.png)
 
 ### 2.4 Cloudflare Tunnel
 
@@ -83,8 +84,9 @@ This keeps the origin off the public internet. The origin only needs outbound co
 
 Evidence:
 
-- `docs/screenshots/06_tunnel_connectors.png`
-- `docs/screenshots/06b_tunnel_routes.png`
+![Cloudflare Tunnel connector status](screenshots/06_tunnel_connectors.png)
+
+![Cloudflare Tunnel public hostname route](screenshots/06b_tunnel_routes.png)
 
 ### 2.5 Identity Provider and Access Policy
 
@@ -103,7 +105,7 @@ Default behavior: block.
 
 Evidence:
 
-- `docs/screenshots/08_idps.png`
+![Google identity provider configuration](screenshots/08_idps.png)
 
 Unauthenticated test:
 
