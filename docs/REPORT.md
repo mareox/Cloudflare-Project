@@ -24,7 +24,7 @@ Reviewer access:
 The domain `mareoxlan.com` is active in Cloudflare. A proxied CNAME was created for:
 
 ```text
-tunnel.mareoxlan.com -> 7b77445a-fcd5-40ee-a37d-023cf350e51b.cfargotunnel.com
+tunnel.mareoxlan.com -> <cloudflare-tunnel-id>.cfargotunnel.com
 ```
 
 Evidence:
@@ -40,7 +40,7 @@ A small Flask origin server was deployed on the homelab Docker host Atlas. It re
 The origin runs at:
 
 ```text
-http://192.168.30.210:18088
+http://<private-origin-ip>:18088
 ```
 
 Local health check:
@@ -73,11 +73,11 @@ Evidence:
 
 ### 2.4 Cloudflare Tunnel
 
-The existing `MareoXLan` tunnel was reused. A public hostname was added:
+An existing Cloudflare Tunnel was reused. A public hostname was added:
 
 ```yaml
 hostname: tunnel.mareoxlan.com
-service: http://192.168.30.210:18088
+service: http://<private-origin-ip>:18088
 ```
 
 This keeps the origin off the public internet. The origin only needs outbound connectivity to Cloudflare through `cloudflared`.

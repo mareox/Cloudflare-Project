@@ -111,7 +111,7 @@ curl http://127.0.0.1:8080/healthz
 curl http://127.0.0.1:8080/
 ```
 
-The deployed homelab origin runs on Atlas at `192.168.30.210:18088` and is reached through Cloudflare Tunnel.
+The deployed homelab origin runs on a private Docker host at `http://<private-origin-ip>:18088` and is reached through Cloudflare Tunnel.
 
 ## Reproduce the Worker
 

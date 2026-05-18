@@ -356,7 +356,7 @@
           </article>
           <article class="step">
             <h3>Deployed the origin server</h3>
-            <p>Ran a Flask and gunicorn header echo service on Atlas at <code>192.168.30.210:18088</code>. The origin exposes <code>/healthz</code> and returns request data as JSON.</p>
+            <p>Ran a Flask and gunicorn header echo service on a private homelab Docker host at <code>http://&lt;private-origin-ip&gt;:18088</code>. The origin exposes <code>/healthz</code> and returns request data as JSON.</p>
           </article>
           <article class="step">
             <h3>Enabled Full Strict TLS</h3>
@@ -364,7 +364,7 @@
           </article>
           <article class="step">
             <h3>Moved traffic behind Cloudflare Tunnel</h3>
-            <p>Added a Tunnel public hostname mapping <code>tunnel.mareoxlan.com</code> to <code>http://192.168.30.210:18088</code>, removing the need for inbound public firewall exposure.</p>
+            <p>Added a Tunnel public hostname mapping <code>tunnel.mareoxlan.com</code> to <code>http://&lt;private-origin-ip&gt;:18088</code>, removing the need for inbound public firewall exposure.</p>
           </article>
           <article class="step">
             <h3>Protected <code>/secure*</code> with Access</h3>
