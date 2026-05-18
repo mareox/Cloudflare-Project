@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 520" role="img" aria-labelledby="title desc">
+  <title id="title">GRE Encapsulation and MSS Calculation</title>
+  <desc id="desc">Shows GRE outer header overhead and the resulting 1436 byte TCP MSS value.</desc>
+  <defs>
+    <style>
+      .bg{fill:#f8fafc}.frame{fill:#fff;stroke:#cbd5e1;stroke-width:2}.outer{fill:#ffedd5;stroke:#f48120}.gre{fill:#fef3c7;stroke:#d97706}.inner{fill:#dbeafe;stroke:#2563eb}.tcp{fill:#dcfce7;stroke:#16a34a}.payload{fill:#ecfeff;stroke:#0891b2}.title{font:700 24px Inter,Arial,sans-serif;fill:#172033}.label{font:700 16px Inter,Arial,sans-serif;fill:#172033}.small{font:500 14px Inter,Arial,sans-serif;fill:#475569}.mono{font:700 18px ui-monospace,SFMono-Regular,Menlo,monospace;fill:#172033}.num{font:800 34px Inter,Arial,sans-serif;fill:#f48120}
+    </style>
+  </defs>
+  <rect class="bg" width="1100" height="520" rx="22"/>
+  <text x="50" y="58" class="title">GRE Overhead Drives the 1,436 Byte MSS Clamp</text>
+  <text x="50" y="84" class="small">A 1500 byte underlay MTU loses 24 bytes to outer IPv4 + GRE before the original packet can fit inside the tunnel.</text>
+
+  <rect x="58" y="145" width="984" height="110" rx="14" class="frame"/>
+  <rect x="78" y="174" width="185" height="52" rx="8" class="outer"/>
+  <text x="170" y="206" text-anchor="middle" class="label">Outer IPv4 20 B</text>
+  <rect x="278" y="174" width="82" height="52" rx="8" class="gre"/>
+  <text x="319" y="206" text-anchor="middle" class="label">GRE 4 B</text>
+  <rect x="375" y="174" width="185" height="52" rx="8" class="inner"/>
+  <text x="468" y="206" text-anchor="middle" class="label">Inner IPv4 20 B</text>
+  <rect x="575" y="174" width="170" height="52" rx="8" class="tcp"/>
+  <text x="660" y="206" text-anchor="middle" class="label">TCP 20 B</text>
+  <rect x="760" y="174" width="262" height="52" rx="8" class="payload"/>
+  <text x="891" y="206" text-anchor="middle" class="label">TCP payload 1436 B</text>
+
+  <rect x="70" y="315" width="420" height="126" rx="14" fill="#fff" stroke="#cbd5e1"/>
+  <text x="95" y="352" class="mono">1500 - 20 - 4 - 20 - 20</text>
+  <text x="95" y="389" class="mono">= 1436 bytes</text>
+  <text x="95" y="421" class="small">Clamp both inbound SYN and outbound SYN-ACK in DSR.</text>
+
+  <rect x="565" y="303" width="420" height="150" rx="14" fill="#172033"/>
+  <text x="595" y="347" class="small" fill="#e2e8f0">Inner MTU</text>
+  <text x="595" y="392" class="num">1476 B</text>
+  <text x="595" y="427" class="small" fill="#e2e8f0">1500 underlay MTU minus 24 bytes of GRE overhead</text>
+</svg>

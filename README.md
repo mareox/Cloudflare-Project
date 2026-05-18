@@ -1,6 +1,17 @@
-# Cloudflare Application Services Project
+# Cloudflare Projects
 
-Public submission repo for the Cloudflare Application Services assignment.
+Public submission repo for Cloudflare application and network services assignments.
+
+## Project task split
+
+The repo is divided into three Cloudflare project tracks under
+[`_cloudflare-projects/`](_cloudflare-projects/):
+
+| Project | Scope |
+| --- | --- |
+| [`Application_Services`](_cloudflare-projects/Application_Services/TASK.md) | Origin service, Tunnel, Worker, R2, and Application Services report. |
+| [`Network_Services`](_cloudflare-projects/Network_Services/TASK.md) | Magic Transit written report, diagrams, and exported document artifacts. |
+| [`Zero_Trust`](_cloudflare-projects/Zero_Trust/TASK.md) | Cloudflare Access, Google IdP, reviewer allow policy, and protected `/secure*` routes. |
 
 ## Live application
 
@@ -24,16 +35,20 @@ HTML source code. Use these links depending on the review path:
 - GitHub-rendered report: [`docs/REPORT.md`](docs/REPORT.md)
 - GitHub-rendered docs landing page: [`docs/README.md`](docs/README.md)
 - HTML page source for GitHub Pages: [`docs/index.html`](docs/index.html)
+- Network Services HTML report: [`docs/network.html`](docs/network.html)
+- Network Services Markdown report: [`docs/network-report.md`](docs/network-report.md)
+- Network Services DOCX report: [`docs/network-report.docx`](docs/network-report.docx)
 
 If GitHub Pages is enabled for this repo with source set to `main` and
 `/docs`, the HTML version renders at:
 
 - <https://mareox.github.io/Cloudflare-Project/>
+- <https://mareox.github.io/Cloudflare-Project/network.html>
 
 ## Written report
 
-The written report is available in Markdown for GitHub review and HTML for
-GitHub Pages:
+The Application Services written report is available in Markdown for GitHub
+review and HTML for GitHub Pages:
 
 - Markdown report: [`docs/REPORT.md`](docs/REPORT.md)
 - HTML report source: [`docs/index.html`](docs/index.html)
@@ -46,13 +61,31 @@ It addresses:
 4. Knowledge gaps filled during the process.
 5. Target customer experience.
 
+The Network Services assignment answers are also published in this repo:
+
+- HTML report: [`docs/network.html`](docs/network.html)
+- Markdown report: [`docs/network-report.md`](docs/network-report.md)
+- DOCX source: [`docs/network-report.docx`](docs/network-report.docx)
+
+It addresses Magic Transit BYOIP onboarding, external routing updates, GRE
+overhead, MSS clamping, smaller-than-/24 overlay routing, DSR firewall
+considerations, packet flow, and firewall rule debugging.
+
 ## Repository layout
 
 ```text
 .
+├── _cloudflare-projects/
+│   ├── Application_Services/
+│   ├── Network_Services/
+│   └── Zero_Trust/
 ├── docs/
 │   ├── index.html
 │   ├── REPORT.md
+│   ├── network.html
+│   ├── network-report.md
+│   ├── network-report.docx
+│   ├── assets/
 │   └── screenshots/
 ├── origin-server/
 │   ├── Dockerfile

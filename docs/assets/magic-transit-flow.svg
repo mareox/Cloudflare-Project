@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 640" role="img" aria-labelledby="title desc">
+  <title id="title">Magic Transit DSR Packet Flow</title>
+  <desc id="desc">Forward traffic enters Cloudflare, is GRE encapsulated toward Acme, and response traffic returns directly to the user.</desc>
+  <defs>
+    <marker id="arrow-orange" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto">
+      <path d="M0,0 L12,6 L0,12 Z" fill="#f48120"/>
+    </marker>
+    <marker id="arrow-blue" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto">
+      <path d="M0,0 L12,6 L0,12 Z" fill="#2563eb"/>
+    </marker>
+    <marker id="arrow-green" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto">
+      <path d="M0,0 L12,6 L0,12 Z" fill="#0f766e"/>
+    </marker>
+    <style>
+      .bg{fill:#f8fafc}.box{fill:#fff;stroke:#cbd5e1;stroke-width:2}.cf{fill:#fff7ed;stroke:#f48120}.acme{fill:#ecfeff;stroke:#0891b2}.user{fill:#eef2ff;stroke:#4f46e5}.edge{fill:#f0fdf4;stroke:#16a34a}.title{font:700 24px Inter,Arial,sans-serif;fill:#172033}.label{font:700 17px Inter,Arial,sans-serif;fill:#172033}.small{font:500 14px Inter,Arial,sans-serif;fill:#475569}.tiny{font:500 12px Inter,Arial,sans-serif;fill:#64748b}.orange{stroke:#f48120;stroke-width:5;fill:none;marker-end:url(#arrow-orange)}.blue{stroke:#2563eb;stroke-width:4;fill:none;marker-end:url(#arrow-blue);stroke-dasharray:10 8}.green{stroke:#0f766e;stroke-width:5;fill:none;marker-end:url(#arrow-green)}
+    </style>
+  </defs>
+  <rect class="bg" width="1200" height="640" rx="22"/>
+  <text x="60" y="58" class="title">Cloudflare Magic Transit with Direct Server Return</text>
+  <text x="60" y="84" class="small">Public route: 203.0.113.0/24, origin AS12345. Forward path is scrubbed and GRE-encapsulated; return path bypasses Cloudflare.</text>
+
+  <rect x="70" y="180" width="190" height="108" rx="14" class="box user"/>
+  <text x="165" y="218" text-anchor="middle" class="label">User</text>
+  <text x="165" y="244" text-anchor="middle" class="small">public client IP</text>
+  <text x="165" y="266" text-anchor="middle" class="tiny">TCP ephemeral -&gt; 443</text>
+
+  <rect x="390" y="150" width="240" height="168" rx="14" class="box cf"/>
+  <text x="510" y="190" text-anchor="middle" class="label">Cloudflare Edge</text>
+  <text x="510" y="216" text-anchor="middle" class="small">Anycast ingress</text>
+  <text x="510" y="240" text-anchor="middle" class="tiny">DDoS scrub + Magic Firewall</text>
+  <text x="510" y="262" text-anchor="middle" class="tiny">MSS clamp 1460 -&gt; 1436</text>
+  <text x="510" y="284" text-anchor="middle" class="tiny">Outer GRE src 192.0.2.10</text>
+
+  <rect x="760" y="160" width="230" height="148" rx="14" class="box acme"/>
+  <text x="875" y="198" text-anchor="middle" class="label">Acme Edge Router</text>
+  <text x="875" y="224" text-anchor="middle" class="small">GRE terminator</text>
+  <text x="875" y="248" text-anchor="middle" class="tiny">100.100.100.100</text>
+  <text x="875" y="270" text-anchor="middle" class="tiny">decapsulates + forwards</text>
+
+  <rect x="910" y="410" width="210" height="112" rx="14" class="box edge"/>
+  <text x="1015" y="450" text-anchor="middle" class="label">Web Server</text>
+  <text x="1015" y="476" text-anchor="middle" class="small">203.0.113.10</text>
+  <text x="1015" y="498" text-anchor="middle" class="tiny">sees original client IP</text>
+
+  <path class="orange" d="M260 232 C315 232 333 232 390 232"/>
+  <text x="325" y="211" text-anchor="middle" class="tiny">plain IP to 203.0.113.10</text>
+
+  <path class="blue" d="M630 232 C690 232 700 232 760 232"/>
+  <text x="695" y="208" text-anchor="middle" class="tiny">GRE proto 47</text>
+  <text x="695" y="252" text-anchor="middle" class="tiny">inner src preserved</text>
+
+  <path class="orange" d="M875 308 C900 355 940 382 1002 410"/>
+  <text x="955" y="350" class="tiny">plain IP after decap</text>
+
+  <path class="green" d="M910 470 C690 590 325 590 175 288"/>
+  <text x="550" y="584" text-anchor="middle" class="small">Return path: direct to user through Acme upstream ISP, no Cloudflare in line</text>
+
+  <rect x="66" y="552" width="352" height="46" rx="10" fill="#fff" stroke="#cbd5e1"/>
+  <text x="86" y="581" class="small">DSR tradeoff: lower egress cost, but Cloudflare cannot track stateful return flows.</text>
+</svg>
