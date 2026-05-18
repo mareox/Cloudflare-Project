@@ -1,0 +1,15 @@
+services:
+  origin:
+    build: .
+    image: cf-app-origin:latest
+    container_name: cf-app-origin
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    environment:
+      - TZ=America/Los_Angeles
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8080/healthz').read()"]
+      interval: 30s
+      timeout: 5s
+      retries: 3

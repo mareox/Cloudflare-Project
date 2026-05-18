@@ -1,0 +1,35 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "cf-application-secure",
+  "main": "src/index.ts",
+  "compatibility_date": "2026-04-15",
+  "compatibility_flags": ["nodejs_compat"],
+
+  "observability": {
+    "enabled": true,
+    "head_sampling_rate": 1
+  },
+
+  "routes": [
+    {
+      "pattern": "tunnel.mareoxlan.com/secure",
+      "zone_name": "mareoxlan.com"
+    },
+    {
+      "pattern": "tunnel.mareoxlan.com/secure/*",
+      "zone_name": "mareoxlan.com"
+    }
+  ],
+
+  "r2_buckets": [
+    {
+      "binding": "FLAGS",
+      "bucket_name": "country-flags"
+    }
+  ],
+
+  "vars": {
+    "TUNNEL_HOSTNAME": "tunnel.mareoxlan.com",
+    "TEAM_DOMAIN": "mareoxlan"
+  }
+}

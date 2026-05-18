@@ -1,0 +1,480 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Cloudflare Application Services Project</title>
+  <style>
+    :root {
+      --ink: #18212f;
+      --muted: #5b6472;
+      --line: #d7dde6;
+      --panel: #ffffff;
+      --soft: #f5f7fb;
+      --accent: #f48120;
+      --accent-dark: #c75d10;
+      --blue: #215ea8;
+      --green: #147a53;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--ink);
+      background: #fbfcfe;
+      line-height: 1.55;
+    }
+
+    a {
+      color: var(--blue);
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    header {
+      background: linear-gradient(135deg, #172033 0%, #263c63 58%, #f48120 160%);
+      color: white;
+      padding: 56px 24px 42px;
+    }
+
+    .wrap {
+      max-width: 1120px;
+      margin: 0 auto;
+    }
+
+    .eyebrow {
+      margin: 0 0 10px;
+      color: #ffd7b5;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      margin: 0;
+      max-width: 820px;
+      font-size: clamp(34px, 6vw, 64px);
+      line-height: 1.02;
+      letter-spacing: 0;
+    }
+
+    .hero-copy {
+      max-width: 760px;
+      margin: 18px 0 0;
+      color: #e6edf7;
+      font-size: 18px;
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 28px;
+    }
+
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 44px;
+      padding: 0 16px;
+      border: 1px solid rgba(255, 255, 255, .28);
+      border-radius: 6px;
+      color: white;
+      font-weight: 700;
+      background: rgba(255, 255, 255, .11);
+    }
+
+    .button.primary {
+      color: #172033;
+      background: white;
+      border-color: white;
+    }
+
+    main {
+      padding: 30px 24px 64px;
+    }
+
+    section {
+      margin-top: 34px;
+    }
+
+    h2 {
+      margin: 0 0 12px;
+      font-size: 28px;
+      line-height: 1.15;
+      letter-spacing: 0;
+    }
+
+    h3 {
+      margin: 26px 0 8px;
+      font-size: 18px;
+      letter-spacing: 0;
+    }
+
+    p {
+      margin: 0 0 14px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 14px;
+    }
+
+    .card {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 18px;
+      box-shadow: 0 10px 24px rgba(24, 33, 47, .06);
+    }
+
+    .status {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 10px;
+      color: var(--green);
+      font-weight: 800;
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: .05em;
+    }
+
+    .status::before {
+      content: "";
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: var(--green);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: white;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      overflow: hidden;
+      display: block;
+      overflow-x: auto;
+    }
+
+    th, td {
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--line);
+      text-align: left;
+      vertical-align: top;
+      min-width: 180px;
+    }
+
+    th {
+      background: var(--soft);
+      color: #2f3949;
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: .04em;
+    }
+
+    tr:last-child td {
+      border-bottom: 0;
+    }
+
+    code, pre {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+    }
+
+    code {
+      padding: 2px 6px;
+      border-radius: 4px;
+      background: #edf1f7;
+    }
+
+    pre {
+      padding: 14px;
+      border-radius: 8px;
+      background: #121826;
+      color: #e9eef8;
+      overflow-x: auto;
+    }
+
+    .timeline {
+      display: grid;
+      gap: 12px;
+      counter-reset: step;
+    }
+
+    .step {
+      position: relative;
+      padding: 16px 18px 16px 54px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: white;
+    }
+
+    .step::before {
+      counter-increment: step;
+      content: counter(step);
+      position: absolute;
+      top: 16px;
+      left: 18px;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: var(--accent);
+      color: white;
+      display: grid;
+      place-items: center;
+      font-weight: 800;
+      font-size: 13px;
+    }
+
+    .screens {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 16px;
+    }
+
+    figure {
+      margin: 0;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: white;
+    }
+
+    figure img {
+      width: 100%;
+      display: block;
+      aspect-ratio: 16 / 10;
+      object-fit: cover;
+      background: var(--soft);
+    }
+
+    figcaption {
+      padding: 11px 13px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .note {
+      border-left: 4px solid var(--accent);
+      background: #fff7ef;
+      padding: 14px 16px;
+      border-radius: 0 8px 8px 0;
+    }
+
+    footer {
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+      padding: 26px 24px;
+      background: white;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="wrap">
+      <p class="eyebrow">Cloudflare Application Services Assignment</p>
+      <h1>Private homelab app published through Cloudflare Tunnel, Access, Workers, and R2</h1>
+      <p class="hero-copy">This submission demonstrates a working application on <strong>tunnel.mareoxlan.com</strong>, including identity-aware access control, edge logic, and private object storage.</p>
+      <div class="actions">
+        <a class="button primary" href="https://tunnel.mareoxlan.com/">Open public origin</a>
+        <a class="button" href="https://tunnel.mareoxlan.com/secure">Open secure app</a>
+        <a class="button" href="https://tunnel.mareoxlan.com/secure/us">Open flag route</a>
+        <a class="button" href="https://github.com/mareox/Cloudflare-Project#readme">View README</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <div class="wrap">
+      <section>
+        <div class="grid">
+          <article class="card">
+            <div class="status">Deployed</div>
+            <h2>Working application</h2>
+            <p><code>/</code> reaches the Atlas origin through Cloudflare Tunnel and returns request headers as JSON.</p>
+            <p><code>/secure</code> is protected by Cloudflare Access and served by a Worker.</p>
+            <p><code>/secure/us</code> returns a flag from private R2 storage.</p>
+          </article>
+          <article class="card">
+            <div class="status">Protected</div>
+            <h2>Access instructions</h2>
+            <p>Use an allowed identity through Cloudflare Access. <code>mareox@gmail.com</code> is allowed, and email addresses ending in <code>@cloudflare.com</code> are allowed for reviewer access.</p>
+            <p>Unauthenticated curl requests to <code>/secure</code> receive an Access login redirect.</p>
+          </article>
+        </div>
+      </section>
+
+      <section>
+        <h2>Deliverable 1: Working Application</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>URL</th>
+              <th>Access</th>
+              <th>Expected result</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><a href="https://tunnel.mareoxlan.com/">https://tunnel.mareoxlan.com/</a></td>
+              <td>Public</td>
+              <td>JSON response with request headers and Cloudflare metadata.</td>
+            </tr>
+            <tr>
+              <td><a href="https://tunnel.mareoxlan.com/secure">https://tunnel.mareoxlan.com/secure</a></td>
+              <td>Cloudflare Access</td>
+              <td>HTML showing authenticated email, timestamp, and country.</td>
+            </tr>
+            <tr>
+              <td><a href="https://tunnel.mareoxlan.com/secure/us">https://tunnel.mareoxlan.com/secure/us</a></td>
+              <td>Cloudflare Access</td>
+              <td>US flag streamed by the Worker from private R2.</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section>
+        <h2>Deliverable 2a: Implementation Steps</h2>
+        <div class="timeline">
+          <article class="step">
+            <h3>Configured Cloudflare DNS</h3>
+            <p>Created proxied DNS for <code>tunnel.mareoxlan.com</code> using a CNAME to the existing Cloudflare Tunnel target.</p>
+          </article>
+          <article class="step">
+            <h3>Deployed the origin server</h3>
+            <p>Ran a Flask and gunicorn header echo service on Atlas at <code>192.168.30.210:18088</code>. The origin exposes <code>/healthz</code> and returns request data as JSON.</p>
+          </article>
+          <article class="step">
+            <h3>Enabled Full Strict TLS</h3>
+            <p>Set the zone SSL mode to Full Strict for origin certificate validation during the proxy phase.</p>
+          </article>
+          <article class="step">
+            <h3>Moved traffic behind Cloudflare Tunnel</h3>
+            <p>Added a Tunnel public hostname mapping <code>tunnel.mareoxlan.com</code> to <code>http://192.168.30.210:18088</code>, removing the need for inbound public firewall exposure.</p>
+          </article>
+          <article class="step">
+            <h3>Protected <code>/secure*</code> with Access</h3>
+            <p>Created a self-hosted Access app for <code>tunnel.mareoxlan.com/secure*</code> with Google IdP and allow policies for the owner plus Cloudflare reviewer addresses.</p>
+          </article>
+          <article class="step">
+            <h3>Deployed Worker and R2</h3>
+            <p>Created private R2 bucket <code>country-flags</code>, uploaded <code>us.svg</code>, and deployed Worker <code>cf-application-secure</code> on <code>/secure</code> and <code>/secure/*</code>.</p>
+          </article>
+        </div>
+      </section>
+
+      <section>
+        <h2>Configuration and Testing Evidence</h2>
+        <div class="screens">
+          <figure>
+            <img src="screenshots/01_zone_overview.png" alt="Cloudflare zone overview">
+            <figcaption>Zone overview for <code>mareoxlan.com</code>.</figcaption>
+          </figure>
+          <figure>
+            <img src="screenshots/02_dns_records.png" alt="DNS records">
+            <figcaption>DNS records including the application hostname.</figcaption>
+          </figure>
+          <figure>
+            <img src="screenshots/04_ssl_mode.png" alt="SSL mode">
+            <figcaption>Full Strict SSL mode configuration.</figcaption>
+          </figure>
+          <figure>
+            <img src="screenshots/06_tunnel_connectors.png" alt="Tunnel connector status">
+            <figcaption>Cloudflare Tunnel connector status.</figcaption>
+          </figure>
+          <figure>
+            <img src="screenshots/06b_tunnel_routes.png" alt="Tunnel public hostname route">
+            <figcaption>Tunnel route for <code>tunnel.mareoxlan.com</code>.</figcaption>
+          </figure>
+          <figure>
+            <img src="screenshots/08_idps.png" alt="Identity providers">
+            <figcaption>Google identity provider configuration.</figcaption>
+          </figure>
+        </div>
+
+        <h3>Verification commands</h3>
+        <pre><code>curl -I https://tunnel.mareoxlan.com/
+curl -I https://tunnel.mareoxlan.com/secure
+npx wrangler r2 object get country-flags/us.svg --remote --pipe</code></pre>
+      </section>
+
+      <section>
+        <h2>Deliverable 2b: Relevant Use Cases</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>Product</th>
+              <th>Use case</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Cloudflare DNS</td>
+              <td>Routes the public hostname and keeps traffic proxied through Cloudflare.</td>
+            </tr>
+            <tr>
+              <td>Cloudflare Tunnel</td>
+              <td>Publishes a private homelab service without exposing inbound ports.</td>
+            </tr>
+            <tr>
+              <td>Cloudflare Access</td>
+              <td>Enforces identity-aware access before requests reach the application.</td>
+            </tr>
+            <tr>
+              <td>Workers</td>
+              <td>Runs edge logic on protected routes and uses Access identity headers.</td>
+            </tr>
+            <tr>
+              <td>R2</td>
+              <td>Stores private static assets and serves them only through a Worker binding.</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section>
+        <h2>Deliverable 2c: Knowledge Gaps Filled</h2>
+        <div class="grid">
+          <article class="card">
+            <h3>Access identity in Workers</h3>
+            <p>I verified when the Access policy runs relative to the Worker. Because Access protects <code>/secure*</code>, the Worker receives requests only after policy success and can use <code>Cf-Access-Authenticated-User-Email</code>.</p>
+          </article>
+          <article class="card">
+            <h3>Private R2 access</h3>
+            <p>I confirmed that a Worker binding is the authorization mechanism for private R2 reads. No public bucket domain or signed URL is required.</p>
+          </article>
+          <article class="card">
+            <h3>Route ownership</h3>
+            <p>I validated that only <code>/secure</code> and <code>/secure/*</code> are Worker routes, while the root path continues to the origin through Tunnel.</p>
+          </article>
+        </div>
+      </section>
+
+      <section>
+        <h2>Customer Experience</h2>
+        <p>A target customer would find the result compelling because a private internal app becomes internet-accessible without opening inbound firewall paths. Access adds identity controls at the edge, Workers add custom behavior without changing the origin, and R2 keeps static assets private.</p>
+        <p class="note">The main setup friction is product boundary alignment: DNS points to Tunnel, Tunnel points to the origin, Access owns the protected path, Worker route patterns must match that path, and R2 is available only through the binding. Once that request path is understood, the solution is clean and repeatable.</p>
+      </section>
+    </div>
+  </main>
+
+  <footer>
+    <div class="wrap">
+      Cloudflare Application Services Project: mareoxlan.com
+    </div>
+  </footer>
+</body>
+</html>
