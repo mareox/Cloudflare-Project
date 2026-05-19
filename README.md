@@ -37,7 +37,6 @@ HTML source code. Use the GitHub Pages links for rendered HTML review:
 - Rendered Application Services HTML report: <https://mareox.github.io/Cloudflare-Project/>
 - Rendered Network Services HTML report: <https://mareox.github.io/Cloudflare-Project/network.html>
 - Network Services Markdown report: [`docs/network-report.md`](docs/network-report.md)
-- Network Services DOCX report: [`docs/network-report.docx`](docs/network-report.docx)
 - Zero Trust HTML report: <https://mareox.github.io/Cloudflare-Project/zero-trust.html>
 - Zero Trust Markdown report: [`docs/zero-trust-report.md`](docs/zero-trust-report.md)
 
@@ -69,7 +68,6 @@ The Network Services assignment answers are also published in this repo:
 
 - Rendered HTML report: <https://mareox.github.io/Cloudflare-Project/network.html>
 - Markdown report: [`docs/network-report.md`](docs/network-report.md)
-- DOCX source: [`docs/network-report.docx`](docs/network-report.docx)
 
 It addresses Magic Transit BYOIP onboarding, external routing updates, GRE
 overhead, MSS clamping, smaller-than-/24 overlay routing, DSR firewall
