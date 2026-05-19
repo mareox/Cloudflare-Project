@@ -3,77 +3,22 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Cloudflare Network Services assignment: Magic Transit onboarding for Acme Corp — BYOIP, GRE tunnels, MSS clamping, DSR, and firewall rule analysis.">
   <title>Network Services Report | Cloudflare Project</title>
-  <style>
-    :root {
-      --ink: #101C30;
-      --muted: #5E6D80;
-      --line: #C8D6E5;
-      --panel: #ffffff;
-      --soft: #EDF2FA;
-      --accent: #F07620;
-      --accent-dark: #C85D10;
-      --blue: #1C64C2;
-      --teal: #0A7A72;
-      --navy: #0C1525;
-    }
-    * { box-sizing: border-box; }
-    body {
-      margin: 0;
-      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      color: var(--ink);
-      background: #F6F9FD;
-      line-height: 1.62;
-    }
-    a { color: var(--blue); text-decoration: none; }
-    a:hover { text-decoration: underline; }
-    header {
-      background: linear-gradient(135deg, #101C30 0%, #1A3A6A 58%, #F07620 160%);
-      color: white;
-      padding: 56px 24px 42px;
-    }
-    .wrap { max-width: 1120px; margin: 0 auto; }
-    .eyebrow { margin: 0 0 10px; color: #FFD0A0; font-size: 13px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
-    h1 { margin: 0; max-width: 920px; font-size: 48px; line-height: 1.06; letter-spacing: 0; }
-    .hero-copy { max-width: 840px; margin: 16px 0 0; color: #e6edf7; font-size: 18px; }
-    .actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 24px; }
-    .button { display: inline-flex; align-items: center; justify-content: center; min-height: 42px; padding: 0 15px; border: 1px solid rgba(255,255,255,.28); border-radius: 6px; color: white; font-weight: 800; background: rgba(255,255,255,.1); }
-    .button.primary { color: #101C30; background: white; border-color: white; }
-    main { padding: 28px 24px 70px; }
-    .toc { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 12px; margin: 0 0 30px; }
-    .tile { background: white; border: 1px solid var(--line); border-radius: 8px; padding: 16px; box-shadow: 0 8px 22px rgba(24,33,47,.05); }
-    .tile strong { display: block; margin-bottom: 4px; }
-    .tile span { color: var(--muted); font-size: 14px; }
-    .report-section { margin-top: 34px; }
-    h2 { margin: 34px 0 12px; padding-top: 12px; border-top: 1px solid var(--line); font-size: 30px; line-height: 1.15; letter-spacing: 0; }
-    h3 { margin: 28px 0 10px; font-size: 22px; line-height: 1.25; letter-spacing: 0; }
-    h4 { margin: 22px 0 8px; font-size: 17px; letter-spacing: 0; color: #213658; }
-    p { margin: 0 0 15px; }
-    li { margin: 0 0 8px; }
-    .meta { color: var(--muted); font-weight: 700; }
-    code, pre { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace; }
-    code { padding: 2px 5px; border-radius: 4px; background: #E6EDF7; }
-    pre { margin: 16px 0 20px; padding: 16px; border-radius: 8px; background: #0C1526; color: #e9eef8; overflow-x: auto; line-height: 1.4; }
-    pre code { padding: 0; background: transparent; color: inherit; }
-    .diagram { margin: 18px 0 24px; border: 1px solid var(--line); border-radius: 8px; background: white; overflow: hidden; box-shadow: 0 10px 24px rgba(24,33,47,.06); }
-    .diagram img { display: block; width: 100%; height: auto; }
-    figcaption { padding: 10px 14px 13px; color: var(--muted); font-size: 14px; border-top: 1px solid var(--line); background: #fff; }
-    .callout { margin: 26px 0; padding: 18px; border-left: 5px solid var(--accent); background: #FFF0E6; border-radius: 8px; }
-    footer { padding: 26px 24px; border-top: 1px solid var(--line); color: var(--muted); background: white; }
-    footer a { color: var(--muted); }
-    footer a:hover { color: var(--ink); }
-    @media (max-width: 720px) {
-      h1 { font-size: 34px; }
-      .hero-copy { font-size: 16px; }
-      h2 { font-size: 25px; }
-      h3 { font-size: 20px; }
-      a, code { overflow-wrap: anywhere; word-break: break-word; }
-      pre, pre code { white-space: pre-wrap; overflow-wrap: anywhere; }
-      main { padding-left: 18px; padding-right: 18px; }
-      header { padding-left: 18px; padding-right: 18px; }
-    }
-  </style>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='50' fill='%23F07620'/><path d='M65 42c0-8.284-6.716-15-15-15s-15 6.716-15 15c0 .34.012.678.035 1.013C30.88 44.557 27 49.104 27 54.5 27 60.299 31.701 65 37.5 65h25C68.851 65 73 60.851 73 55.75c0-4.418-3.017-8.13-7.1-9.196C65.956 45.086 65 43.621 65 42z' fill='white'/></svg>">
   <link rel="stylesheet" href="shared.css">
+  <style>
+    /* ─ Network-page specifics ─ */
+    .toc { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 12px; margin: 0 0 30px; }
+    .tile { background: white; border: 1px solid var(--line); border-radius: var(--r); padding: 16px; box-shadow: 0 8px 22px rgba(24,33,47,.05); text-decoration: none; color: var(--ink); display: block; transition: box-shadow .14s; }
+    .tile:hover { box-shadow: 0 12px 30px rgba(24,33,47,.1); text-decoration: none; }
+    .tile strong { display: block; margin-bottom: 4px; font-weight: 600; }
+    .tile span { color: var(--muted); font-size: 14px; }
+    .callout { margin: 26px 0; padding: 18px; border-left: 5px solid var(--accent); background: #FFF0E6; border-radius: 0 var(--r) var(--r) 0; }
+    .diagram { margin: 18px 0 24px; border: 1px solid var(--line); border-radius: var(--r); background: white; overflow: hidden; box-shadow: 0 10px 24px rgba(24,33,47,.06); }
+    .diagram img { display: block; width: 100%; height: auto; }
+    .meta { color: var(--muted); font-weight: 600; margin-bottom: 6px; }
+  </style>
 </head>
 <body>
   <nav class="site-nav">
@@ -100,8 +45,7 @@
       <p class="hero-copy">Short answers for BYOIP, GRE, MSS, DSR, and the firewall questions.</p>
       <div class="actions">
         <a class="button primary" href="network-report.md">Read Markdown</a>
-        <a class="button" href="index.html">App Services</a>
-        <a class="button" href="zero-trust.html">Zero Trust</a>
+        <a class="button" href="https://github.com/mareox/Cloudflare-Project" target="_blank" rel="noopener">GitHub</a>
       </div>
     </div>
   </header>
@@ -117,7 +61,7 @@
       <p class="meta"><strong>Author:</strong> Acme Corp CTO (assignment response)</p>
       <p class="meta"><strong>Scenario:</strong> Onboarding <code>203.0.113.0/24</code> (Acme ASN <code>12345</code>) to Cloudflare Magic Transit with two anycast GRE tunnels and DSR egress.</p>
 
-      <section id="section-a-magic-transit-onboarding" class="report-section"><h2>Section A: Magic Transit Onboarding</h2>
+      <section id="section-a-magic-transit-onboarding"><h2>Section A: Magic Transit Onboarding</h2>
         <h3 id="a-1-what-information-must-acme-supply-to-cloudflare-to-advertise-the-24">A.1 What information must Acme supply to Cloudflare to advertise the /24?</h3>
         <p>Cloudflare needs proof that Acme owns the route and can let Cloudflare announce it. I would provide:</p>
         <ul>
@@ -142,7 +86,7 @@
         <p>GRE adds <strong>24 bytes</strong>: 20 bytes for the outer IPv4 header and 4 bytes for GRE. With a 1500-byte path MTU, the inner MTU is <strong>1476 bytes</strong>. (<a href="https://developers.cloudflare.com/magic-transit/reference/mtu-mss/">Magic Transit MTU/MSS</a>; <a href="https://datatracker.ietf.org/doc/html/rfc2784">RFC 2784</a>)</p>
 
         <h4>A.3.a MSS clamp value</h4>
-        <figure class="diagram"><img src="assets/gre-encapsulation.svg" alt="GRE encapsulation and MSS calculation"><figcaption>GRE adds 24 bytes of overhead, which leaves 1,436 bytes for TCP payload when the underlay MTU is 1500.</figcaption></figure>
+        <figure class="diagram"><img src="assets/gre-encapsulation.svg" alt="GRE encapsulation and MSS calculation" loading="lazy"><figcaption>GRE adds 24 bytes of overhead, which leaves 1,436 bytes for TCP payload when the underlay MTU is 1500.</figcaption></figure>
         <p><strong>1,436 bytes.</strong></p>
         <pre><code>1500  path MTU
 - 20  outer IPv4
@@ -171,8 +115,8 @@ User -&gt; Cloudflare anycast PoP -&gt; GRE tunnel -&gt; Acme edge -&gt; Web ser
 
 Return path:
 Web server -&gt; Acme ISP/default route -&gt; User</code></pre>
-        <figure class="diagram"><img src="assets/magic-transit-flow.svg" alt="Magic Transit direct server return packet flow"><figcaption>Forward traffic is scrubbed and GRE-encapsulated through Cloudflare. Return traffic leaves Acme directly.</figcaption></figure>
-        <figure class="diagram"><img src="assets/packet-header-walkthrough.svg" alt="Forward packet header walkthrough: Outer IPv4, GRE, Inner IPv4, TCP with MSS 1436"><figcaption>Forward packet between Cloudflare and Acme: outer IPv4 wraps GRE, and the inner packet keeps the original client IP.</figcaption></figure>
+        <figure class="diagram"><img src="assets/magic-transit-flow.svg" alt="Magic Transit direct server return packet flow" loading="lazy"><figcaption>Forward traffic is scrubbed and GRE-encapsulated through Cloudflare. Return traffic leaves Acme directly.</figcaption></figure>
+        <figure class="diagram"><img src="assets/packet-header-walkthrough.svg" alt="Forward packet header walkthrough: Outer IPv4, GRE, Inner IPv4, TCP with MSS 1436" loading="lazy"><figcaption>Forward packet between Cloudflare and Acme: outer IPv4 wraps GRE, and the inner packet keeps the original client IP.</figcaption></figure>
         <pre><code>Outer IP: src=Cloudflare GRE endpoint, dst=100.100.100.100, proto=47
 GRE:      4 bytes
 Inner IP: src=USER_PUBLIC_IP, dst=203.0.113.10
@@ -180,7 +124,7 @@ TCP:      dport=443, MSS=1436</code></pre>
         <p>Main point: Cloudflare receives and cleans the packet, sends it to Acme over GRE, and Acme sends return traffic straight back to the user. The server still sees the real client IP. (<a href="https://developers.cloudflare.com/reference-architecture/architectures/magic-transit/">Magic Transit reference architecture</a>; <a href="https://developers.cloudflare.com/magic-transit/reference/gre-ipsec-tunnels/">GRE and IPsec tunnels</a>; <a href="https://developers.cloudflare.com/magic-transit/reference/tunnel-health-checks/">Tunnel health checks</a>)</p>
       </section>
 
-      <section id="section-b-firewall-debugging" class="report-section"><h2>Section B: Firewall Debugging</h2>
+      <section id="section-b-firewall-debugging"><h2>Section B: Firewall Debugging</h2>
         <div class="callout"><strong>Note:</strong> The prompt says to assume stateful firewall behavior. Magic Transit DSR is not really stateful for egress, but I am answering this section the way the prompt asks. (<a href="https://developers.cloudflare.com/reference-architecture/architectures/magic-transit/">Magic Transit reference architecture</a>; <a href="https://developers.cloudflare.com/cloudflare-network-firewall/best-practices/magic-transit-egress/">Network Firewall Magic Transit egress</a>)</div>
 
         <h3 id="b-1-does-the-firewall-allow-all-dns-queries">B.1 Does the firewall allow all DNS queries?</h3>
@@ -215,7 +159,7 @@ Rule 2b: ANY -&gt; 203.0.113.0/24, TCP, dport=53, ALLOW</code></pre>
         <p><strong>Fix:</strong> add <code>ANY -&gt; ANY, UDP, dport=443, ALLOW</code>.</p>
       </section>
 
-      <section id="section-c-what-i-learned" class="report-section"><h2>Section C: What I Learned</h2>
+      <section id="section-c-what-i-learned"><h2>Section C: What I Learned</h2>
         <p><strong>BYOIP is mostly trust paperwork.</strong> LOA, IRR, and RPKI need to match, or the route can fail in weird ways. (<a href="https://developers.cloudflare.com/byoip/concepts/loa/">Cloudflare BYOIP LOA</a>; <a href="https://developers.cloudflare.com/magic-transit/how-to/advertise-prefixes/">Magic Transit advertise prefixes</a>)</p>
         <p><strong>DSR changes firewall thinking.</strong> Cloudflare sees ingress. Acme sends return traffic direct. So Cloudflare rules need to be simple L3/L4 rules, not full stateful firewall rules. (<a href="https://developers.cloudflare.com/reference-architecture/architectures/magic-transit/">Magic Transit reference architecture</a>; <a href="https://developers.cloudflare.com/cloudflare-network-firewall/best-practices/magic-transit-egress/">Network Firewall Magic Transit egress</a>)</p>
         <p><strong>MSS clamping matters.</strong> The right number here is 1436. If the egress side is missed, TCP can look fine but still break on larger packets. (<a href="https://developers.cloudflare.com/magic-transit/reference/mtu-mss/">Magic Transit MTU/MSS</a>)</p>
@@ -223,7 +167,7 @@ Rule 2b: ANY -&gt; 203.0.113.0/24, TCP, dport=53, ALLOW</code></pre>
         <p><strong>Cutover order matters.</strong> I would validate LOA, IRR, RPKI, MSS, and tunnel health before moving traffic. (<a href="https://developers.cloudflare.com/magic-transit/how-to/advertise-prefixes/">Magic Transit advertise prefixes</a>; <a href="https://developers.cloudflare.com/learning-paths/data-center-protection/run-pre-flight-checks/">Data Center Protection pre-flight checks</a>; <a href="https://developers.cloudflare.com/magic-transit/reference/tunnel-health-checks/">Tunnel health checks</a>)</p>
       </section>
 
-      <section id="references" class="report-section"><h2>References</h2>
+      <section id="references"><h2>References</h2>
         <ul>
           <li><strong>BYOIP - Letter of Agency</strong>: <a href="https://developers.cloudflare.com/byoip/concepts/loa/">Cloudflare BYOIP LOA</a></li>
           <li><strong>Magic Transit - Advertise prefixes</strong>: <a href="https://developers.cloudflare.com/magic-transit/how-to/advertise-prefixes/">Cloudflare Magic Transit advertise prefixes</a></li>
@@ -247,7 +191,7 @@ Rule 2b: ANY -&gt; 203.0.113.0/24, TCP, dport=53, ALLOW</code></pre>
   </main>
   <footer>
     <div class="wrap">
-      Cloudflare Network Services Assignment - <a href="network-report.md">network-report.md</a> &nbsp;·&nbsp;
+      Cloudflare Network Services Assignment &nbsp;·&nbsp; <a href="network-report.md">network-report.md</a> &nbsp;·&nbsp;
       <a href="https://github.com/mareox/Cloudflare-Project" target="_blank" rel="noopener">github.com/mareox/Cloudflare-Project</a>
     </div>
   </footer>

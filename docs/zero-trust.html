@@ -3,169 +3,29 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Cloudflare Zero Trust Services assignment: ZTNA implementation with Access policies, WARP enrollment, Gateway DNS and HTTP filtering, and SaaS identity integration with policy-as-code templates.">
   <title>Zero Trust Services Report | Cloudflare Project</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='50' fill='%23F07620'/><path d='M65 42c0-8.284-6.716-15-15-15s-15 6.716-15 15c0 .34.012.678.035 1.013C30.88 44.557 27 49.104 27 54.5 27 60.299 31.701 65 37.5 65h25C68.851 65 73 60.851 73 55.75c0-4.418-3.017-8.13-7.1-9.196C65.956 45.086 65 43.621 65 42z' fill='white'/></svg>">
+  <link rel="stylesheet" href="shared.css">
   <style>
-    :root {
-      --ink: #101C30;
-      --muted: #5E6D80;
-      --line: #C8D6E5;
-      --panel: #ffffff;
-      --soft: #EDF2FA;
-      --accent: #F07620;
-      --blue: #1C64C2;
-      --green: #0C8A5A;
-      --red: #b42318;
-    }
-    * { box-sizing: border-box; }
-    body {
-      margin: 0;
-      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      color: var(--ink);
-      background: #F6F9FD;
-      line-height: 1.58;
-    }
-    a { color: var(--blue); text-decoration: none; }
-    a:hover { text-decoration: underline; }
-    header {
-      background: linear-gradient(135deg, #101C30 0%, #1A3A6A 58%, #F07620 160%);
-      color: white;
-      padding: 56px 24px 42px;
-    }
-    .wrap { max-width: 1120px; margin: 0 auto; }
-    .eyebrow {
-      margin: 0 0 10px;
-      color: #FFD0A0;
-      font-size: 13px;
-      font-weight: 800;
-      letter-spacing: .08em;
-      text-transform: uppercase;
-    }
-    h1 { margin: 0; max-width: 820px; font-size: clamp(32px, 5vw, 54px); line-height: 1.06; letter-spacing: 0; }
-    .hero-copy { max-width: 760px; margin: 16px 0 0; color: #e6edf7; font-size: 18px; }
-    .actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 26px; }
-    .button {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      min-height: 42px;
-      padding: 0 16px;
-      border: 1px solid rgba(255,255,255,.28);
-      border-radius: 6px;
-      color: white;
-      font-weight: 700;
-      font-size: 14px;
-      background: rgba(255,255,255,.1);
-      white-space: nowrap;
-    }
-    .button:hover { background: rgba(255,255,255,.18); text-decoration: none; }
-    .button.primary { color: #101C30; background: white; border-color: white; }
-    main { padding: 34px 24px 72px; }
-    section { margin-top: 36px; }
-    h2 {
-      margin: 0 0 16px;
-      padding-top: 14px;
-      border-top: 1px solid var(--line);
-      font-size: 28px;
-      line-height: 1.18;
-      letter-spacing: 0;
-    }
-    h3 { margin: 28px 0 10px; font-size: 19px; line-height: 1.28; letter-spacing: 0; }
-    p { margin: 0 0 14px; }
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-      gap: 14px;
-    }
-    .card {
-      background: var(--panel);
-      border: 1px solid var(--line);
-      border-radius: 8px;
-      padding: 20px;
-      box-shadow: 0 6px 20px rgba(24,33,47,.05);
-    }
-    .status {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      margin-bottom: 10px;
-      font-size: 11px;
-      font-weight: 900;
-      letter-spacing: .07em;
-      text-transform: uppercase;
-    }
+    /* ─ Zero Trust-page specifics ─ */
+    .status { display: inline-flex; align-items: center; gap: 8px; margin-bottom: 10px; font-size: 11px; font-weight: 700; letter-spacing: .07em; text-transform: uppercase; }
     .status::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: currentColor; flex-shrink: 0; }
     .done { color: var(--green); }
     .designed { color: var(--blue); }
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      background: white;
-      border: 1px solid var(--line);
-      border-radius: 8px;
-      overflow: hidden;
-      display: block;
-      overflow-x: auto;
-    }
-    th, td {
-      padding: 11px 14px;
-      border-bottom: 1px solid var(--line);
-      text-align: left;
-      vertical-align: top;
-      min-width: 160px;
-    }
-    th { background: var(--soft); color: #273655; font-size: 12px; text-transform: uppercase; letter-spacing: .04em; }
-    tr:last-child td { border-bottom: 0; }
-    code, pre { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace; }
-    code { padding: 2px 5px; border-radius: 4px; background: #E6EDF7; font-size: .9em; }
-    pre { padding: 16px; border-radius: 8px; background: #0C1526; color: #e9eef8; overflow-x: auto; font-size: 13px; line-height: 1.55; }
-    ul, ol { margin-top: 0; padding-left: 22px; }
-    li { margin-bottom: 8px; }
-    .screens {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 16px;
-    }
-    figure {
-      margin: 0;
-      overflow: hidden;
-      border: 1px solid var(--line);
-      border-radius: 8px;
-      background: white;
-      box-shadow: 0 6px 20px rgba(24,33,47,.05);
-    }
-    figure img { width: 100%; display: block; aspect-ratio: 16 / 10; object-fit: cover; background: var(--soft); }
-    figcaption { padding: 10px 14px 13px; color: var(--muted); font-size: 13px; border-top: 1px solid var(--line); }
-    .tag {
-      display: inline-block;
-      padding: 3px 9px;
-      border-radius: 99px;
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: .04em;
-      background: #D9F5EC;
-      color: var(--green);
-      vertical-align: middle;
-    }
+    .tag { display: inline-block; padding: 3px 9px; border-radius: 99px; font-size: 11px; font-weight: 700; letter-spacing: .04em; background: #D9F5EC; color: var(--green); vertical-align: middle; }
     .tag.blue { background: #D9EAF8; color: var(--blue); }
-    .pill-row { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 18px; }
-    footer { padding: 28px 24px; border-top: 1px solid var(--line); color: var(--muted); background: white; }
-    footer a { color: var(--muted); }
-    footer a:hover { color: var(--ink); }
     .assign-row { display: flex; flex-wrap: wrap; gap: 18px; margin-top: 18px; align-items: center; }
-    .assign-label { color: #FFD0A0; font-size: 12px; font-weight: 800; letter-spacing: .07em; text-transform: uppercase; white-space: nowrap; }
+    .assign-label { color: #FFD0A0; font-size: 12px; font-weight: 700; letter-spacing: .07em; text-transform: uppercase; white-space: nowrap; }
     .assign-task { color: rgba(255,255,255,.85); font-size: 14px; white-space: nowrap; }
     .assign-task strong { color: white; font-weight: 600; }
     .assign-task a { color: #FFD0A0; font-weight: 700; }
     .assign-task a:hover { color: white; text-decoration: underline; }
     @media (max-width: 720px) {
-      h1 { font-size: 32px; }
-      .hero-copy { font-size: 16px; }
-      h2 { font-size: 23px; }
-      pre { white-space: pre-wrap; overflow-wrap: anywhere; }
-      main, header { padding-left: 18px; padding-right: 18px; }
+      .assign-row { gap: 12px; }
+      .assign-task { white-space: normal; }
     }
   </style>
-  <link rel="stylesheet" href="shared.css">
 </head>
 <body>
   <nav class="site-nav">
@@ -193,10 +53,9 @@
       <div class="actions">
         <a class="button primary" href="zero-trust-report.md">Full Markdown Report</a>
         <a class="button" href="https://tunnel.mareoxlan.com/secure">Live App</a>
-        <a class="button" href="zero-trust/access-policies/groups.json">Access Groups JSON</a>
-        <a class="button" href="zero-trust/gateway-policies/dns-policies.json">Gateway DNS JSON</a>
-        <a class="button" href="index.html">App Services</a>
-        <a class="button" href="network.html">Network</a>
+        <a class="button report" href="zero-trust/access-policies/groups.json">Access Groups JSON</a>
+        <a class="button report" href="zero-trust/gateway-policies/dns-policies.json">Gateway DNS JSON</a>
+        <a class="button" href="https://github.com/mareox/Cloudflare-Project" target="_blank" rel="noopener">GitHub</a>
       </div>
       <div class="assign-row">
         <span class="assign-label">Assignment answers</span>
@@ -309,27 +168,27 @@
         <h3>Screenshot evidence</h3>
         <div class="screens">
           <figure>
-            <img src="zero-trust/screenshots/zt_01_reusable_policies_list.png" alt="Reusable Access policies">
+            <img src="zero-trust/screenshots/zt_01_reusable_policies_list.png" alt="Reusable Access policies" loading="lazy">
             <figcaption>Reusable Access policies: <code>allow-testers</code>, <code>allow-saas-users</code>, <code>allow-email-me</code>, <code>allow-email-cloudflare</code></figcaption>
           </figure>
           <figure>
-            <img src="zero-trust/screenshots/zt_02_allow_testers_policy.png" alt="allow-testers policy detail">
+            <img src="zero-trust/screenshots/zt_02_allow_testers_policy.png" alt="allow-testers policy detail" loading="lazy">
             <figcaption><code>allow-testers</code> policy — includes tester emails and reviewer domain</figcaption>
           </figure>
           <figure>
-            <img src="zero-trust/screenshots/zt_03_allow_saas_users_policy.png" alt="allow-saas-users policy detail">
+            <img src="zero-trust/screenshots/zt_03_allow_saas_users_policy.png" alt="allow-saas-users policy detail" loading="lazy">
             <figcaption><code>allow-saas-users</code> policy — SaaS user group definition</figcaption>
           </figure>
           <figure>
-            <img src="zero-trust/screenshots/zt_baseline_existing_apps.png" alt="Existing Access applications">
+            <img src="zero-trust/screenshots/zt_baseline_existing_apps.png" alt="Existing Access applications" loading="lazy">
             <figcaption>Existing Access applications including the protected <code>tunnel.mareoxlan.com/secure</code> app</figcaption>
           </figure>
           <figure>
-            <img src="zero-trust/screenshots/zt_baseline_access_policies.png" alt="Access policy baseline">
+            <img src="zero-trust/screenshots/zt_baseline_access_policies.png" alt="Access policy baseline" loading="lazy">
             <figcaption>Access policies baseline — full policy list in Cloudflare dashboard</figcaption>
           </figure>
           <figure>
-            <img src="zero-trust/screenshots/zt_settings_overview.png" alt="Zero Trust settings">
+            <img src="zero-trust/screenshots/zt_settings_overview.png" alt="Zero Trust settings" loading="lazy">
             <figcaption>Zero Trust settings overview — team domain, IdP, and session settings</figcaption>
           </figure>
         </div>
@@ -340,7 +199,7 @@
         <p>Cloudflare WARP was installed on the test device and enrolled into the <code>mareoxlan</code> Zero Trust organization. Once enrolled, all DNS and HTTP traffic routes through Cloudflare Gateway for policy evaluation.</p>
         <div class="screens" style="max-width:540px">
           <figure>
-            <img src="zero-trust/screenshots/zt_06_devices_warp.png" alt="WARP enrolled device">
+            <img src="zero-trust/screenshots/zt_06_devices_warp.png" alt="WARP enrolled device" loading="lazy">
             <figcaption>Enrolled device visible in Zero Trust → My Team → Devices</figcaption>
           </figure>
         </div>
@@ -388,7 +247,7 @@
 
         <div class="screens">
           <figure>
-            <img src="zero-trust/screenshots/zt_baseline_traffic_policies.png" alt="Gateway HTTP policy baseline">
+            <img src="zero-trust/screenshots/zt_baseline_traffic_policies.png" alt="Gateway HTTP policy baseline" loading="lazy">
             <figcaption>Gateway HTTP (traffic) policies baseline</figcaption>
           </figure>
         </div>
@@ -441,7 +300,7 @@
 
   <footer>
     <div class="wrap">
-      Cloudflare Zero Trust Services Assignment &mdash; <code>mareoxlan.com</code> &mdash; May 2026 &nbsp;·&nbsp;
+      Cloudflare Zero Trust Services Assignment &nbsp;·&nbsp; <code>mareoxlan.com</code> &nbsp;·&nbsp; May 2026 &nbsp;·&nbsp;
       <a href="https://github.com/mareox/Cloudflare-Project" target="_blank" rel="noopener">github.com/mareox/Cloudflare-Project</a>
     </div>
   </footer>
