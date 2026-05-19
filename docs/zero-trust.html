@@ -15,16 +15,16 @@
     .designed { color: var(--blue); }
     .tag { display: inline-block; padding: 3px 9px; border-radius: 99px; font-size: 11px; font-weight: 700; letter-spacing: .04em; background: #D9F5EC; color: var(--green); vertical-align: middle; }
     .tag.blue { background: #D9EAF8; color: var(--blue); }
-    .assign-row { display: flex; flex-wrap: wrap; gap: 18px; margin-top: 18px; align-items: center; }
-    .assign-label { color: #FFD0A0; font-size: 12px; font-weight: 700; letter-spacing: .07em; text-transform: uppercase; white-space: nowrap; }
-    .assign-task { color: rgba(255,255,255,.85); font-size: 14px; white-space: nowrap; }
-    .assign-task strong { color: white; font-weight: 600; }
-    .assign-task a { color: #FFD0A0; font-weight: 700; }
-    .assign-task a:hover { color: white; text-decoration: underline; }
-    @media (max-width: 720px) {
-      .assign-row { gap: 12px; }
-      .assign-task { white-space: normal; }
-    }
+    .task-list { margin-top: 20px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,.12); }
+    .task-list-label { margin: 0 0 10px; font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: rgba(255,255,255,.4); }
+    .task-items { display: flex; flex-direction: column; gap: 5px; }
+    .task-item { display: flex; align-items: center; gap: 12px; padding: 8px 12px; background: rgba(255,255,255,.055); border: 1px solid rgba(255,255,255,.09); border-radius: 6px; transition: background .14s; }
+    .task-item:hover { background: rgba(255,255,255,.1); }
+    .task-badge { display: flex; align-items: center; justify-content: center; width: 22px; height: 22px; border-radius: 4px; background: rgba(240,118,32,.3); color: #FFD0A0; font-size: 11px; font-weight: 800; flex-shrink: 0; }
+    .task-title { flex: 1; color: rgba(255,255,255,.78); font-size: 13px; min-width: 0; }
+    .task-links { display: flex; gap: 5px; flex-shrink: 0; }
+    .task-links a { display: inline-flex; align-items: center; padding: 3px 8px; border-radius: 4px; background: rgba(255,255,255,.09); border: 1px solid rgba(255,255,255,.14); color: rgba(255,255,255,.65); font-size: 11px; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; transition: background .12s, color .12s, border-color .12s; }
+    .task-links a:hover { background: rgba(255,255,255,.2); color: white; border-color: rgba(255,255,255,.3); text-decoration: none; }
   </style>
 </head>
 <body>
@@ -57,11 +57,34 @@
         <a class="button report" href="zero-trust/gateway-policies/dns-policies.json">Gateway DNS JSON</a>
         <a class="button" href="https://github.com/mareox/Cloudflare-Project" target="_blank" rel="noopener">GitHub</a>
       </div>
-      <div class="assign-row">
-        <span class="assign-label">Assignment answers</span>
-        <span class="assign-task"><strong>Task A</strong> — Technical requirements summary &nbsp;<a href="zero-trust/assignment-answers/task-a-technical-requirements-summary.md">MD</a> / <a href="zero-trust/assignment-answers/task-a-technical-requirements-summary.pdf">PDF</a></span>
-        <span class="assign-task"><strong>Task B</strong> — Lessons learned and issues encountered &nbsp;<a href="zero-trust/assignment-answers/task-b-lessons-issues.md">MD</a> / <a href="zero-trust/assignment-answers/task-b-lessons-issues.pdf">PDF</a></span>
-        <span class="assign-task"><strong>Task C</strong> — Best practices applied &nbsp;<a href="zero-trust/assignment-answers/task-c-best-practices.md">MD</a> / <a href="zero-trust/assignment-answers/task-c-best-practices.pdf">PDF</a></span>
+      <div class="task-list">
+        <p class="task-list-label">Assignment answers</p>
+        <div class="task-items">
+          <div class="task-item">
+            <span class="task-badge">A</span>
+            <span class="task-title">Technical requirements summary</span>
+            <div class="task-links">
+              <a href="zero-trust/assignment-answers/task-a-technical-requirements-summary.md">MD</a>
+              <a href="zero-trust/assignment-answers/task-a-technical-requirements-summary.pdf">PDF</a>
+            </div>
+          </div>
+          <div class="task-item">
+            <span class="task-badge">B</span>
+            <span class="task-title">Lessons learned and issues encountered</span>
+            <div class="task-links">
+              <a href="zero-trust/assignment-answers/task-b-lessons-issues.md">MD</a>
+              <a href="zero-trust/assignment-answers/task-b-lessons-issues.pdf">PDF</a>
+            </div>
+          </div>
+          <div class="task-item">
+            <span class="task-badge">C</span>
+            <span class="task-title">Best practices applied</span>
+            <div class="task-links">
+              <a href="zero-trust/assignment-answers/task-c-best-practices.md">MD</a>
+              <a href="zero-trust/assignment-answers/task-c-best-practices.pdf">PDF</a>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </header>
