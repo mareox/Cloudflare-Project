@@ -1,0 +1,260 @@
+%PDF-1.4
+%‚„œ”
+1 0 obj
+<< /Type /Catalog /Pages 2 0 R >>
+endobj
+2 0 obj
+<< /Type /Pages /Kids [6 0 R 8 0 R] /Count 2 >>
+endobj
+3 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>
+endobj
+4 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold >>
+endobj
+5 0 obj
+<< /Length 3474 >>
+stream
+1 1 1 rg
+0 0 612 792 re f
+0 0 0 rg
+BT
+/F2 16 Tf
+1 0 0 1 54 736.00 Tm
+(Task C - Best Practices Applied) Tj
+/F2 13 Tf
+1 0 0 1 54 690.00 Tm
+(Default Deny) Tj
+/F1 10 Tf
+1 0 0 1 54 663.00 Tm
+(The implementation uses default-deny behavior for application access and device enrollment.) Tj
+/F1 10 Tf
+1 0 0 1 54 650.00 Tm
+(Users and devices only gain access when they match an explicit allow policy.) Tj
+/F1 10 Tf
+1 0 0 1 54 631.00 Tm
+(This matters because Zero Trust should not depend on broad network reachability. Access is) Tj
+/F1 10 Tf
+1 0 0 1 54 618.00 Tm
+(granted per identity, per application, and per policy decision.) Tj
+/F2 13 Tf
+1 0 0 1 54 589.00 Tm
+(Least Privilege) Tj
+/F1 10 Tf
+1 0 0 1 54 562.00 Tm
+(The Access model separates normal users from administrators:) Tj
+/F1 10 Tf
+1 0 0 1 54 543.00 Tm
+(- `Testers` are scoped to the self-hosted application.) Tj
+/F1 10 Tf
+1 0 0 1 54 530.00 Tm
+(- `SaaS-Users` are scoped to the SaaS application.) Tj
+/F1 10 Tf
+1 0 0 1 54 517.00 Tm
+(- `Admins` are separate from both user groups.) Tj
+/F1 10 Tf
+1 0 0 1 54 498.00 Tm
+(This avoids using one broad allowlist for every application. It also keeps the owner/admin) Tj
+/F1 10 Tf
+1 0 0 1 54 485.00 Tm
+(path available without making every tester an admin.) Tj
+/F2 13 Tf
+1 0 0 1 54 456.00 Tm
+(Reusable Identity Groups) Tj
+/F1 10 Tf
+1 0 0 1 54 429.00 Tm
+(The same group pattern is reused across the Access applications. That makes the access model) Tj
+/F1 10 Tf
+1 0 0 1 54 416.00 Tm
+(easier to maintain because the operator can add or remove a user from a group rather than) Tj
+/F1 10 Tf
+1 0 0 1 54 403.00 Tm
+(editing every application policy individually.) Tj
+/F1 10 Tf
+1 0 0 1 54 384.00 Tm
+(In this lab, the groups are implemented as Cloudflare-native Access groups and reusable) Tj
+/F1 10 Tf
+1 0 0 1 54 371.00 Tm
+(policies with email includes. In a production tenant, the same group names could map to) Tj
+/F1 10 Tf
+1 0 0 1 54 358.00 Tm
+(identity-provider group claims from Google Workspace, Okta, or another enterprise IdP.) Tj
+/F2 13 Tf
+1 0 0 1 54 329.00 Tm
+(Private Origin Through Cloudflare Tunnel) Tj
+/F1 10 Tf
+1 0 0 1 54 302.00 Tm
+(The self-hosted application uses Cloudflare Tunnel instead of exposing the origin directly) Tj
+/F1 10 Tf
+1 0 0 1 54 289.00 Tm
+(to the internet. This is a strong Zero Trust pattern because the origin does not need) Tj
+/F1 10 Tf
+1 0 0 1 54 276.00 Tm
+(inbound firewall openings for public users.) Tj
+/F1 10 Tf
+1 0 0 1 54 257.00 Tm
+(Cloudflare becomes the enforcement point before the request reaches the internal service.) Tj
+/F2 13 Tf
+1 0 0 1 54 228.00 Tm
+(Separate SaaS and Self-Hosted Controls With a Common Policy Model) Tj
+/F1 10 Tf
+1 0 0 1 54 201.00 Tm
+(The assignment includes both self-hosted and SaaS access. I used Cloudflare Access as the) Tj
+/F1 10 Tf
+1 0 0 1 54 188.00 Tm
+(common policy layer for both.) Tj
+/F1 10 Tf
+1 0 0 1 54 169.00 Tm
+(This is a useful best practice because it reduces identity sprawl. A user should not have) Tj
+/F1 10 Tf
+1 0 0 1 54 156.00 Tm
+(one access model for internal apps and a completely different access model for SaaS if the) Tj
+/F1 10 Tf
+1 0 0 1 54 143.00 Tm
+(same Zero Trust policy can govern both.) Tj
+/F2 13 Tf
+1 0 0 1 54 114.00 Tm
+(Ordered Gateway Policies) Tj
+/F1 10 Tf
+1 0 0 1 54 87.00 Tm
+(The HTTP filtering requirement depends on policy order. I applied the specific allow policy) Tj
+/F1 10 Tf
+1 0 0 1 54 74.00 Tm
+(before the broad block policy:) Tj
+/F1 9 Tf
+1 0 0 1 488 32 Tm
+(Page 1 of 2) Tj
+ET
+endstream
+endobj
+6 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 3 0 R /F2 4 0 R >> >> /Contents 5 0 R >>
+endobj
+7 0 obj
+<< /Length 3096 >>
+stream
+1 1 1 rg
+0 0 612 792 re f
+0 0 0 rg
+BT
+/F1 10 Tf
+1 0 0 1 54 736.00 Tm
+(1. Allow Netflix and YouTube.) Tj
+/F1 10 Tf
+1 0 0 1 54 723.00 Tm
+(2. Block Entertainment.) Tj
+/F1 10 Tf
+1 0 0 1 54 704.00 Tm
+(That rule order is documented at https://github.com/mareox/Cloudflare-Project/blob/main/docs) Tj
+/F1 10 Tf
+1 0 0 1 54 691.00 Tm
+(/zero-trust/gateway-policies/README.md, because changing the order would break the) Tj
+/F1 10 Tf
+1 0 0 1 54 678.00 Tm
+(exception.) Tj
+/F2 13 Tf
+1 0 0 1 54 649.00 Tm
+(Policy-as-Code Documentation) Tj
+/F1 10 Tf
+1 0 0 1 54 622.00 Tm
+(The repo stores the important policy definitions as JSON:) Tj
+/F1 10 Tf
+1 0 0 1 54 603.00 Tm
+(- https://github.com/mareox/Cloudflare-Project/blob/main/docs/zero-trust/access-polici) Tj
+/F1 10 Tf
+1 0 0 1 54 590.00 Tm
+(  es/groups.json) Tj
+/F1 10 Tf
+1 0 0 1 54 577.00 Tm
+(- https://github.com/mareox/Cloudflare-Project/blob/main/docs/zero-trust/access-polici) Tj
+/F1 10 Tf
+1 0 0 1 54 564.00 Tm
+(  es/self-hosted-app.json) Tj
+/F1 10 Tf
+1 0 0 1 54 551.00 Tm
+(- https://github.com/mareox/Cloudflare-Project/blob/main/docs/zero-trust/access-polici) Tj
+/F1 10 Tf
+1 0 0 1 54 538.00 Tm
+(  es/saas-app.json) Tj
+/F1 10 Tf
+1 0 0 1 54 525.00 Tm
+(- https://github.com/mareox/Cloudflare-Project/blob/main/docs/zero-trust/gateway-polic) Tj
+/F1 10 Tf
+1 0 0 1 54 512.00 Tm
+(  ies/dns-policies.json) Tj
+/F1 10 Tf
+1 0 0 1 54 499.00 Tm
+(- https://github.com/mareox/Cloudflare-Project/blob/main/docs/zero-trust/gateway-polic) Tj
+/F1 10 Tf
+1 0 0 1 54 486.00 Tm
+(  ies/http-policies.json) Tj
+/F1 10 Tf
+1 0 0 1 54 467.00 Tm
+(This makes the implementation reviewable outside the dashboard and gives a starting point) Tj
+/F1 10 Tf
+1 0 0 1 54 454.00 Tm
+(for automation through Terraform, API calls, or a deployment script.) Tj
+/F2 13 Tf
+1 0 0 1 54 425.00 Tm
+(Evidence-Based Deliverables) Tj
+/F1 10 Tf
+1 0 0 1 54 398.00 Tm
+(The written report is backed by screenshots and policy files instead of only prose. The) Tj
+/F1 10 Tf
+1 0 0 1 54 385.00 Tm
+(screenshots show the dashboard state, while the JSON files show the intended reusable) Tj
+/F1 10 Tf
+1 0 0 1 54 372.00 Tm
+(configuration.) Tj
+/F1 10 Tf
+1 0 0 1 54 353.00 Tm
+(That combination is useful for assignments and real operations because it separates "what) Tj
+/F1 10 Tf
+1 0 0 1 54 340.00 Tm
+(was configured" from "why it was configured.") Tj
+/F2 13 Tf
+1 0 0 1 54 311.00 Tm
+(Documented Limitations) Tj
+/F1 10 Tf
+1 0 0 1 54 284.00 Tm
+(I documented the personal Gmail limitation instead of hiding it. Since personal Gmail does) Tj
+/F1 10 Tf
+1 0 0 1 54 271.00 Tm
+(not provide Workspace group claims, the assignment uses Cloudflare-native groups and) Tj
+/F1 10 Tf
+1 0 0 1 54 258.00 Tm
+(reusable policies with email includes.) Tj
+/F1 10 Tf
+1 0 0 1 54 239.00 Tm
+(That is not the ideal enterprise design, but it is the correct transparent choice for this) Tj
+/F1 10 Tf
+1 0 0 1 54 226.00 Tm
+(environment. The production upgrade path is clear: replace email includes with IdP group) Tj
+/F1 10 Tf
+1 0 0 1 54 213.00 Tm
+(claims once a Workspace or enterprise IdP is available.) Tj
+/F1 9 Tf
+1 0 0 1 488 32 Tm
+(Page 2 of 2) Tj
+ET
+endstream
+endobj
+8 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 3 0 R /F2 4 0 R >> >> /Contents 7 0 R >>
+endobj
+xref
+0 9
+0000000000 65535 f 
+0000000015 00000 n 
+0000000064 00000 n 
+0000000127 00000 n 
+0000000197 00000 n 
+0000000272 00000 n 
+0000003798 00000 n 
+0000003934 00000 n 
+0000007082 00000 n 
+trailer
+<< /Size 9 /Root 1 0 R >>
+startxref
+7218
+%%EOF

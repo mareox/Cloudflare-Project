@@ -1,0 +1,329 @@
+%PDF-1.4
+%‚„œ”
+1 0 obj
+<< /Type /Catalog /Pages 2 0 R >>
+endobj
+2 0 obj
+<< /Type /Pages /Kids [6 0 R 8 0 R 10 0 R] /Count 3 >>
+endobj
+3 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>
+endobj
+4 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold >>
+endobj
+5 0 obj
+<< /Length 4068 >>
+stream
+1 1 1 rg
+0 0 612 792 re f
+0 0 0 rg
+BT
+/F2 16 Tf
+1 0 0 1 54 736.00 Tm
+(Task A - Technical Requirements Summary) Tj
+/F2 13 Tf
+1 0 0 1 54 690.00 Tm
+(Summary) Tj
+/F1 10 Tf
+1 0 0 1 54 663.00 Tm
+(I implemented the Zero Trust assignment by using Cloudflare Access for application-level) Tj
+/F1 10 Tf
+1 0 0 1 54 650.00 Tm
+(access control, Cloudflare Gateway for DNS and HTTP filtering, and WARP enrollment controls) Tj
+/F1 10 Tf
+1 0 0 1 54 637.00 Tm
+(for device onboarding. The implementation uses the mareoxlan.com zone and the existing) Tj
+/F1 10 Tf
+1 0 0 1 54 624.00 Tm
+(mareoxlan.cloudflareaccess.com Zero Trust team.) Tj
+/F1 10 Tf
+1 0 0 1 54 605.00 Tm
+(The deliverable is documented as both dashboard evidence and reusable policy definitions in) Tj
+/F1 10 Tf
+1 0 0 1 54 592.00 Tm
+(the public Cloudflare-Project repository:) Tj
+/F1 10 Tf
+1 0 0 1 54 573.00 Tm
+(- Access policy definitions: https://github.com/mareox/Cloudflare-Project/tree/main/do) Tj
+/F1 10 Tf
+1 0 0 1 54 560.00 Tm
+(  cs/zero-trust/access-policies) Tj
+/F1 10 Tf
+1 0 0 1 54 547.00 Tm
+(- Gateway policy definitions: https://github.com/mareox/Cloudflare-Project/tree/main/d) Tj
+/F1 10 Tf
+1 0 0 1 54 534.00 Tm
+(  ocs/zero-trust/gateway-policies) Tj
+/F1 10 Tf
+1 0 0 1 54 521.00 Tm
+(- Screenshots:) Tj
+/F1 10 Tf
+1 0 0 1 54 508.00 Tm
+(  https://github.com/mareox/Cloudflare-Project/tree/main/docs/zero-trust/screenshots) Tj
+/F1 10 Tf
+1 0 0 1 54 495.00 Tm
+(- Full Zero Trust report:) Tj
+/F1 10 Tf
+1 0 0 1 54 482.00 Tm
+(  https://github.com/mareox/Cloudflare-Project/blob/main/docs/zero-trust-report.md) Tj
+/F1 10 Tf
+1 0 0 1 54 469.00 Tm
+(- Rendered Zero Trust page:) Tj
+/F1 10 Tf
+1 0 0 1 54 456.00 Tm
+(  https://mareox.github.io/Cloudflare-Project/zero-trust.html) Tj
+/F2 13 Tf
+1 0 0 1 54 427.00 Tm
+(Self-Hosted Application Access) Tj
+/F1 10 Tf
+1 0 0 1 54 400.00 Tm
+(For the self-hosted application requirement, I used the existing Access-protected) Tj
+/F1 10 Tf
+1 0 0 1 54 387.00 Tm
+(application at https://tunnel.mareoxlan.com/secure. The application is served through) Tj
+/F1 10 Tf
+1 0 0 1 54 374.00 Tm
+(Cloudflare Tunnel and Cloudflare Access, so the origin remains private and requests must) Tj
+/F1 10 Tf
+1 0 0 1 54 361.00 Tm
+(pass identity policy enforcement before reaching the protected route.) Tj
+/F1 10 Tf
+1 0 0 1 54 342.00 Tm
+(Cloudflare Access was placed in front of the application with explicit allow policies:) Tj
+/F1 10 Tf
+1 0 0 1 54 323.00 Tm
+(- `allow-email-me` allows `mareox@gmail.com`.) Tj
+/F1 10 Tf
+1 0 0 1 54 310.00 Tm
+(- `allow-email-cloudflare` allows reviewer identities from the `cloudflare.com` email) Tj
+/F1 10 Tf
+1 0 0 1 54 297.00 Tm
+(  domain.) Tj
+/F1 10 Tf
+1 0 0 1 54 284.00 Tm
+(- `allow-testers` models the assignment's Testers access policy.) Tj
+/F1 10 Tf
+1 0 0 1 54 271.00 Tm
+(- Everyone else is denied by default.) Tj
+/F1 10 Tf
+1 0 0 1 54 252.00 Tm
+(The reusable policy model is captured in:) Tj
+/F1 10 Tf
+1 0 0 1 54 233.00 Tm
+(- https://github.com/mareox/Cloudflare-Project/blob/main/docs/zero-trust/access-polici) Tj
+/F1 10 Tf
+1 0 0 1 54 220.00 Tm
+(  es/groups.json) Tj
+/F1 10 Tf
+1 0 0 1 54 207.00 Tm
+(- https://github.com/mareox/Cloudflare-Project/blob/main/docs/zero-trust/access-polici) Tj
+/F1 10 Tf
+1 0 0 1 54 194.00 Tm
+(  es/self-hosted-app.json) Tj
+/F1 10 Tf
+1 0 0 1 54 175.00 Tm
+(The group implementation uses Cloudflare-native Access groups and reusable policy templates) Tj
+/F1 10 Tf
+1 0 0 1 54 162.00 Tm
+(because the available Google identity provider is a personal Gmail account. Personal Gmail) Tj
+/F1 10 Tf
+1 0 0 1 54 149.00 Tm
+(does not expose Workspace group claims to Cloudflare Access.) Tj
+/F2 13 Tf
+1 0 0 1 54 120.00 Tm
+(SaaS Application Access) Tj
+/F1 10 Tf
+1 0 0 1 54 93.00 Tm
+(For the SaaS application requirement, I modeled Cloudflare Access as the identity provider) Tj
+/F1 10 Tf
+1 0 0 1 54 80.00 Tm
+(in front of a SaaS application using SAML. The SaaS app trusts Cloudflare, while Cloudflare) Tj
+/F1 10 Tf
+1 0 0 1 54 67.00 Tm
+(applies the Zero Trust policy decision before issuing the SAML assertion.) Tj
+/F1 9 Tf
+1 0 0 1 488 32 Tm
+(Page 1 of 3) Tj
+ET
+endstream
+endobj
+6 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 3 0 R /F2 4 0 R >> >> /Contents 5 0 R >>
+endobj
+7 0 obj
+<< /Length 3436 >>
+stream
+1 1 1 rg
+0 0 612 792 re f
+0 0 0 rg
+BT
+/F1 10 Tf
+1 0 0 1 54 736.00 Tm
+(The SaaS access model uses:) Tj
+/F1 10 Tf
+1 0 0 1 54 717.00 Tm
+(- `SaaS-Users` for normal SaaS users.) Tj
+/F1 10 Tf
+1 0 0 1 54 704.00 Tm
+(- `Admins` for owner or administrative access.) Tj
+/F1 10 Tf
+1 0 0 1 54 691.00 Tm
+(- Default deny for users outside those groups.) Tj
+/F1 10 Tf
+1 0 0 1 54 672.00 Tm
+(The reusable SaaS policy definition is captured at:) Tj
+/F1 10 Tf
+1 0 0 1 54 653.00 Tm
+(- https://github.com/mareox/Cloudflare-Project/blob/main/docs/zero-trust/access-polici) Tj
+/F1 10 Tf
+1 0 0 1 54 640.00 Tm
+(  es/saas-app.json) Tj
+/F1 10 Tf
+1 0 0 1 54 621.00 Tm
+(This design keeps the same access-control pattern across both self-hosted and SaaS) Tj
+/F1 10 Tf
+1 0 0 1 54 608.00 Tm
+(applications.) Tj
+/F2 13 Tf
+1 0 0 1 54 579.00 Tm
+(WARP Enrollment Control) Tj
+/F1 10 Tf
+1 0 0 1 54 552.00 Tm
+(For device enrollment, I configured the design around an explicit WARP enrollment allow) Tj
+/F1 10 Tf
+1 0 0 1 54 539.00 Tm
+(policy. Only approved identity-provider users are allowed to enroll devices into the) Tj
+/F1 10 Tf
+1 0 0 1 54 526.00 Tm
+(Cloudflare Zero Trust team. Anyone outside the approved identity set is denied by default.) Tj
+/F1 10 Tf
+1 0 0 1 54 507.00 Tm
+(The WARP screenshot evidence is available at:) Tj
+/F1 10 Tf
+1 0 0 1 54 488.00 Tm
+(- https://github.com/mareox/Cloudflare-Project/blob/main/docs/zero-trust/screenshots/z) Tj
+/F1 10 Tf
+1 0 0 1 54 475.00 Tm
+(  t_06_devices_warp.png) Tj
+/F2 13 Tf
+1 0 0 1 54 446.00 Tm
+(Gateway DNS Filtering) Tj
+/F1 10 Tf
+1 0 0 1 54 419.00 Tm
+(For DNS security filtering, I created Gateway DNS policy definitions that block:) Tj
+/F1 10 Tf
+1 0 0 1 54 400.00 Tm
+(- Anonymizer and proxy categories.) Tj
+/F1 10 Tf
+1 0 0 1 54 387.00 Tm
+(- Malware and related security categories, including command-and-control, phishing,) Tj
+/F1 10 Tf
+1 0 0 1 54 374.00 Tm
+(  spyware, DGA domains, and potentially unwanted software.) Tj
+/F1 10 Tf
+1 0 0 1 54 355.00 Tm
+(The DNS policies are captured at:) Tj
+/F1 10 Tf
+1 0 0 1 54 336.00 Tm
+(- https://github.com/mareox/Cloudflare-Project/blob/main/docs/zero-trust/gateway-polic) Tj
+/F1 10 Tf
+1 0 0 1 54 323.00 Tm
+(  ies/dns-policies.json) Tj
+/F2 13 Tf
+1 0 0 1 54 294.00 Tm
+(Gateway HTTP Filtering) Tj
+/F1 10 Tf
+1 0 0 1 54 267.00 Tm
+(For HTTP filtering, I implemented the entertainment-block requirement as two ordered Gateway) Tj
+/F1 10 Tf
+1 0 0 1 54 254.00 Tm
+(HTTP policies:) Tj
+/F1 10 Tf
+1 0 0 1 54 235.00 Tm
+(1. Allow Netflix and YouTube domains.) Tj
+/F1 10 Tf
+1 0 0 1 54 222.00 Tm
+(2. Block the broader Entertainment content category.) Tj
+/F1 10 Tf
+1 0 0 1 54 203.00 Tm
+(This order is required because Cloudflare Gateway evaluates matching policies by precedence.) Tj
+/F1 10 Tf
+1 0 0 1 54 190.00 Tm
+(The specific allow rule must run before the broader block rule, otherwise Netflix and) Tj
+/F1 10 Tf
+1 0 0 1 54 177.00 Tm
+(YouTube are blocked with the rest of the Entertainment category.) Tj
+/F1 10 Tf
+1 0 0 1 54 158.00 Tm
+(The HTTP policies and ordering note are captured at:) Tj
+/F1 10 Tf
+1 0 0 1 54 139.00 Tm
+(- https://github.com/mareox/Cloudflare-Project/blob/main/docs/zero-trust/gateway-polic) Tj
+/F1 10 Tf
+1 0 0 1 54 126.00 Tm
+(  ies/http-policies.json) Tj
+/F1 10 Tf
+1 0 0 1 54 113.00 Tm
+(- https://github.com/mareox/Cloudflare-Project/blob/main/docs/zero-trust/gateway-polic) Tj
+/F1 10 Tf
+1 0 0 1 54 100.00 Tm
+(  ies/README.md) Tj
+/F1 9 Tf
+1 0 0 1 488 32 Tm
+(Page 2 of 3) Tj
+ET
+endstream
+endobj
+8 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 3 0 R /F2 4 0 R >> >> /Contents 7 0 R >>
+endobj
+9 0 obj
+<< /Length 623 >>
+stream
+1 1 1 rg
+0 0 612 792 re f
+0 0 0 rg
+BT
+/F2 13 Tf
+1 0 0 1 54 726.00 Tm
+(Result) Tj
+/F1 10 Tf
+1 0 0 1 54 699.00 Tm
+(The implementation satisfies the assignment by demonstrating identity-aware application) Tj
+/F1 10 Tf
+1 0 0 1 54 686.00 Tm
+(access, SaaS access brokering, device enrollment control, DNS threat filtering, and ordered) Tj
+/F1 10 Tf
+1 0 0 1 54 673.00 Tm
+(HTTP category filtering. The repo includes both human-readable documentation and reusable) Tj
+/F1 10 Tf
+1 0 0 1 54 660.00 Tm
+(policy-as-code artifacts so the work can be reviewed, repeated, or adapted later.) Tj
+/F1 9 Tf
+1 0 0 1 488 32 Tm
+(Page 3 of 3) Tj
+ET
+endstream
+endobj
+10 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 3 0 R /F2 4 0 R >> >> /Contents 9 0 R >>
+endobj
+xref
+0 11
+0000000000 65535 f 
+0000000015 00000 n 
+0000000064 00000 n 
+0000000134 00000 n 
+0000000204 00000 n 
+0000000279 00000 n 
+0000004399 00000 n 
+0000004535 00000 n 
+0000008023 00000 n 
+0000008159 00000 n 
+0000008833 00000 n 
+trailer
+<< /Size 11 /Root 1 0 R >>
+startxref
+8970
+%%EOF
