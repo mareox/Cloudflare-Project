@@ -335,8 +335,26 @@
       background: white;
     }
   </style>
+  <link rel="stylesheet" href="shared.css">
 </head>
 <body>
+  <nav class="site-nav">
+    <div class="wrap nav-inner">
+      <a href="index.html" class="nav-brand">
+        <svg width="18" height="18" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="50" r="50" fill="#F07620"/><path d="M65 42c0-8.284-6.716-15-15-15s-15 6.716-15 15c0 .34.012.678.035 1.013C30.88 44.557 27 49.104 27 54.5 27 60.299 31.701 65 37.5 65h25C68.851 65 73 60.851 73 55.75c0-4.418-3.017-8.13-7.1-9.196C65.956 45.086 65 43.621 65 42z" fill="white"/></svg>
+        Cloudflare Project
+      </a>
+      <div class="nav-links">
+        <a href="index.html" class="nav-link active">App Services</a>
+        <a href="network.html" class="nav-link">Network</a>
+        <a href="zero-trust.html" class="nav-link">Zero Trust</a>
+      </div>
+      <a href="https://github.com/mareox/Cloudflare-Project" class="nav-github" target="_blank" rel="noopener">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.477 2 12c0 4.42 2.865 8.167 6.839 9.49.5.09.682-.218.682-.484 0-.236-.009-.866-.013-1.7-2.782.603-3.369-1.34-3.369-1.34-.454-1.156-1.11-1.462-1.11-1.462-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.03-2.683-.103-.253-.447-1.27.097-2.646 0 0 .84-.269 2.75 1.025A9.578 9.578 0 0112 6.836c.85.004 1.705.114 2.504.336 1.909-1.294 2.747-1.025 2.747-1.025.546 1.376.202 2.394.1 2.646.64.699 1.026 1.592 1.026 2.683 0 3.841-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.577.688.48C19.138 20.163 22 16.418 22 12c0-5.523-4.477-10-10-10z"/></svg>
+        GitHub
+      </a>
+    </div>
+  </nav>
   <header>
     <div class="wrap">
       <p class="eyebrow">Cloudflare Application Services Assignment</p>
@@ -572,8 +590,10 @@ npx wrangler r2 object get country-flags/us.svg --remote --pipe</code></pre>
 
   <footer>
     <div class="wrap">
-      Cloudflare Application Services Project: mareoxlan.com
+      Cloudflare Application Services Project — mareoxlan.com &nbsp;·&nbsp;
+      <a href="https://github.com/mareox/Cloudflare-Project" target="_blank" rel="noopener">github.com/mareox/Cloudflare-Project</a>
     </div>
   </footer>
+  <script src="shared.js"></script>
 </body>
 </html>
