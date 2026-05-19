@@ -436,7 +436,7 @@ npx wrangler r2 object get country-flags/us.svg --remote --pipe</code></pre>
             </tr>
             <tr>
               <td>Workers</td>
-              <td>Runs edge logic on protected routes and uses Access identity headers.</td>
+              <td>Runs edge logic on protected routes and validates the Access JWT before using identity data.</td>
             </tr>
             <tr>
               <td>R2</td>
@@ -451,7 +451,7 @@ npx wrangler r2 object get country-flags/us.svg --remote --pipe</code></pre>
         <div class="grid">
           <article class="card">
             <h3>Access identity in Workers</h3>
-            <p>I verified when the Access policy runs relative to the Worker. Because Access protects <code>/secure*</code>, the Worker receives requests only after policy success and can use <code>Cf-Access-Authenticated-User-Email</code>.</p>
+            <p>I verified when the Access policy runs relative to the Worker. Because Access protects <code>/secure*</code>, the Worker receives requests only after policy success, then validates <code>Cf-Access-Jwt-Assertion</code> against Cloudflare Access certificates before displaying the authenticated identity.</p>
           </article>
           <article class="card">
             <h3>Private R2 access</h3>

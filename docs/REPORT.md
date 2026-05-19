@@ -124,11 +124,17 @@ tunnel.mareoxlan.com/secure
 tunnel.mareoxlan.com/secure/*
 ```
 
-The Worker reads the authenticated user from:
+The Worker validates the Cloudflare Access JWT from:
 
 ```text
-Cf-Access-Authenticated-User-Email
+Cf-Access-Jwt-Assertion
 ```
+
+Validation checks the RS256 signature against the team JWKS endpoint, the
+issuer (`https://mareoxlan.cloudflareaccess.com`), the Access application
+audience, and token timing claims. After validation, the Worker uses the
+verified identity email from the JWT payload, with
+`Cf-Access-Authenticated-User-Email` available only as a fallback for display.
 
 The Worker reads the country from:
 
@@ -183,7 +189,7 @@ The main gaps were around how the Cloudflare products interact when combined on 
 
 | Gap | How it was resolved |
 | --- | --- |
-| Whether the Worker must manually verify the Access JWT | Cloudflare Access documentation and live testing confirmed that Access enforces the policy before the Worker receives the request. The Worker can trust the injected email header when the route is correctly protected by Access. |
+| Whether the Worker must manually verify the Access JWT | Cloudflare Access documentation recommends validating `Cf-Access-Jwt-Assertion` inside the Worker. The Worker now validates the JWT signature, issuer, audience, and timing claims before displaying the identity. |
 | How a private R2 bucket is read by a Worker | Wrangler configuration and testing confirmed that the R2 binding is the authorization path. No public bucket URL, access key, or signed URL is required in Worker code. |
 | How to route only `/secure` to the Worker while leaving `/` on the origin | Worker route patterns were configured for `tunnel.mareoxlan.com/secure` and `tunnel.mareoxlan.com/secure/*`, while all other paths continue through the Tunnel origin. |
 | How to avoid origin bypass | The Tunnel design removes inbound public access to the origin. The only external path is Cloudflare edge to Tunnel to origin. |

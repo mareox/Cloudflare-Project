@@ -18,14 +18,15 @@ The repo is divided into three Cloudflare project tracks under
 | URL | Access | What it shows |
 | --- | --- | --- |
 | <https://tunnel.mareoxlan.com/> | Public | Origin echo server. Returns request headers as JSON so Cloudflare headers can be inspected. |
-| <https://tunnel.mareoxlan.com/secure> | Cloudflare Access | Authenticated page showing the logged-in email, timestamp, and country code. |
+| <https://tunnel.mareoxlan.com/secure> | Cloudflare Access | Authenticated page showing the verified Access JWT email, timestamp, and country code. |
 | <https://tunnel.mareoxlan.com/secure/us> | Cloudflare Access | US flag served from a private R2 bucket through a Worker. |
 
-Access policy:
+Access policy and Worker validation:
 
 - `mareox@gmail.com` is allowed through Google IdP.
 - `@cloudflare.com` email addresses are allowed for reviewer access.
 - Unauthenticated users are redirected to Cloudflare Access.
+- The Worker validates the `Cf-Access-Jwt-Assertion` signature, issuer, audience, and timing claims before displaying identity information.
 
 ## Report and project page
 

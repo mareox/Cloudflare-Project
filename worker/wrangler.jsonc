@@ -30,6 +30,7 @@
 
   "vars": {
     "TUNNEL_HOSTNAME": "tunnel.mareoxlan.com",
-    "TEAM_DOMAIN": "mareoxlan"
+    "TEAM_DOMAIN": "mareoxlan",
+    "ACCESS_AUD": "c9180ea3c3cd97442982c52bb5d6401a2a666fc67a6645c188f6aee52f89ba23"
   }
 }
