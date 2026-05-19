@@ -49,9 +49,8 @@
     h3 { margin: 28px 0 10px; font-size: 22px; line-height: 1.25; letter-spacing: 0; }
     h4 { margin: 22px 0 8px; font-size: 17px; letter-spacing: 0; color: #213658; }
     p { margin: 0 0 15px; }
+    li { margin: 0 0 8px; }
     .meta { color: var(--muted); font-weight: 700; }
-    .bullet { position: relative; padding-left: 20px; }
-    .bullet::before { content: ""; position: absolute; left: 0; top: .78em; width: 7px; height: 7px; border-radius: 50%; background: var(--accent); }
     code, pre { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace; }
     code { padding: 2px 5px; border-radius: 4px; background: #E6EDF7; }
     pre { margin: 16px 0 20px; padding: 16px; border-radius: 8px; background: #0C1526; color: #e9eef8; overflow-x: auto; line-height: 1.4; }
@@ -98,7 +97,7 @@
     <div class="wrap">
       <p class="eyebrow">Cloudflare Network Services Assignment</p>
       <h1>Magic Transit Onboarding for Acme Corp</h1>
-      <p class="hero-copy">A public, readable version of the Network Services report covering BYOIP authorization, GRE encapsulation, MSS clamping, asymmetric DSR routing, Magic Firewall implications, and firewall rule debugging.</p>
+      <p class="hero-copy">Short answers for BYOIP, GRE, MSS, DSR, and the firewall questions.</p>
       <div class="actions">
         <a class="button primary" href="network-report.md">Read Markdown</a>
         <a class="button" href="index.html">App Services</a>
@@ -109,122 +108,146 @@
   <main>
     <div class="wrap">
       <div class="toc" aria-label="Report overview">
-        <a class="tile" href="#section-a-magic-transit-onboarding"><strong>Section A</strong><span>Magic Transit onboarding, GRE, MSS, DSR, and packet flow.</span></a>
-        <a class="tile" href="#section-b-firewall-debugging"><strong>Section B</strong><span>DNS, ICMP, TFTP, HTTP, HTTPS, and HTTP/3 rule analysis.</span></a>
-        <a class="tile" href="#section-c-what-i-learned"><strong>Section C</strong><span>Lessons learned from the routing, trust, and operations model.</span></a>
-        <a class="tile" href="#references"><strong>References</strong><span>Cloudflare documentation and routing-security context.</span></a>
+        <a class="tile" href="#section-a-magic-transit-onboarding"><strong>Section A</strong><span>Magic Transit setup answers.</span></a>
+        <a class="tile" href="#section-b-firewall-debugging"><strong>Section B</strong><span>Firewall rule answers.</span></a>
+        <a class="tile" href="#section-c-what-i-learned"><strong>Section C</strong><span>Short lessons learned.</span></a>
+        <a class="tile" href="#references"><strong>References</strong><span>Source links used.</span></a>
       </div>
-      <div class="callout"><strong>Submission status:</strong> This page contains the requested answers from the Network Services assignment, rendered from the cited Markdown report with SVG diagrams for easier review.</div>
+      <div class="callout"><strong>Submission status:</strong> Short assignment answers with source links.</div>
       <p class="meta"><strong>Author:</strong> Acme Corp CTO (assignment response)</p>
-<p class="meta"><strong>Scenario:</strong> Onboarding <code>203.0.113.0/24</code> (Acme ASN <code>12345</code>) to Cloudflare Magic Transit with two anycast GRE tunnels and DSR egress.</p>
-<section id="section-a-magic-transit-onboarding" class="report-section"><h2>Section A — Magic Transit Onboarding</h2>
-<h3 id="a-1-what-information-must-acme-supply-to-cloudflare-to-advertise-the-24">A.1 What information must Acme supply to Cloudflare to advertise the /24?</h3>
-<p>Cloudflare will originate the BGP announcement for <code>203.0.113.0/24</code> from its edge routers, so transit providers must be able to verify that Cloudflare is authorized to announce Acme&#x27;s prefix. Four artifacts are required. (<a href="https://developers.cloudflare.com/byoip/concepts/loa/">Cloudflare BYOIP LOA</a>; <a href="https://developers.cloudflare.com/magic-transit/how-to/advertise-prefixes/">Magic Transit advertise prefixes</a>)</p>
-<p><strong>Letter of Agency (LOA).</strong> A signed PDF on company letterhead explicitly authorizing Cloudflare to announce <code>203.0.113.0/24</code>, naming <code>AS12345</code> as the originating ASN and Cloudflare as the authorized party. Cloudflare documents that the LOA must identify the prefixes and ASN being authorized. (<a href="https://developers.cloudflare.com/byoip/concepts/loa/">Cloudflare BYOIP LOA</a>)</p>
-<p><strong>RPKI Route Origin Authorization (ROA).</strong> Published through Acme&#x27;s RIR (ARIN, RIPE, APNIC, etc.), pairing <code>203.0.113.0/24</code> with <code>origin: AS12345</code>, matching the assignment scenario. Cloudflare&#x27;s onboarding guidance says ROA prefix and originating ASN must match the submitted prefix. Mismatches can create partial reachability when validating networks reject the route. (<a href="https://developers.cloudflare.com/magic-transit/how-to/advertise-prefixes/">Magic Transit advertise prefixes</a>)</p>
-<p><strong>IRR route objects.</strong> A <code>route:</code> object in RADb, ARIN-IRR, RIPE-NONAUTH, or whichever registry upstreams build prefix-lists from, pointing <code>203.0.113.0/24</code> at <code>origin: AS12345</code>. Cloudflare requires Internet Routing Registry entries and the LOA to match the submitted prefixes and originating ASNs. (<a href="https://developers.cloudflare.com/magic-transit/how-to/advertise-prefixes/">Magic Transit advertise prefixes</a>)</p>
-<p><strong>Supporting documentation.</strong> Proof of ASN ownership (RIR portal record), a monitored abuse contact (<code>abuse@acme.example</code>), and WHOIS <code>inetnum</code>/<code>NetRange</code> records listing Acme as registrant. Cloudflare&#x27;s onboarding and pre-flight flow validates routing authorization, tunnel readiness, and MSS-related settings before production use. (<a href="https://developers.cloudflare.com/magic-transit/how-to/advertise-prefixes/">Magic Transit advertise prefixes</a>; <a href="https://developers.cloudflare.com/learning-paths/data-center-protection/run-pre-flight-checks/">Data Center Protection pre-flight checks</a>)</p>
-<h3 id="a-2-external-entities-that-need-to-be-informed">A.2 External entities that need to be informed</h3>
-<p><strong>IRR registries.</strong> Review existing <code>route:</code> objects. If Acme keeps <code>AS12345</code> as origin, existing objects remain valid, but add an <code>as-set</code> reference Cloudflare can use in peer prefix-list generation. Any transit ISP currently building filters from Acme-specific IRR objects must be told to stop accepting the prefix from Acme directly once Cloudflare starts announcing it. Overlapping announcements cause asymmetric paths that break TCP. (<a href="https://developers.cloudflare.com/magic-transit/how-to/advertise-prefixes/">Magic Transit advertise prefixes</a>)</p>
-<p><strong>RPKI.</strong> Create or update ROA: <code>prefix=203.0.113.0/24, origin=AS12345, maxLength=24</code>. (<a href="https://developers.cloudflare.com/magic-transit/how-to/advertise-prefixes/">Magic Transit advertise prefixes</a>)</p>
-<p><strong>PeeringDB.</strong> Review <code>AS12345</code> peering records. IXP peering relationships will likely be torn down since Cloudflare is now the path of record.</p>
-<p><strong>Geo-IP databases.</strong> Submit corrections to MaxMind GeoIP2, IP2Location, DB-IP, and Digital Element so the prefix stays geolocated to Acme&#x27;s region rather than a Cloudflare PoP. Without this, latency-based routing by CDNs and ad networks breaks, and geo-fenced content licensing can serve wrong content.</p>
-<p><strong>Existing DDoS scrubbing provider.</strong> If replacing Akamai Prolexic, Radware, Neustar/Vercara, or Imperva, that provider&#x27;s BGP announcement must be withdrawn cleanly before Cloudflare&#x27;s goes live.</p>
-<p><strong>Downstream customers and B2B partners.</strong> Notify customers that RTT will change because Cloudflare anycast ingests traffic close to the source. Source IPs are preserved inside GRE, so source-IP allowlists do not need to change, but partners doing route-policy checks should know the path and next hop will change even though the origin remains <code>AS12345</code>. (<a href="https://developers.cloudflare.com/reference-architecture/architectures/magic-transit/">Magic Transit reference architecture</a>; <a href="https://datatracker.ietf.org/doc/html/rfc2784">RFC 2784</a>)</p>
-<h3 id="a-3-gre-encapsulation-and-packet-size">A.3 GRE encapsulation and packet size</h3>
-<p>GRE adds <strong>24 bytes</strong> of overhead per packet: 20-byte outer IPv4 header plus 4-byte GRE header. With a typical Internet path MTU of 1500 bytes between Cloudflare&#x27;s anycast endpoint and Acme&#x27;s tunnel terminator at <code>100.100.100.100</code>, the inner MTU is <code>1500 - 24 = 1476</code> bytes. Packets larger than the path MTU must be fragmented or dropped, which produces the classic symptom: TCP handshake completes, small requests succeed, large responses stall. (<a href="https://developers.cloudflare.com/magic-transit/reference/mtu-mss/">Magic Transit MTU/MSS</a>; <a href="https://datatracker.ietf.org/doc/html/rfc2784">RFC 2784</a>)</p>
-<h4>A.3.a MSS clamp value</h4>
-<figure class="diagram"><img src="assets/gre-encapsulation.svg" alt="GRE encapsulation and MSS calculation"><figcaption>GRE adds 24 bytes of overhead, which leaves 1,436 bytes for TCP payload when the underlay MTU is 1500.</figcaption></figure>
-<p>The MSS (Maximum Segment Size) clamp value for a Magic Transit GRE tunnel in DSR (ingress-only) mode is <strong>1,436 bytes</strong>. The arithmetic:</p>
-<pre><code>1500 (path MTU)
-−  20 (outer IPv4 header)
-−   4 (GRE header)
-−  20 (inner IPv4 header)
-−  20 (TCP header)
-= 1436 bytes of TCP payload per segment</code></pre>
-<p>Cloudflare recommends a maximum MSS clamp of 1,436 bytes for Magic Transit GRE deployments, including DSR. (<a href="https://developers.cloudflare.com/magic-transit/reference/mtu-mss/">Magic Transit MTU/MSS</a>)</p>
-<h4>A.3.b Where to apply the clamp and why</h4>
-<p>The clamp must go on <strong>Acme&#x27;s edge router transit ports</strong> facing upstream Internet uplinks, and on the GRE tunnel interfaces where Cloudflare-decapsulated traffic is forwarded inward. (<a href="https://developers.cloudflare.com/magic-transit/reference/mtu-mss/">Magic Transit MTU/MSS</a>)</p>
-<p>In DSR, the TCP MSS exchange is split across two paths. The client&#x27;s SYN traverses Cloudflare on ingress, so Cloudflare clamps it to 1436. The server&#x27;s SYN-ACK leaves Acme&#x27;s data center directly via the default route and never touches Cloudflare. If Acme&#x27;s edge does not clamp the outbound SYN-ACK, the client believes the server accepts 1460-byte segments. When it sends a full-size segment back through the GRE tunnel, it exceeds the inner MTU and gets dropped. (<a href="https://developers.cloudflare.com/reference-architecture/architectures/magic-transit/">Magic Transit reference architecture</a>; <a href="https://developers.cloudflare.com/magic-transit/reference/mtu-mss/">Magic Transit MTU/MSS</a>)</p>
-<p>Both sides need the clamp: Cloudflare handles the inbound SYN, Acme&#x27;s edge handles the outbound SYN-ACK. Missing the egress side produces a characteristic failure: HTTPS handshake completes, small responses work, large responses or file downloads stall around the first ~1.4 KB of payload. (<a href="https://developers.cloudflare.com/magic-transit/reference/mtu-mss/">Magic Transit MTU/MSS</a>)</p>
-<h3 id="a-4-can-prefixes-smaller-than-24-be-routed-across-the-gre-tunnels">A.4 Can prefixes smaller than /24 be routed across the GRE tunnels?</h3>
-<p><strong>Yes across the tunnels. No for public Internet advertisement.</strong></p>
-<p>The /24 minimum applies to what Cloudflare can announce to the global IPv4 Internet. Cloudflare documents that prefixes longer than <code>/24</code> are not globally routable, so the Internet-facing announcement must remain <code>203.0.113.0/24</code>. (<a href="https://developers.cloudflare.com/magic-transit/how-to/advertise-prefixes/">Magic Transit advertise prefixes</a>)</p>
-<p>Inside the Cloudflare-to-Acme overlay, Cloudflare&#x27;s internal routing can map sub-prefixes to different GRE tunnels, for example <code>203.0.113.0/29</code> over GRE1 and <code>203.0.113.8/29</code> over GRE2. This is Magic Transit&#x27;s prefix mapping feature, useful when Acme has multiple data centers and needs traffic for specific server pools to land at specific sites. (<a href="https://developers.cloudflare.com/magic-transit/reference/traffic-steering/">Magic Transit traffic steering</a>)</p>
-<h3 id="a-5-asymmetric-routing-and-on-prem-firewall-migration">A.5 Asymmetric routing and on-prem firewall migration</h3>
-<p>DSR puts Cloudflare in the ingress path only. Return traffic leaves Acme&#x27;s data center through its default Internet route and never touches Cloudflare. This breaks stateful firewall assumptions: Magic Firewall has no visibility into the return path, and Cloudflare documents that Network Firewall is not stateful for Magic Transit egress traffic. Every rule must be treated as a directional L3/L4 match on the traffic Cloudflare actually sees. (<a href="https://developers.cloudflare.com/reference-architecture/architectures/magic-transit/">Magic Transit reference architecture</a>; <a href="https://developers.cloudflare.com/cloudflare-network-firewall/best-practices/magic-transit-egress/">Network Firewall Magic Transit egress</a>; <a href="https://developers.cloudflare.com/cloudflare-network-firewall/about/traffic-types/">Network Firewall traffic types</a>)</p>
-<p><strong>Migrating on-prem rules:</strong></p>
-	<p>Write Magic Firewall rules service-by-service: allow <code>dst=web-vip:443/TCP</code>, <code>dst=mail-vip:25/TCP</code>, etc. Do not constrain client source ports; ephemeral ports span the full OS range (32768-61000 Linux, 49152-65535 Windows).</p>
-<p>For services requiring stateful inspection, keep enforcement on-prem behind the GRE tunnel. Acme&#x27;s existing stateful firewall will see both directions: ingress arrives via GRE decap, egress leaves via the default route, both passing through the same on-prem choke point. (<a href="https://developers.cloudflare.com/reference-architecture/architectures/magic-transit/">Magic Transit reference architecture</a>)</p>
-<p>If Cloudflare-layer policy must inspect outbound or return traffic too, evaluate a symmetric egress design instead of DSR. That changes the routing and bandwidth model, and Cloudflare still documents Network Firewall statefulness limits for Magic Transit egress. (<a href="https://developers.cloudflare.com/cloudflare-network-firewall/best-practices/magic-transit-egress/">Network Firewall Magic Transit egress</a>)</p>
-<h3 id="a-6-detailed-packet-flow-diagram">A.6 Detailed packet flow diagram</h3>
-<p>Below is the forward and return path for a TCP/443 request from an end user to a web server at <code>203.0.113.10</code> inside Acme&#x27;s data center.</p>
-<figure class="diagram"><img src="assets/magic-transit-flow.svg" alt="Magic Transit direct server return packet flow"><figcaption>Forward traffic is scrubbed and GRE-encapsulated through Cloudflare. Return traffic leaves Acme directly.</figcaption></figure>
-<figure class="diagram"><img src="assets/packet-header-walkthrough.svg" alt="Forward packet header walkthrough: Outer IPv4, GRE, Inner IPv4, TCP with MSS 1436"><figcaption>Forward-direction packet on the wire between Cloudflare and Acme: outer IPv4 wraps a GRE header, which carries the original inner IPv4 and TCP segment with MSS clamped to 1,436 bytes.</figcaption></figure>
-<p>A few things to note. Cloudflare uses BGP and anycast to ingest customer traffic close to the source, then hands clean traffic to the origin over GRE or IPsec tunnels. The GRE outer-source IP is an anycast address reachable from Cloudflare data centers, so any capable PoP can encapsulate and forward to <code>100.100.100.100</code>. Per the scenario, Cloudflare uses static routes (<code>203.0.113.0/24 → GRE1</code> and <code>→ GRE2</code>). ECMP load-balances across both tunnels by hashing the inner 5-tuple. If a tunnel fails health checks, Cloudflare applies route penalties and steers traffic toward healthier alternatives. Source IP preservation means the inner header carries the original user IP all the way to the web server, so access logs, geo-fencing, and rate-limiting based on client IP all work without X-Forwarded-For. (<a href="https://developers.cloudflare.com/reference-architecture/architectures/magic-transit/">Magic Transit reference architecture</a>; <a href="https://developers.cloudflare.com/magic-transit/reference/gre-ipsec-tunnels/">GRE and IPsec tunnels</a>; <a href="https://developers.cloudflare.com/magic-transit/reference/tunnel-health-checks/">Tunnel health checks</a>)</p>
-</section>
-<section id="section-b-firewall-debugging" class="report-section"><h2>Section B — Firewall Debugging</h2>
-<div class="callout"><strong>Note on framing:</strong> Question B says &quot;assume the above is a stateful ingress firewall,&quot; which contradicts the DSR scenario in Section A where return traffic bypasses Cloudflare and Network Firewall is not stateful for Magic Transit egress. Answers below follow the prompt&#x27;s stateful framing. (<a href="https://developers.cloudflare.com/reference-architecture/architectures/magic-transit/">Magic Transit reference architecture</a>; <a href="https://developers.cloudflare.com/cloudflare-network-firewall/best-practices/magic-transit-egress/">Network Firewall Magic Transit egress</a>)</div>
-<h3 id="b-1-does-the-firewall-allow-all-dns-queries">B.1 Does the firewall allow all DNS queries?</h3>
-<p><strong>Partially. Modern DNS will break.</strong></p>
-<p>Rule 2 allows <code>ANY → 203.0.113.0/24, UDP, dport=53</code>, covering standard recursive UDP/53 queries. It misses:</p>
-<ul>
-<li><strong>TCP/53</strong>: Large UDP responses (&gt;512 bytes, or &gt;4096 with EDNS0) trigger the TC bit and force a TCP/53 retry. AXFR/IXFR zone transfers also use TCP/53. Both hit Rule 6 deny. (<a href="https://datatracker.ietf.org/doc/html/rfc7766">RFC 7766</a>)</li>
-<li><strong>DNS-over-TLS (DoT)</strong>: TCP/853, no matching rule, dropped. (<a href="https://datatracker.ietf.org/doc/html/rfc7858">RFC 7858</a>)</li>
-<li><strong>DNS-over-HTTPS (DoH)</strong>: TCP/443, allowed by Rule 1, but only incidentally; the operator probably did not intend Rule 1 as a DNS rule. (<a href="https://datatracker.ietf.org/doc/html/rfc8484">RFC 8484</a>)</li>
-</ul>
-<p><strong>Fix:</strong> split Rule 2 into UDP and TCP variants:</p>
-<pre><code>Rule 2a: ANY → 203.0.113.0/24, UDP, dport=53, ALLOW
-Rule 2b: ANY → 203.0.113.0/24, TCP, dport=53, ALLOW</code></pre>
-<p>Add an explicit TCP/853 rule if Acme runs a DoT-capable resolver.</p>
-<h3 id="b-2-will-the-firewall-allow-pings">B.2 Will the firewall allow pings?</h3>
-<p><strong>No.</strong></p>
-<p>Rule 4 allows ICMP but caps Max IP Packet Length at 56 bytes. Cloudflare Network Firewall exposes <code>ip.len</code> as packet length including the header, so the length check must be evaluated against the full IP packet. The Linux/macOS <code>ping</code> default sends 56 bytes of ICMP payload plus 8-byte ICMP header plus 20-byte IPv4 header = <strong>84 bytes total</strong>. 84 &gt; 56, so Rule 4 rejects it and the packet falls to Rule 6 deny. Windows <code>ping</code> defaults to 32 bytes payload = 60 bytes total, also blocked. (<a href="https://developers.cloudflare.com/cloudflare-network-firewall/reference/network-firewall-fields/">Network Firewall fields</a>)</p>
-<p><strong>Fix:</strong> raise Rule 4&#x27;s Max IP Packet Length to <strong>1476</strong> (the GRE inner MTU), covering standard pings, MTU discovery probes (1472 + 8 + 20 = 1500), and diagnostic traffic. Magic Transit&#x27;s upstream DDoS layer already rate-limits ICMP volumetrically, so this cap is not the right control for ICMP floods.</p>
-<h3 id="b-3-is-tftp-available-on-203-0-113-8">B.3 Is TFTP available on <code>203.0.113.8</code>?</h3>
-<p><strong>No.</strong></p>
-<p>TFTP runs on UDP/69. Rule 5 covers UDP but only for <code>203.0.113.0/29</code>, which spans <code>.0</code> through <code>.7</code>. The address <code>203.0.113.8</code> is the first address of the <em>next</em> /29 block (<code>203.0.113.8/29</code>, covering <code>.8</code>-<code>.15</code>), so it falls through to Rule 6 deny.</p>
-<p><strong>Fix:</strong> if TFTP should be available on <code>.8</code> only, add a specific rule:</p>
-<pre><code>203.0.113.8/32, UDP, dport=69, ALLOW</code></pre>
-<p>If TFTP should cover the full /28 (<code>.0</code>-<code>.15</code>), change Rule 5&#x27;s destination to <code>203.0.113.0/28</code>.</p>
-<h3 id="b-4-application-protocols-supported">B.4 Application protocols supported</h3>
-<p><strong>a. HTTP (TCP/80): NO.</strong> Rule 1 allows TCP/443 only. No rule covers TCP/80; plain HTTP hits Rule 6 deny. Better to leave it blocked and redirect to HTTPS at the application layer rather than carrying cleartext to the origin.</p>
-<p><strong>b. HTTPS (TCP/443): YES.</strong> Rule 1 explicitly allows it.</p>
-<p><strong>c. HTTP/3 (QUIC, UDP/443): NO.</strong> HTTP/3 runs QUIC over UDP. Rule 1 is TCP-only. Rule 5 covers UDP but only for <code>203.0.113.0/29</code>. QUIC to any address outside that range is blocked. (<a href="https://datatracker.ietf.org/doc/html/rfc9114">RFC 9114</a>)</p>
-<p><strong>Fix:</strong> add a parallel UDP rule: <code>ANY → ANY, UDP, dport=443, ALLOW</code>. Most modern browsers try QUIC first and fall back to TCP only on failure, so without UDP/443 the first-page-load experience is consistently slow.</p>
-</section>
-<section id="section-c-what-i-learned" class="report-section"><h2>Section C — What I Learned</h2>
-<p><strong>BYOIP is about trust, not config.</strong> The hard part of Magic Transit onboarding is not the GRE setup; it is proving that Cloudflare is allowed to announce Acme&#x27;s <code>/24</code>. That requires LOA (legal authorization), IRR objects (filter sources upstreams build prefix-lists from), and an RPKI ROA (cryptographic proof). If those artifacts do not match the submitted prefix and ASN, reachability can fail unevenly across validating or IRR-filtering networks. (<a href="https://developers.cloudflare.com/byoip/concepts/loa/">Cloudflare BYOIP LOA</a>; <a href="https://developers.cloudflare.com/magic-transit/how-to/advertise-prefixes/">Magic Transit advertise prefixes</a>)</p>
-<p><strong>DSR has architectural consequences.</strong> In the default Magic Transit architecture, Cloudflare processes ingress traffic while server return traffic follows the customer&#x27;s default Internet route and does not traverse Cloudflare. The trade-off is that Cloudflare Network Firewall cannot be treated as a symmetric stateful firewall for flows it does not see in both directions. Migrating an on-prem stateful rule set to Magic Firewall is not a translation exercise; deep stateful policy stays on-prem while Cloudflare handles volumetric and L3/L4 admission control at the edge. (<a href="https://developers.cloudflare.com/reference-architecture/architectures/magic-transit/">Magic Transit reference architecture</a>; <a href="https://developers.cloudflare.com/cloudflare-network-firewall/best-practices/magic-transit-egress/">Network Firewall Magic Transit egress</a>; <a href="https://developers.cloudflare.com/cloudflare-network-firewall/about/traffic-types/">Network Firewall traffic types</a>)</p>
-<p><strong>MSS clamping is the most common &quot;TCP works but is broken&quot; failure in GRE/IPsec overlays.</strong> The pattern is unmistakable: handshake completes, small requests succeed, large responses stall at the first segment exceeding the inner MTU. Doing the arithmetic (1500 - 20 - 4 - 20 - 20 = 1436) makes the why concrete. The key insight is that the TCP three-way handshake exchanges MSS independently in each direction. In DSR, the SYN-ACK bypasses Cloudflare entirely, so the server-side announcement is whatever Acme&#x27;s edge does or does not clamp. The &quot;clamp both sides&quot; guidance is not redundancy; each direction is a distinct announcement. (<a href="https://developers.cloudflare.com/magic-transit/reference/mtu-mss/">Magic Transit MTU/MSS</a>)</p>
-<p><strong>The firewall framing contradiction was the most useful exercise.</strong> The prompt says &quot;assume stateful&quot; while the DSR scenario above makes Magic Firewall stateless. Working through the rules under both framings made concrete how much policy expressiveness is lost without state. Under stateful framing, &quot;allow TCP/443 inbound&quot; is complete because the firewall tracks the flow. Under stateless DSR framing, the same rule does the same thing, but there&#x27;s no egress to match a symmetric rule against. This sharpens the case for keeping stateful inspection on-prem and using Cloudflare for what stateless edge does well: volumetric DDoS mitigation and L3/L4 admission control at scale.</p>
-<p><strong>The onboarding sequence matters as much as the config.</strong> Cloudflare&#x27;s onboarding guidance ties the prefix submission, LOA, IRR, ROA, MSS, and tunnel health checks to specific failure domains. The order of withdrawing the old provider&#x27;s announcement and bringing up Cloudflare&#x27;s matters too. Overlapping announcements cause asymmetric paths that break TCP for a subset of users. In practice, the per-customer config is well-templated; the real work is choreographing the cutover given each customer&#x27;s upstream filter propagation timing and downstream expectations. (<a href="https://developers.cloudflare.com/magic-transit/how-to/advertise-prefixes/">Magic Transit advertise prefixes</a>; <a href="https://developers.cloudflare.com/learning-paths/data-center-protection/run-pre-flight-checks/">Data Center Protection pre-flight checks</a>; <a href="https://developers.cloudflare.com/magic-transit/reference/tunnel-health-checks/">Tunnel health checks</a>)</p>
-</section>
-<section id="references" class="report-section"><h2>References</h2>
-<ul>
-<li><strong>BYOIP — Letter of Agency</strong>: <a href="https://developers.cloudflare.com/byoip/concepts/loa/">Cloudflare BYOIP LOA</a></li>
-<li><strong>Magic Transit — Advertise prefixes</strong>: <a href="https://developers.cloudflare.com/magic-transit/how-to/advertise-prefixes/">Cloudflare Magic Transit advertise prefixes</a></li>
-<li><strong>Magic Transit — MTU and MSS reference</strong>: <a href="https://developers.cloudflare.com/magic-transit/reference/mtu-mss/">Cloudflare Magic Transit MTU/MSS</a></li>
-<li><strong>Magic Transit — Traffic steering and prefix mapping</strong>: <a href="https://developers.cloudflare.com/magic-transit/reference/traffic-steering/">Cloudflare Magic Transit traffic steering</a></li>
-<li><strong>Magic Transit — Tunnel health checks</strong>: <a href="https://developers.cloudflare.com/magic-transit/reference/tunnel-health-checks/">Cloudflare Magic Transit tunnel health checks</a></li>
-<li><strong>Magic Transit — GRE and IPsec tunnels</strong>: <a href="https://developers.cloudflare.com/magic-transit/reference/gre-ipsec-tunnels/">Cloudflare Magic Transit GRE and IPsec tunnels</a></li>
-<li><strong>Reference Architecture — Magic Transit</strong>: <a href="https://developers.cloudflare.com/reference-architecture/architectures/magic-transit/">Cloudflare Magic Transit reference architecture</a></li>
-<li><strong>Data Center Protection — Pre-flight checks</strong>: <a href="https://developers.cloudflare.com/learning-paths/data-center-protection/run-pre-flight-checks/">Cloudflare Data Center Protection pre-flight checks</a></li>
-<li><strong>Cloudflare Network Firewall — Magic Transit egress</strong>: <a href="https://developers.cloudflare.com/cloudflare-network-firewall/best-practices/magic-transit-egress/">Network Firewall Magic Transit egress</a></li>
-<li><strong>Cloudflare Network Firewall — Traffic types</strong>: <a href="https://developers.cloudflare.com/cloudflare-network-firewall/about/traffic-types/">Network Firewall traffic types</a></li>
-<li><strong>Cloudflare Network Firewall — Fields</strong>: <a href="https://developers.cloudflare.com/cloudflare-network-firewall/reference/network-firewall-fields/">Network Firewall fields</a></li>
-<li><strong>IETF — RFC 2784</strong>: <a href="https://datatracker.ietf.org/doc/html/rfc2784">Generic Routing Encapsulation (GRE)</a></li>
-<li><strong>IETF — RFC 7766</strong>: <a href="https://datatracker.ietf.org/doc/html/rfc7766">DNS Transport over TCP</a></li>
-<li><strong>IETF — RFC 7858</strong>: <a href="https://datatracker.ietf.org/doc/html/rfc7858">DNS over TLS</a></li>
-<li><strong>IETF — RFC 8484</strong>: <a href="https://datatracker.ietf.org/doc/html/rfc8484">DNS Queries over HTTPS</a></li>
-<li><strong>IETF — RFC 9114</strong>: <a href="https://datatracker.ietf.org/doc/html/rfc9114">HTTP/3</a></li>
-</ul>
-</section>
+      <p class="meta"><strong>Scenario:</strong> Onboarding <code>203.0.113.0/24</code> (Acme ASN <code>12345</code>) to Cloudflare Magic Transit with two anycast GRE tunnels and DSR egress.</p>
+
+      <section id="section-a-magic-transit-onboarding" class="report-section"><h2>Section A: Magic Transit Onboarding</h2>
+        <h3 id="a-1-what-information-must-acme-supply-to-cloudflare-to-advertise-the-24">A.1 What information must Acme supply to Cloudflare to advertise the /24?</h3>
+        <p>Cloudflare needs proof that Acme owns the route and can let Cloudflare announce it. I would provide:</p>
+        <ul>
+          <li><strong>LOA:</strong> signed letter saying Cloudflare can announce <code>203.0.113.0/24</code> for Acme. (<a href="https://developers.cloudflare.com/byoip/concepts/loa/">Cloudflare BYOIP LOA</a>)</li>
+          <li><strong>RPKI ROA:</strong> <code>203.0.113.0/24</code>, origin <code>AS12345</code>, maxLength <code>24</code>. (<a href="https://developers.cloudflare.com/magic-transit/how-to/advertise-prefixes/">Magic Transit advertise prefixes</a>)</li>
+          <li><strong>IRR route object:</strong> <code>route: 203.0.113.0/24</code>, <code>origin: AS12345</code>. (<a href="https://developers.cloudflare.com/magic-transit/how-to/advertise-prefixes/">Magic Transit advertise prefixes</a>)</li>
+          <li><strong>Proof and contacts:</strong> ASN ownership, WHOIS/NetRange info, and abuse/NOC contact. (<a href="https://developers.cloudflare.com/magic-transit/how-to/advertise-prefixes/">Magic Transit advertise prefixes</a>; <a href="https://developers.cloudflare.com/learning-paths/data-center-protection/run-pre-flight-checks/">Data Center Protection pre-flight checks</a>)</li>
+        </ul>
+        <p>The main thing is that LOA, IRR, and RPKI all need to match.</p>
+
+        <h3 id="a-2-external-entities-that-need-to-be-informed">A.2 External entities that need to be informed</h3>
+        <p>I would update or notify:</p>
+        <ul>
+          <li><strong>IRR and RPKI:</strong> make sure route objects and ROA match <code>AS12345</code>. (<a href="https://developers.cloudflare.com/magic-transit/how-to/advertise-prefixes/">Magic Transit advertise prefixes</a>)</li>
+          <li><strong>Current transit or DDoS provider:</strong> remove the old announcement during cutover.</li>
+          <li><strong>GeoIP vendors:</strong> keep the prefix mapped to the right location.</li>
+          <li><strong>PeeringDB:</strong> clean up old peering details if they are no longer true.</li>
+          <li><strong>Partners and customers:</strong> tell them the path may change, but source IPs should stay the same through GRE. (<a href="https://developers.cloudflare.com/reference-architecture/architectures/magic-transit/">Magic Transit reference architecture</a>; <a href="https://datatracker.ietf.org/doc/html/rfc2784">RFC 2784</a>)</li>
+        </ul>
+
+        <h3 id="a-3-gre-encapsulation-and-packet-size">A.3 GRE encapsulation and packet size</h3>
+        <p>GRE adds <strong>24 bytes</strong>: 20 bytes for the outer IPv4 header and 4 bytes for GRE. With a 1500-byte path MTU, the inner MTU is <strong>1476 bytes</strong>. (<a href="https://developers.cloudflare.com/magic-transit/reference/mtu-mss/">Magic Transit MTU/MSS</a>; <a href="https://datatracker.ietf.org/doc/html/rfc2784">RFC 2784</a>)</p>
+
+        <h4>A.3.a MSS clamp value</h4>
+        <figure class="diagram"><img src="assets/gre-encapsulation.svg" alt="GRE encapsulation and MSS calculation"><figcaption>GRE adds 24 bytes of overhead, which leaves 1,436 bytes for TCP payload when the underlay MTU is 1500.</figcaption></figure>
+        <p><strong>1,436 bytes.</strong></p>
+        <pre><code>1500  path MTU
+- 20  outer IPv4
+-  4  GRE
+- 20  inner IPv4
+- 20  TCP
+= 1436</code></pre>
+        <p>Cloudflare recommends 1436 for Magic Transit GRE. (<a href="https://developers.cloudflare.com/magic-transit/reference/mtu-mss/">Magic Transit MTU/MSS</a>)</p>
+
+        <h4>A.3.b Where to apply the clamp and why</h4>
+        <p>Apply the clamp on Acme's edge router and GRE-facing interfaces.</p>
+        <p>Cloudflare can clamp the inbound SYN. In DSR, the SYN-ACK goes straight out from Acme and does not go back through Cloudflare. If Acme does not clamp that side, large TCP packets can still break. (<a href="https://developers.cloudflare.com/reference-architecture/architectures/magic-transit/">Magic Transit reference architecture</a>; <a href="https://developers.cloudflare.com/magic-transit/reference/mtu-mss/">Magic Transit MTU/MSS</a>)</p>
+
+        <h3 id="a-4-can-prefixes-smaller-than-24-be-routed-across-the-gre-tunnels">A.4 Can prefixes smaller than /24 be routed across the GRE tunnels?</h3>
+        <p><strong>Yes inside the tunnels. No on the public Internet.</strong></p>
+        <p>The public announcement needs to stay <code>/24</code>. Inside Cloudflare's overlay, smaller blocks like <code>203.0.113.0/29</code> and <code>203.0.113.8/29</code> can be mapped to different tunnels. (<a href="https://developers.cloudflare.com/magic-transit/how-to/advertise-prefixes/">Magic Transit advertise prefixes</a>; <a href="https://developers.cloudflare.com/magic-transit/reference/traffic-steering/">Magic Transit traffic steering</a>)</p>
+
+        <h3 id="a-5-asymmetric-routing-and-on-prem-firewall-migration">A.5 Asymmetric routing and on-prem firewall migration</h3>
+        <p>DSR means Cloudflare sees inbound traffic only. Return traffic leaves Acme directly. So I would not copy stateful on-prem rules 1:1 into Cloudflare. (<a href="https://developers.cloudflare.com/reference-architecture/architectures/magic-transit/">Magic Transit reference architecture</a>; <a href="https://developers.cloudflare.com/cloudflare-network-firewall/best-practices/magic-transit-egress/">Network Firewall Magic Transit egress</a>; <a href="https://developers.cloudflare.com/cloudflare-network-firewall/about/traffic-types/">Network Firewall traffic types</a>)</p>
+        <p>I would move only simple L3/L4 allows to Cloudflare, like <code>web-vip:443/TCP</code> or <code>mail-vip:25/TCP</code>. Anything that needs full stateful inspection should stay on-prem, unless Acme changes to a symmetric design.</p>
+
+        <h3 id="a-6-detailed-packet-flow-diagram">A.6 Detailed packet flow diagram</h3>
+        <p>Basic packet flow for a user going to <code>203.0.113.10</code> on TCP/443:</p>
+        <pre><code>Forward path:
+User -&gt; Cloudflare anycast PoP -&gt; GRE tunnel -&gt; Acme edge -&gt; Web server
+
+Return path:
+Web server -&gt; Acme ISP/default route -&gt; User</code></pre>
+        <figure class="diagram"><img src="assets/magic-transit-flow.svg" alt="Magic Transit direct server return packet flow"><figcaption>Forward traffic is scrubbed and GRE-encapsulated through Cloudflare. Return traffic leaves Acme directly.</figcaption></figure>
+        <figure class="diagram"><img src="assets/packet-header-walkthrough.svg" alt="Forward packet header walkthrough: Outer IPv4, GRE, Inner IPv4, TCP with MSS 1436"><figcaption>Forward packet between Cloudflare and Acme: outer IPv4 wraps GRE, and the inner packet keeps the original client IP.</figcaption></figure>
+        <pre><code>Outer IP: src=Cloudflare GRE endpoint, dst=100.100.100.100, proto=47
+GRE:      4 bytes
+Inner IP: src=USER_PUBLIC_IP, dst=203.0.113.10
+TCP:      dport=443, MSS=1436</code></pre>
+        <p>Main point: Cloudflare receives and cleans the packet, sends it to Acme over GRE, and Acme sends return traffic straight back to the user. The server still sees the real client IP. (<a href="https://developers.cloudflare.com/reference-architecture/architectures/magic-transit/">Magic Transit reference architecture</a>; <a href="https://developers.cloudflare.com/magic-transit/reference/gre-ipsec-tunnels/">GRE and IPsec tunnels</a>; <a href="https://developers.cloudflare.com/magic-transit/reference/tunnel-health-checks/">Tunnel health checks</a>)</p>
+      </section>
+
+      <section id="section-b-firewall-debugging" class="report-section"><h2>Section B: Firewall Debugging</h2>
+        <div class="callout"><strong>Note:</strong> The prompt says to assume stateful firewall behavior. Magic Transit DSR is not really stateful for egress, but I am answering this section the way the prompt asks. (<a href="https://developers.cloudflare.com/reference-architecture/architectures/magic-transit/">Magic Transit reference architecture</a>; <a href="https://developers.cloudflare.com/cloudflare-network-firewall/best-practices/magic-transit-egress/">Network Firewall Magic Transit egress</a>)</div>
+
+        <h3 id="b-1-does-the-firewall-allow-all-dns-queries">B.1 Does the firewall allow all DNS queries?</h3>
+        <p><strong>No, not all DNS.</strong></p>
+        <p>Rule 2 only covers UDP/53. It misses:</p>
+        <ul>
+          <li><strong>TCP/53:</strong> large DNS replies and zone transfers. (<a href="https://datatracker.ietf.org/doc/html/rfc7766">RFC 7766</a>)</li>
+          <li><strong>DNS-over-TLS:</strong> TCP/853. (<a href="https://datatracker.ietf.org/doc/html/rfc7858">RFC 7858</a>)</li>
+          <li><strong>DNS-over-HTTPS:</strong> TCP/443. This works only because Rule 1 allows TCP/443, not because DNS was handled on purpose. (<a href="https://datatracker.ietf.org/doc/html/rfc8484">RFC 8484</a>)</li>
+        </ul>
+        <p><strong>Fix:</strong></p>
+        <pre><code>Rule 2a: ANY -&gt; 203.0.113.0/24, UDP, dport=53, ALLOW
+Rule 2b: ANY -&gt; 203.0.113.0/24, TCP, dport=53, ALLOW</code></pre>
+        <p>Add TCP/853 too if Acme supports DoT.</p>
+
+        <h3 id="b-2-will-the-firewall-allow-pings">B.2 Will the firewall allow pings?</h3>
+        <p><strong>No.</strong></p>
+        <p>Rule 4 allows ICMP, but only up to 56 bytes total IP length. Normal Linux/macOS ping is 84 bytes total, and Windows is 60 bytes total. Both are too big, so they get denied. (<a href="https://developers.cloudflare.com/cloudflare-network-firewall/reference/network-firewall-fields/">Network Firewall fields</a>)</p>
+        <p><strong>Fix:</strong> raise the max IP packet length to <strong>1476</strong>.</p>
+
+        <h3 id="b-3-is-tftp-available-on-203-0-113-8">B.3 Is TFTP available on <code>203.0.113.8</code>?</h3>
+        <p><strong>No.</strong></p>
+        <p>TFTP uses UDP/69. Rule 5 only covers <code>203.0.113.0/29</code>, which is <code>.0</code> through <code>.7</code>. <code>203.0.113.8</code> is outside that range, so it hits Rule 6 deny.</p>
+        <p><strong>Fix:</strong> if only <code>.8</code> needs TFTP:</p>
+        <pre><code>203.0.113.8/32, UDP, dport=69, ALLOW</code></pre>
+        <p>If the whole <code>.0</code> to <code>.15</code> range should work, change the rule to <code>203.0.113.0/28</code>.</p>
+
+        <h3 id="b-4-application-protocols-supported">B.4 Application protocols supported</h3>
+        <p><strong>a. HTTP (TCP/80): NO.</strong> There is no TCP/80 rule.</p>
+        <p><strong>b. HTTPS (TCP/443): YES.</strong> Rule 1 allows it.</p>
+        <p><strong>c. HTTP/3 (QUIC, UDP/443): NO.</strong> HTTP/3 uses QUIC over UDP, and Rule 1 is TCP only. (<a href="https://datatracker.ietf.org/doc/html/rfc9114">RFC 9114</a>)</p>
+        <p><strong>Fix:</strong> add <code>ANY -&gt; ANY, UDP, dport=443, ALLOW</code>.</p>
+      </section>
+
+      <section id="section-c-what-i-learned" class="report-section"><h2>Section C: What I Learned</h2>
+        <p><strong>BYOIP is mostly trust paperwork.</strong> LOA, IRR, and RPKI need to match, or the route can fail in weird ways. (<a href="https://developers.cloudflare.com/byoip/concepts/loa/">Cloudflare BYOIP LOA</a>; <a href="https://developers.cloudflare.com/magic-transit/how-to/advertise-prefixes/">Magic Transit advertise prefixes</a>)</p>
+        <p><strong>DSR changes firewall thinking.</strong> Cloudflare sees ingress. Acme sends return traffic direct. So Cloudflare rules need to be simple L3/L4 rules, not full stateful firewall rules. (<a href="https://developers.cloudflare.com/reference-architecture/architectures/magic-transit/">Magic Transit reference architecture</a>; <a href="https://developers.cloudflare.com/cloudflare-network-firewall/best-practices/magic-transit-egress/">Network Firewall Magic Transit egress</a>)</p>
+        <p><strong>MSS clamping matters.</strong> The right number here is 1436. If the egress side is missed, TCP can look fine but still break on larger packets. (<a href="https://developers.cloudflare.com/magic-transit/reference/mtu-mss/">Magic Transit MTU/MSS</a>)</p>
+        <p><strong>The prompt mixes stateful firewall logic with DSR.</strong> I answered the firewall section using the prompt's stateful assumption, but in a real Magic Transit DSR setup I would keep stateful checks on-prem.</p>
+        <p><strong>Cutover order matters.</strong> I would validate LOA, IRR, RPKI, MSS, and tunnel health before moving traffic. (<a href="https://developers.cloudflare.com/magic-transit/how-to/advertise-prefixes/">Magic Transit advertise prefixes</a>; <a href="https://developers.cloudflare.com/learning-paths/data-center-protection/run-pre-flight-checks/">Data Center Protection pre-flight checks</a>; <a href="https://developers.cloudflare.com/magic-transit/reference/tunnel-health-checks/">Tunnel health checks</a>)</p>
+      </section>
+
+      <section id="references" class="report-section"><h2>References</h2>
+        <ul>
+          <li><strong>BYOIP - Letter of Agency</strong>: <a href="https://developers.cloudflare.com/byoip/concepts/loa/">Cloudflare BYOIP LOA</a></li>
+          <li><strong>Magic Transit - Advertise prefixes</strong>: <a href="https://developers.cloudflare.com/magic-transit/how-to/advertise-prefixes/">Cloudflare Magic Transit advertise prefixes</a></li>
+          <li><strong>Magic Transit - MTU and MSS reference</strong>: <a href="https://developers.cloudflare.com/magic-transit/reference/mtu-mss/">Cloudflare Magic Transit MTU/MSS</a></li>
+          <li><strong>Magic Transit - Traffic steering and prefix mapping</strong>: <a href="https://developers.cloudflare.com/magic-transit/reference/traffic-steering/">Cloudflare Magic Transit traffic steering</a></li>
+          <li><strong>Magic Transit - Tunnel health checks</strong>: <a href="https://developers.cloudflare.com/magic-transit/reference/tunnel-health-checks/">Cloudflare Magic Transit tunnel health checks</a></li>
+          <li><strong>Magic Transit - GRE and IPsec tunnels</strong>: <a href="https://developers.cloudflare.com/magic-transit/reference/gre-ipsec-tunnels/">Cloudflare Magic Transit GRE and IPsec tunnels</a></li>
+          <li><strong>Reference Architecture - Magic Transit</strong>: <a href="https://developers.cloudflare.com/reference-architecture/architectures/magic-transit/">Cloudflare Magic Transit reference architecture</a></li>
+          <li><strong>Data Center Protection - Pre-flight checks</strong>: <a href="https://developers.cloudflare.com/learning-paths/data-center-protection/run-pre-flight-checks/">Cloudflare Data Center Protection pre-flight checks</a></li>
+          <li><strong>Cloudflare Network Firewall - Magic Transit egress</strong>: <a href="https://developers.cloudflare.com/cloudflare-network-firewall/best-practices/magic-transit-egress/">Network Firewall Magic Transit egress</a></li>
+          <li><strong>Cloudflare Network Firewall - Traffic types</strong>: <a href="https://developers.cloudflare.com/cloudflare-network-firewall/about/traffic-types/">Network Firewall traffic types</a></li>
+          <li><strong>Cloudflare Network Firewall - Fields</strong>: <a href="https://developers.cloudflare.com/cloudflare-network-firewall/reference/network-firewall-fields/">Network Firewall fields</a></li>
+          <li><strong>IETF - RFC 2784</strong>: <a href="https://datatracker.ietf.org/doc/html/rfc2784">Generic Routing Encapsulation (GRE)</a></li>
+          <li><strong>IETF - RFC 7766</strong>: <a href="https://datatracker.ietf.org/doc/html/rfc7766">DNS Transport over TCP</a></li>
+          <li><strong>IETF - RFC 7858</strong>: <a href="https://datatracker.ietf.org/doc/html/rfc7858">DNS over TLS</a></li>
+          <li><strong>IETF - RFC 8484</strong>: <a href="https://datatracker.ietf.org/doc/html/rfc8484">DNS Queries over HTTPS</a></li>
+          <li><strong>IETF - RFC 9114</strong>: <a href="https://datatracker.ietf.org/doc/html/rfc9114">HTTP/3</a></li>
+        </ul>
+      </section>
     </div>
   </main>
   <footer>
     <div class="wrap">
-      Cloudflare Network Services Assignment &mdash; <a href="network-report.md">network-report.md</a> &nbsp;·&nbsp;
+      Cloudflare Network Services Assignment - <a href="network-report.md">network-report.md</a> &nbsp;·&nbsp;
       <a href="https://github.com/mareox/Cloudflare-Project" target="_blank" rel="noopener">github.com/mareox/Cloudflare-Project</a>
     </div>
   </footer>
