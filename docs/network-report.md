@@ -13,7 +13,7 @@ Cloudflare will originate the BGP announcement for `203.0.113.0/24` from its edg
 
 **Letter of Agency (LOA).** A signed PDF on company letterhead explicitly authorizing Cloudflare to announce `203.0.113.0/24`, naming `AS12345` as the originating ASN and Cloudflare as the authorized party. Cloudflare presents LOAs to upstream transit providers on request. (Source: developers.cloudflare.com/byoip/concepts/loa/)
 
-**RPKI Route Origin Authorization (ROA).** Published through Acme's RIR (ARIN, RIPE, APNIC, etc.), pairing `203.0.113.0/24` with `origin: AS12345`. If Cloudflare's ASN were used instead, the ROA would reference `AS13335`. Mismatched ROAs are the most common cause of partial reachability after cutover: RPKI-validating networks like AT&T and Telia mark the route `invalid` and drop it silently. (Source: developers.cloudflare.com/magic-transit/how-to/advertise-prefixes/)
+**RPKI Route Origin Authorization (ROA).** Published through Acme's RIR (ARIN, RIPE, APNIC, etc.), pairing `203.0.113.0/24` with `origin: AS12345`, matching the assignment scenario. Mismatched ROAs are the most common cause of partial reachability after cutover: RPKI-validating networks like AT&T and Telia mark the route `invalid` and drop it silently. (Source: developers.cloudflare.com/magic-transit/how-to/advertise-prefixes/)
 
 **IRR route objects.** A `route:` object in RADb, ARIN-IRR, RIPE-NONAUTH, or whichever registry upstreams build prefix-lists from, pointing `203.0.113.0/24` at `origin: AS12345`. NTT, Cogent, and others rebuild filters nightly from IRR; missing or stale entries cause a 24-48 hour propagation delay.
 
