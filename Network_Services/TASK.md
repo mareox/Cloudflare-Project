@@ -10,7 +10,6 @@ Answer the Cloudflare Network Services assignment with a Magic Transit onboardin
 | --- | --- |
 | Markdown report | [`../../docs/network-report.md`](../../docs/network-report.md) |
 | Rendered GitHub Pages HTML | <https://mareox.github.io/Cloudflare-Project/network.html> |
-| DOCX export | [`../../docs/network-report.docx`](../../docs/network-report.docx) |
 | Diagrams | [`../../docs/assets/`](../../docs/assets/) |
 | Preview screenshot | [`../../docs/screenshots/network_report_preview.png`](../../docs/screenshots/network_report_preview.png) |
 
