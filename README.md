@@ -4,14 +4,13 @@ Public submission repo for Cloudflare application, network, and Zero Trust assig
 
 ## Project task split
 
-The repo is divided into three Cloudflare project tracks under
-[`_cloudflare-projects/`](_cloudflare-projects/):
+The repo is divided into three Cloudflare project tracks:
 
 | Project | Scope |
 | --- | --- |
-| [`Application_Services`](_cloudflare-projects/Application_Services/TASK.md) | Origin service, Tunnel, Worker, R2, and Application Services report. |
-| [`Network_Services`](_cloudflare-projects/Network_Services/TASK.md) | Magic Transit written report, diagrams, and exported document artifacts. |
-| [`Zero_Trust`](_cloudflare-projects/Zero_Trust/TASK.md) | Zero Trust report, Access/Gateway policy-as-code templates, WARP enrollment, and SaaS integration design. |
+| [`Application_Services`](Application_Services/TASK.md) | Origin service, Tunnel, Worker, R2, and Application Services report. |
+| [`Network_Services`](Network_Services/TASK.md) | Magic Transit written report, diagrams, and exported document artifacts. |
+| [`Zero_Trust`](Zero_Trust/TASK.md) | Zero Trust report, Access/Gateway policy-as-code templates, WARP enrollment, and SaaS integration design. |
 
 ## Live application
 
@@ -92,10 +91,9 @@ step-by-step configuration instructions.
 
 ```text
 .
-├── _cloudflare-projects/
-│   ├── Application_Services/
-│   ├── Network_Services/
-│   └── Zero_Trust/
+├── Application_Services/
+├── Network_Services/
+├── Zero_Trust/
 ├── docs/
 │   ├── index.html
 │   ├── REPORT.md
