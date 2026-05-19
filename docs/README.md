@@ -21,6 +21,9 @@ Project task tracking is split under [`../_cloudflare-projects/`](../_cloudflare
 | [`network-report.docx`](network-report.docx) | You want the DOCX source for the Network Services report. |
 | [`zero-trust-report.md`](zero-trust-report.md) | You want the corrected GitHub-native Zero Trust status report. |
 | [Zero Trust HTML](https://mareox.github.io/Cloudflare-Project/zero-trust.html) | You want the rendered Zero Trust status page. |
+| [`Task A MD`](zero-trust/assignment-answers/task-a-technical-requirements-summary.md) / [`PDF`](zero-trust/assignment-answers/task-a-technical-requirements-summary.pdf) | You want the standalone technical requirements summary. |
+| [`Task B MD`](zero-trust/assignment-answers/task-b-lessons-issues.md) / [`PDF`](zero-trust/assignment-answers/task-b-lessons-issues.pdf) | You want the standalone lessons learned and issues answer. |
+| [`Task C MD`](zero-trust/assignment-answers/task-c-best-practices.md) / [`PDF`](zero-trust/assignment-answers/task-c-best-practices.pdf) | You want the standalone best practices answer. |
 
 GitHub does not render `index.html` in the normal repository file viewer. It shows the source code. To render the HTML page, enable GitHub Pages for this repository with:
 

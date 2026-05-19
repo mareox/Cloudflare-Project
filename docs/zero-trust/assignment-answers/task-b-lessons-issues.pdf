@@ -1,0 +1,263 @@
+%PDF-1.4
+%‚„œ”
+1 0 obj
+<< /Type /Catalog /Pages 2 0 R >>
+endobj
+2 0 obj
+<< /Type /Pages /Kids [6 0 R 8 0 R] /Count 2 >>
+endobj
+3 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>
+endobj
+4 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold >>
+endobj
+5 0 obj
+<< /Length 4051 >>
+stream
+1 1 1 rg
+0 0 612 792 re f
+0 0 0 rg
+BT
+/F2 16 Tf
+1 0 0 1 54 736.00 Tm
+(Task B - Lessons Learned and Issues Encountered) Tj
+/F2 13 Tf
+1 0 0 1 54 690.00 Tm
+(What I Learned) Tj
+/F1 10 Tf
+1 0 0 1 54 663.00 Tm
+(The biggest lesson from this assignment was how much Cloudflare Zero Trust depends on policy) Tj
+/F1 10 Tf
+1 0 0 1 54 650.00 Tm
+(composition rather than a single product toggle. Access, Gateway, WARP, identity providers,) Tj
+/F1 10 Tf
+1 0 0 1 54 637.00 Tm
+(tunnels, and SaaS integrations all solve different parts of the problem. The final design) Tj
+/F1 10 Tf
+1 0 0 1 54 624.00 Tm
+(works because those controls are layered together.) Tj
+/F1 10 Tf
+1 0 0 1 54 605.00 Tm
+(I also learned that Cloudflare Access can provide a consistent policy layer across very) Tj
+/F1 10 Tf
+1 0 0 1 54 592.00 Tm
+(different application types. A self-hosted application behind Cloudflare Tunnel and a SaaS) Tj
+/F1 10 Tf
+1 0 0 1 54 579.00 Tm
+(application using SAML can both be governed by the same group and allowlist model. That is a) Tj
+/F1 10 Tf
+1 0 0 1 54 566.00 Tm
+(useful pattern because the operator does not need a separate access-control strategy for) Tj
+/F1 10 Tf
+1 0 0 1 54 553.00 Tm
+(every application.) Tj
+/F1 10 Tf
+1 0 0 1 54 534.00 Tm
+(Another important lesson was how Cloudflare Gateway evaluates policy order. The) Tj
+/F1 10 Tf
+1 0 0 1 54 521.00 Tm
+(Entertainment filtering requirement looked simple at first, but the exception for Netflix) Tj
+/F1 10 Tf
+1 0 0 1 54 508.00 Tm
+(and YouTube changes the design. The allow rule for Netflix and YouTube has to be placed) Tj
+/F1 10 Tf
+1 0 0 1 54 495.00 Tm
+(before the broader Entertainment block rule. Otherwise the broad category block wins first) Tj
+/F1 10 Tf
+1 0 0 1 54 482.00 Tm
+(and the exception never applies.) Tj
+/F2 13 Tf
+1 0 0 1 54 453.00 Tm
+(Issues Encountered) Tj
+/F2 11 Tf
+1 0 0 1 54 418.00 Tm
+(Google Group Claims Were Not Available) Tj
+/F1 10 Tf
+1 0 0 1 54 395.00 Tm
+(The assignment references user groups, but the identity provider available in this) Tj
+/F1 10 Tf
+1 0 0 1 54 382.00 Tm
+(environment is a personal Gmail account. Personal Gmail does not expose Google Workspace) Tj
+/F1 10 Tf
+1 0 0 1 54 369.00 Tm
+(group claims to Cloudflare Access. That means I could not rely on directory-synced Google) Tj
+/F1 10 Tf
+1 0 0 1 54 356.00 Tm
+(groups for Testers, SaaS-Users, or Admins.) Tj
+/F1 10 Tf
+1 0 0 1 54 337.00 Tm
+(I handled this by using Cloudflare-native Access groups and reusable policies backed by) Tj
+/F1 10 Tf
+1 0 0 1 54 324.00 Tm
+(explicit email includes. This preserves the policy shape required by the assignment while) Tj
+/F1 10 Tf
+1 0 0 1 54 311.00 Tm
+(documenting the limitation clearly. In a production Google Workspace tenant, I would replace) Tj
+/F1 10 Tf
+1 0 0 1 54 298.00 Tm
+(those email includes with real IdP group claims.) Tj
+/F2 11 Tf
+1 0 0 1 54 271.00 Tm
+(Gateway Rule Ordering Was Easy to Get Wrong) Tj
+/F1 10 Tf
+1 0 0 1 54 248.00 Tm
+(The HTTP filtering requirement asked for Entertainment to be blocked except Netflix and) Tj
+/F1 10 Tf
+1 0 0 1 54 235.00 Tm
+(YouTube. The first attempt can easily be implemented as a single category block, but that) Tj
+/F1 10 Tf
+1 0 0 1 54 222.00 Tm
+(blocks the exceptions too.) Tj
+/F1 10 Tf
+1 0 0 1 54 203.00 Tm
+(I resolved this by treating the exception as the first policy:) Tj
+/F1 10 Tf
+1 0 0 1 54 184.00 Tm
+(1. Allow Netflix and YouTube domains.) Tj
+/F1 10 Tf
+1 0 0 1 54 171.00 Tm
+(2. Block the broader Entertainment category.) Tj
+/F1 10 Tf
+1 0 0 1 54 152.00 Tm
+(I also documented the ordering requirement at https://github.com/mareox/Cloudflare-Project/b) Tj
+/F1 10 Tf
+1 0 0 1 54 139.00 Tm
+(lob/main/docs/zero-trust/gateway-policies/README.md so the next operator understands why the) Tj
+/F1 10 Tf
+1 0 0 1 54 126.00 Tm
+(allow rule must stay above the block rule.) Tj
+/F2 11 Tf
+1 0 0 1 54 99.00 Tm
+(API Writes Were Not Reliable From This Environment) Tj
+/F1 10 Tf
+1 0 0 1 54 76.00 Tm
+(The local Cloudflare API connection could read account, zone, tunnel, DNS, Access, Workers,) Tj
+/F1 9 Tf
+1 0 0 1 488 32 Tm
+(Page 1 of 2) Tj
+ET
+endstream
+endobj
+6 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 3 0 R /F2 4 0 R >> >> /Contents 5 0 R >>
+endobj
+7 0 obj
+<< /Length 2993 >>
+stream
+1 1 1 rg
+0 0 612 792 re f
+0 0 0 rg
+BT
+/F1 10 Tf
+1 0 0 1 54 736.00 Tm
+(and Zero Trust state, but write attempts returned an authentication error. Where direct API) Tj
+/F1 10 Tf
+1 0 0 1 54 723.00 Tm
+(writes were not available, the implementation was captured through dashboard configuration) Tj
+/F1 10 Tf
+1 0 0 1 54 710.00 Tm
+(and exported as reusable JSON policy definitions.) Tj
+/F1 10 Tf
+1 0 0 1 54 691.00 Tm
+(The result is still reviewable and repeatable because the important control decisions are) Tj
+/F1 10 Tf
+1 0 0 1 54 678.00 Tm
+(stored in the public repo under:) Tj
+/F1 10 Tf
+1 0 0 1 54 659.00 Tm
+(- https://github.com/mareox/Cloudflare-Project/tree/main/docs/zero-trust/access-polici) Tj
+/F1 10 Tf
+1 0 0 1 54 646.00 Tm
+(  es) Tj
+/F1 10 Tf
+1 0 0 1 54 633.00 Tm
+(- https://github.com/mareox/Cloudflare-Project/tree/main/docs/zero-trust/gateway-polic) Tj
+/F1 10 Tf
+1 0 0 1 54 620.00 Tm
+(  ies) Tj
+/F2 11 Tf
+1 0 0 1 54 593.00 Tm
+(SaaS SSO Requires a Real SaaS Admin Surface) Tj
+/F1 10 Tf
+1 0 0 1 54 570.00 Tm
+(Cloudflare can act as the identity provider for SaaS applications, but the SaaS side still) Tj
+/F1 10 Tf
+1 0 0 1 54 557.00 Tm
+(needs an administrator to paste the SAML metadata or OIDC client details. That makes SaaS) Tj
+/F1 10 Tf
+1 0 0 1 54 544.00 Tm
+(SSO harder to demonstrate than a self-hosted Access app, especially in a personal lab) Tj
+/F1 10 Tf
+1 0 0 1 54 531.00 Tm
+(environment.) Tj
+/F1 10 Tf
+1 0 0 1 54 512.00 Tm
+(I handled this by documenting the Cloudflare-side SaaS application shape and the expected) Tj
+/F1 10 Tf
+1 0 0 1 54 499.00 Tm
+(SAML/OIDC configuration flow at https://github.com/mareox/Cloudflare-Project/blob/main/docs/) Tj
+/F1 10 Tf
+1 0 0 1 54 486.00 Tm
+(zero-trust/access-policies/saas-app.json.) Tj
+/F2 13 Tf
+1 0 0 1 54 457.00 Tm
+(How I Overcame the Issues) Tj
+/F1 10 Tf
+1 0 0 1 54 430.00 Tm
+(I kept the design aligned to the intent of the assignment instead of pretending the personal) Tj
+/F1 10 Tf
+1 0 0 1 54 417.00 Tm
+(lab environment had enterprise-only identity features. The main compromises were documented) Tj
+/F1 10 Tf
+1 0 0 1 54 404.00 Tm
+(directly in the deliverables:) Tj
+/F1 10 Tf
+1 0 0 1 54 385.00 Tm
+(- Use Cloudflare-native Access groups when IdP group claims are unavailable.) Tj
+/F1 10 Tf
+1 0 0 1 54 372.00 Tm
+(- Preserve default-deny behavior even when using email includes.) Tj
+/F1 10 Tf
+1 0 0 1 54 359.00 Tm
+(- Store policies as JSON so they can be recreated or moved to a different account.) Tj
+/F1 10 Tf
+1 0 0 1 54 346.00 Tm
+(- Document ordering-sensitive Gateway rules near the policy files.) Tj
+/F1 10 Tf
+1 0 0 1 54 333.00 Tm
+(- Keep screenshots and policy files together so the implementation can be validated) Tj
+/F1 10 Tf
+1 0 0 1 54 320.00 Tm
+(  from the repo.) Tj
+/F1 10 Tf
+1 0 0 1 54 301.00 Tm
+(The end result is a practical Zero Trust deployment model that can run in a small lab but) Tj
+/F1 10 Tf
+1 0 0 1 54 288.00 Tm
+(still maps cleanly to a production implementation.) Tj
+/F1 9 Tf
+1 0 0 1 488 32 Tm
+(Page 2 of 2) Tj
+ET
+endstream
+endobj
+8 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 3 0 R /F2 4 0 R >> >> /Contents 7 0 R >>
+endobj
+xref
+0 9
+0000000000 65535 f 
+0000000015 00000 n 
+0000000064 00000 n 
+0000000127 00000 n 
+0000000197 00000 n 
+0000000272 00000 n 
+0000004375 00000 n 
+0000004511 00000 n 
+0000007556 00000 n 
+trailer
+<< /Size 9 /Root 1 0 R >>
+startxref
+7692
+%%EOF

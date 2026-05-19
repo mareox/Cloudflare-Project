@@ -77,6 +77,9 @@ The Zero Trust assignment report covers all seven requirements:
 
 - HTML report: <https://mareox.github.io/Cloudflare-Project/zero-trust.html>
 - Markdown report: [`docs/zero-trust-report.md`](docs/zero-trust-report.md)
+- Task A technical requirements summary: [`MD`](docs/zero-trust/assignment-answers/task-a-technical-requirements-summary.md) / [`PDF`](docs/zero-trust/assignment-answers/task-a-technical-requirements-summary.pdf)
+- Task B lessons learned and issues encountered: [`MD`](docs/zero-trust/assignment-answers/task-b-lessons-issues.md) / [`PDF`](docs/zero-trust/assignment-answers/task-b-lessons-issues.pdf)
+- Task C best practices applied: [`MD`](docs/zero-trust/assignment-answers/task-c-best-practices.md) / [`PDF`](docs/zero-trust/assignment-answers/task-c-best-practices.pdf)
 - Policy-as-code templates: [`docs/zero-trust/`](docs/zero-trust/)
 
 It documents the live Access-protected self-hosted app, WARP enrollment,
