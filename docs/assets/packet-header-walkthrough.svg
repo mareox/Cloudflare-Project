@@ -1,0 +1,88 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 820 400" font-family="'Segoe UI', system-ui, -apple-system, sans-serif">
+  <defs>
+    <filter id="shadow" x="-2%" y="-2%" width="104%" height="108%">
+      <feDropShadow dx="0" dy="1" stdDeviation="2" flood-opacity="0.15"/>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="820" height="400" rx="8" fill="#0f172a"/>
+
+  <!-- Title -->
+  <text x="410" y="28" text-anchor="middle" fill="#e2e8f0" font-size="15" font-weight="600">Packet Header Walkthrough — Forward Direction (CF → Acme, on the wire)</text>
+
+  <!-- ── Layer 1: Outer IPv4 (orange) ── -->
+  <rect x="20" y="46" width="780" height="76" rx="7" fill="#1e293b" stroke="#f97316" stroke-width="1.2" filter="url(#shadow)"/>
+  <!-- header band -->
+  <rect x="20" y="46" width="780" height="24" rx="7" fill="#9a3412"/>
+  <rect x="20" y="58" width="780" height="12" fill="#9a3412"/>
+  <text x="34" y="63" fill="#fed7aa" font-size="10" font-weight="700" letter-spacing="0.4">OUTER IPv4</text>
+  <rect x="128" y="51" width="36" height="14" rx="6" fill="#f97316" fill-opacity="0.30" stroke="#f97316" stroke-width="0.5"/>
+  <text x="146" y="62" text-anchor="middle" fill="#fed7aa" font-size="8" font-weight="700">20 B</text>
+  <text x="750" y="63" text-anchor="end" fill="#fb923c" font-size="9">CF-added outer wrapper — stripped at Acme GRE peer</text>
+  <!-- fields -->
+  <text x="36" y="87" font-family="'Courier New', monospace" font-size="11" fill="#94a3b8">src  =</text>
+  <text x="90" y="87" font-family="'Courier New', monospace" font-size="11" fill="#fed7aa">192.0.2.10</text>
+  <text x="220" y="87" font-family="'Courier New', monospace" font-size="11" fill="#64748b">(Cloudflare anycast GRE endpoint)</text>
+  <text x="36" y="103" font-family="'Courier New', monospace" font-size="11" fill="#94a3b8">dst  =</text>
+  <text x="90" y="103" font-family="'Courier New', monospace" font-size="11" fill="#fed7aa">100.100.100.100</text>
+  <text x="268" y="103" font-family="'Courier New', monospace" font-size="11" fill="#64748b">(Acme GRE terminator)</text>
+  <text x="36" y="119" font-family="'Courier New', monospace" font-size="11" fill="#94a3b8">proto=</text>
+  <text x="90" y="119" font-family="'Courier New', monospace" font-size="11" fill="#fed7aa">47</text>
+  <text x="120" y="119" font-family="'Courier New', monospace" font-size="11" fill="#64748b">(GRE)</text>
+
+  <!-- ── Layer 2: GRE Header (amber) ── -->
+  <rect x="20" y="128" width="780" height="48" rx="7" fill="#1e293b" stroke="#f59e0b" stroke-width="1.2" filter="url(#shadow)"/>
+  <rect x="20" y="128" width="780" height="24" rx="7" fill="#78350f"/>
+  <rect x="20" y="140" width="780" height="12" fill="#78350f"/>
+  <text x="34" y="145" fill="#fde68a" font-size="10" font-weight="700" letter-spacing="0.4">GRE HEADER</text>
+  <rect x="128" y="133" width="28" height="14" rx="6" fill="#f59e0b" fill-opacity="0.30" stroke="#f59e0b" stroke-width="0.5"/>
+  <text x="142" y="144" text-anchor="middle" fill="#fde68a" font-size="8" font-weight="700">4 B</text>
+  <text x="750" y="145" text-anchor="end" fill="#fbbf24" font-size="9">RFC 2784 — no key, no sequence number fields</text>
+  <!-- field -->
+  <text x="36" y="166" font-family="'Courier New', monospace" font-size="11" fill="#94a3b8">Protocol Type =</text>
+  <text x="178" y="166" font-family="'Courier New', monospace" font-size="11" fill="#fde68a">0x0800</text>
+  <text x="244" y="166" font-family="'Courier New', monospace" font-size="11" fill="#64748b">(IPv4 inner payload)</text>
+
+  <!-- ── Layer 3: Inner IPv4 (purple) ── -->
+  <rect x="20" y="182" width="780" height="90" rx="7" fill="#1e293b" stroke="#8b5cf6" stroke-width="1.2" filter="url(#shadow)"/>
+  <rect x="20" y="182" width="780" height="24" rx="7" fill="#3b0764"/>
+  <rect x="20" y="194" width="780" height="12" fill="#3b0764"/>
+  <text x="34" y="199" fill="#e9d5ff" font-size="10" font-weight="700" letter-spacing="0.4">INNER IPv4</text>
+  <rect x="128" y="187" width="36" height="14" rx="6" fill="#8b5cf6" fill-opacity="0.30" stroke="#8b5cf6" stroke-width="0.5"/>
+  <text x="146" y="198" text-anchor="middle" fill="#e9d5ff" font-size="8" font-weight="700">20 B</text>
+  <text x="750" y="199" text-anchor="end" fill="#c4b5fd" font-size="9">original packet — untouched end-to-end</text>
+  <!-- fields -->
+  <text x="36" y="221" font-family="'Courier New', monospace" font-size="11" fill="#94a3b8">src  =</text>
+  <text x="90" y="221" font-family="'Courier New', monospace" font-size="11" fill="#e9d5ff">USER_PUBLIC_IP</text>
+  <text x="256" y="221" font-family="'Courier New', monospace" font-size="11" fill="#64748b">(preserved end-to-end)</text>
+  <!-- "this is the win" badge -->
+  <rect x="502" y="209" width="120" height="15" rx="7" fill="#4c1d95" stroke="#8b5cf6" stroke-width="0.6"/>
+  <text x="562" y="220" text-anchor="middle" fill="#c4b5fd" font-size="8" font-weight="700">← this is the BYOIP win</text>
+  <text x="36" y="238" font-family="'Courier New', monospace" font-size="11" fill="#94a3b8">dst  =</text>
+  <text x="90" y="238" font-family="'Courier New', monospace" font-size="11" fill="#e9d5ff">203.0.113.10</text>
+  <text x="36" y="255" font-family="'Courier New', monospace" font-size="11" fill="#94a3b8">proto=</text>
+  <text x="90" y="255" font-family="'Courier New', monospace" font-size="11" fill="#e9d5ff">6</text>
+  <text x="108" y="255" font-family="'Courier New', monospace" font-size="11" fill="#64748b">(TCP)</text>
+
+  <!-- ── Layer 4: TCP (green) ── -->
+  <rect x="20" y="278" width="780" height="90" rx="7" fill="#1e293b" stroke="#22c55e" stroke-width="1.2" filter="url(#shadow)"/>
+  <rect x="20" y="278" width="780" height="24" rx="7" fill="#052e16"/>
+  <rect x="20" y="290" width="780" height="12" fill="#052e16"/>
+  <text x="34" y="295" fill="#bbf7d0" font-size="10" font-weight="700" letter-spacing="0.4">TCP</text>
+  <rect x="68" y="283" width="36" height="14" rx="6" fill="#22c55e" fill-opacity="0.25" stroke="#22c55e" stroke-width="0.5"/>
+  <text x="86" y="294" text-anchor="middle" fill="#bbf7d0" font-size="8" font-weight="700">20 B</text>
+  <text x="750" y="295" text-anchor="end" fill="#86efac" font-size="9">header intact — MSS option rewritten by CF on inbound SYN</text>
+  <!-- fields -->
+  <text x="36" y="318" font-family="'Courier New', monospace" font-size="11" fill="#94a3b8">sport =</text>
+  <text x="96" y="318" font-family="'Courier New', monospace" font-size="11" fill="#bbf7d0">ephemeral</text>
+  <text x="36" y="335" font-family="'Courier New', monospace" font-size="11" fill="#94a3b8">dport =</text>
+  <text x="96" y="335" font-family="'Courier New', monospace" font-size="11" fill="#bbf7d0">443</text>
+  <text x="36" y="352" font-family="'Courier New', monospace" font-size="11" fill="#94a3b8">MSS   =</text>
+  <text x="96" y="352" font-family="'Courier New', monospace" font-size="11" fill="#86efac" font-weight="700">1436</text>
+  <text x="148" y="352" font-family="'Courier New', monospace" font-size="11" fill="#64748b">(clamped by CF Magic Firewall on inbound SYN)</text>
+
+  <!-- Total size footer -->
+  <rect x="20" y="376" width="780" height="16" rx="4" fill="#1e293b" stroke="#334155" stroke-width="0.5"/>
+  <text x="410" y="388" text-anchor="middle" fill="#475569" font-size="8.5">Total on wire: 20 (outer IP) + 4 (GRE) + 20 (inner IP) + 20 (TCP) + 1436 (payload) = 1,500 B — fits 1500 B path MTU exactly</text>
+</svg>
