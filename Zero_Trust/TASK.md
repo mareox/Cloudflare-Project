@@ -8,7 +8,7 @@ Track the Zero Trust Services assignment separately from the Application Service
 
 | Artifact | Path |
 | --- | --- |
-| Corrected Zero Trust status page | [`../../docs/zero-trust.html`](../../docs/zero-trust.html) |
+| Corrected Zero Trust status page | [`../../docs/zero-trust.html`](https://mareox.github.io/Cloudflare-Project/zero-trust.html) |
 | Corrected Zero Trust Markdown report | [`../../docs/zero-trust-report.md`](../../docs/zero-trust-report.md) |
 | Access and Gateway policy templates | [`../../docs/zero-trust/`](../../docs/zero-trust/) |
 | Access-protected Worker used by Application Services | [`../../worker/src/index.ts`](../../worker/src/index.ts) |
