@@ -199,8 +199,6 @@ Gateway logs in the dashboard confirm the block policy was applied with the matc
 
 **Screenshot evidence:**
 
-- Gateway resolver policy baseline: `zero-trust/screenshots/zt_baseline_resolver_policies.png`
-
 ---
 
 ### 5. Gateway HTTP Filtering — Entertainment Block with Exceptions
