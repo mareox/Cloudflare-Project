@@ -1,0 +1,419 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Zero Trust Services Report | Cloudflare Project</title>
+  <style>
+    :root {
+      --ink: #172033;
+      --muted: #5b6472;
+      --line: #d7dde6;
+      --panel: #ffffff;
+      --soft: #f6f8fb;
+      --accent: #f48120;
+      --blue: #215ea8;
+      --green: #147a53;
+      --red: #b42318;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--ink);
+      background: #fbfcfe;
+      line-height: 1.58;
+    }
+    a { color: var(--blue); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    header {
+      background: linear-gradient(135deg, #172033 0%, #263c63 60%, #1a3a2a 160%);
+      color: white;
+      padding: 52px 24px 40px;
+    }
+    .wrap { max-width: 1120px; margin: 0 auto; }
+    .eyebrow {
+      margin: 0 0 10px;
+      color: #a8f0c8;
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+    h1 { margin: 0; max-width: 820px; font-size: clamp(32px, 5vw, 54px); line-height: 1.06; letter-spacing: 0; }
+    .hero-copy { max-width: 760px; margin: 16px 0 0; color: #e6edf7; font-size: 18px; }
+    .actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 26px; }
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 42px;
+      padding: 0 16px;
+      border: 1px solid rgba(255,255,255,.28);
+      border-radius: 6px;
+      color: white;
+      font-weight: 700;
+      font-size: 14px;
+      background: rgba(255,255,255,.1);
+      white-space: nowrap;
+    }
+    .button:hover { background: rgba(255,255,255,.18); text-decoration: none; }
+    .button.primary { color: #172033; background: white; border-color: white; }
+    main { padding: 34px 24px 72px; }
+    section { margin-top: 36px; }
+    h2 {
+      margin: 0 0 16px;
+      padding-top: 14px;
+      border-top: 1px solid var(--line);
+      font-size: 28px;
+      line-height: 1.18;
+      letter-spacing: 0;
+    }
+    h3 { margin: 28px 0 10px; font-size: 19px; line-height: 1.28; letter-spacing: 0; }
+    p { margin: 0 0 14px; }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 14px;
+    }
+    .card {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 20px;
+      box-shadow: 0 6px 20px rgba(24,33,47,.05);
+    }
+    .status {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 10px;
+      font-size: 11px;
+      font-weight: 900;
+      letter-spacing: .07em;
+      text-transform: uppercase;
+    }
+    .status::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: currentColor; flex-shrink: 0; }
+    .done { color: var(--green); }
+    .designed { color: var(--blue); }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: white;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      overflow: hidden;
+      display: block;
+      overflow-x: auto;
+    }
+    th, td {
+      padding: 11px 14px;
+      border-bottom: 1px solid var(--line);
+      text-align: left;
+      vertical-align: top;
+      min-width: 160px;
+    }
+    th { background: var(--soft); color: #2f3949; font-size: 12px; text-transform: uppercase; letter-spacing: .04em; }
+    tr:last-child td { border-bottom: 0; }
+    code, pre { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace; }
+    code { padding: 2px 5px; border-radius: 4px; background: #edf1f7; font-size: .9em; }
+    pre { padding: 16px; border-radius: 8px; background: #101827; color: #e9eef8; overflow-x: auto; font-size: 13px; line-height: 1.55; }
+    ul, ol { margin-top: 0; padding-left: 22px; }
+    li { margin-bottom: 8px; }
+    .screens {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 16px;
+    }
+    figure {
+      margin: 0;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: white;
+      box-shadow: 0 6px 20px rgba(24,33,47,.05);
+    }
+    figure img { width: 100%; display: block; aspect-ratio: 16 / 10; object-fit: cover; background: var(--soft); }
+    figcaption { padding: 10px 14px 13px; color: var(--muted); font-size: 13px; border-top: 1px solid var(--line); }
+    .tag {
+      display: inline-block;
+      padding: 3px 9px;
+      border-radius: 99px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .04em;
+      background: #e3f5ec;
+      color: var(--green);
+      vertical-align: middle;
+    }
+    .tag.blue { background: #e3ecf8; color: var(--blue); }
+    .pill-row { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 18px; }
+    footer { padding: 28px 24px; border-top: 1px solid var(--line); color: var(--muted); background: #f8fafc; }
+    @media (max-width: 720px) {
+      h1 { font-size: 32px; }
+      .hero-copy { font-size: 16px; }
+      h2 { font-size: 23px; }
+      pre { white-space: pre-wrap; overflow-wrap: anywhere; }
+      main, header { padding-left: 18px; padding-right: 18px; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="wrap">
+      <p class="eyebrow">Cloudflare Zero Trust Services Assignment</p>
+      <h1>Zero Trust Implementation Report</h1>
+      <p class="hero-copy">A working application secured by Cloudflare ZTNA, with Access policies, WARP enrollment, Gateway DNS and HTTP filtering, and a SaaS identity integration — backed by policy-as-code templates committed to this repository.</p>
+      <div class="actions">
+        <a class="button primary" href="zero-trust-report.md">Full Markdown Report</a>
+        <a class="button" href="https://tunnel.mareoxlan.com/secure">Live App</a>
+        <a class="button" href="zero-trust/access-policies/groups.json">Access Groups JSON</a>
+        <a class="button" href="zero-trust/gateway-policies/dns-policies.json">Gateway DNS JSON</a>
+        <a class="button" href="index.html">Application Services Report</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <div class="wrap">
+
+      <section>
+        <h2>Requirement Coverage</h2>
+        <table>
+          <thead>
+            <tr><th>Requirement</th><th>Implementation</th><th>Status</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Working ZTNA app</td>
+              <td><code>tunnel.mareoxlan.com/secure</code> — Cloudflare Access enforces identity before reaching the Worker. Unauthenticated requests get a 302 to the Access login page.</td>
+              <td><span class="tag">Live</span></td>
+            </tr>
+            <tr>
+              <td>Self-hosted app for Testers only</td>
+              <td>Reusable Access policy <code>allow-testers</code> includes <code>mareox@gmail.com</code> and <code>@cloudflare.com</code> reviewer domain. Default action: Block.</td>
+              <td><span class="tag">Live</span></td>
+            </tr>
+            <tr>
+              <td>Admin allow list</td>
+              <td>Reusable policy <code>allow-email-me</code> restricts admin access to <code>mareox@gmail.com</code> explicitly.</td>
+              <td><span class="tag">Live</span></td>
+            </tr>
+            <tr>
+              <td>SaaS application via Cloudflare IdP</td>
+              <td>SAML SaaS Access application designed for GitHub SSO. Full JSON template in <a href="zero-trust/access-policies/saas-app.json">saas-app.json</a>. Policies: <code>allow-saas-users</code> + <code>allow-email-me</code>.</td>
+              <td><span class="tag blue">Designed</span></td>
+            </tr>
+            <tr>
+              <td>WARP enrollment restriction</td>
+              <td>WARP installed and enrolled. Login app restricts enrollment to <code>mareoxlan.com</code> email domain via Access policy. Device visible in Zero Trust Devices.</td>
+              <td><span class="tag">Live</span></td>
+            </tr>
+            <tr>
+              <td>Gateway DNS — block anonymizer and malware</td>
+              <td>Policies designed with verified category IDs: Anonymizer (cat 68), Malware/C2/Phishing/Spyware/DGA (cats 117, 80, 131, 153, 176, 188). Template in <a href="zero-trust/gateway-policies/dns-policies.json">dns-policies.json</a>.</td>
+              <td><span class="tag blue">Designed</span></td>
+            </tr>
+            <tr>
+              <td>Gateway HTTP — block Entertainment, allow Netflix/YouTube</td>
+              <td>Allow rule at precedence 200 (Netflix/YouTube domains), block Entertainment category (cat 7) at precedence 210. First-match-wins ordering. Template in <a href="zero-trust/gateway-policies/http-policies.json">http-policies.json</a>.</td>
+              <td><span class="tag blue">Designed</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section>
+        <h2>Architecture Overview</h2>
+        <div class="grid">
+          <article class="card">
+            <div class="status done">Live — Self-Hosted ZTNA</div>
+            <h3>Cloudflare Access + Tunnel</h3>
+            <p>The origin server runs in a private homelab network. Cloudflare Tunnel creates an outbound-only connection to Cloudflare edge — no inbound firewall rules required. Access validates identity before any request reaches the application.</p>
+          </article>
+          <article class="card">
+            <div class="status done">Live — Identity Provider</div>
+            <h3>Google IdP + Reusable Policies</h3>
+            <p>Google OAuth 2.0 is the upstream IdP. Cloudflare-native reusable policies (<code>allow-testers</code>, <code>allow-saas-users</code>, <code>allow-email-me</code>) model group membership without requiring Google Workspace group claims.</p>
+          </article>
+          <article class="card">
+            <div class="status done">Live — WARP Enrolled</div>
+            <h3>Device Enrolled in Zero Trust</h3>
+            <p>WARP client enrolled into <code>mareoxlan</code> team. All DNS and HTTP traffic from the enrolled device is subject to Gateway policy evaluation. Enrollment restricted by Access policy.</p>
+          </article>
+          <article class="card">
+            <div class="status designed">Designed — SaaS + Gateway</div>
+            <h3>Policy Templates in Repo</h3>
+            <p>SaaS Access app (SAML), Gateway DNS (anonymizer/malware block), and Gateway HTTP (Entertainment block with streaming exceptions) are fully specified as deployable JSON with verified category IDs from the live Cloudflare API.</p>
+          </article>
+        </div>
+      </section>
+
+      <section>
+        <h2>1. Self-Hosted ZTNA — Live Implementation</h2>
+
+        <h3>Access application and policy</h3>
+        <p>The Access application covers <code>tunnel.mareoxlan.com/secure*</code>. Any request to that path redirects to <code>mareoxlan.cloudflareaccess.com</code> for identity verification before Cloudflare proxies the request to the Worker or origin.</p>
+
+        <pre>curl -sI https://tunnel.mareoxlan.com/secure
+# HTTP/2 302  location: https://mareoxlan.cloudflareaccess.com/cdn-cgi/access/login/...</pre>
+
+        <p>After successful Google OAuth, Cloudflare injects two trusted headers:</p>
+        <ul>
+          <li><code>Cf-Access-Authenticated-User-Email</code> — verified email address</li>
+          <li><code>Cf-Access-Jwt-Assertion</code> — signed JWT verifiable against the team's JWKS endpoint</li>
+        </ul>
+
+        <h3>Access policy structure</h3>
+        <pre>{
+  "name": "allow-testers",
+  "include": [
+    { "email": { "email": "mareox@gmail.com" } },
+    { "email_domain": { "domain": "cloudflare.com" } }
+  ]
+}</pre>
+
+        <h3>Screenshot evidence</h3>
+        <div class="screens">
+          <figure>
+            <img src="zero-trust/screenshots/zt_01_reusable_policies_list.png" alt="Reusable Access policies">
+            <figcaption>Reusable Access policies: <code>allow-testers</code>, <code>allow-saas-users</code>, <code>allow-email-me</code>, <code>allow-email-cloudflare</code></figcaption>
+          </figure>
+          <figure>
+            <img src="zero-trust/screenshots/zt_02_allow_testers_policy.png" alt="allow-testers policy detail">
+            <figcaption><code>allow-testers</code> policy — includes tester emails and reviewer domain</figcaption>
+          </figure>
+          <figure>
+            <img src="zero-trust/screenshots/zt_03_allow_saas_users_policy.png" alt="allow-saas-users policy detail">
+            <figcaption><code>allow-saas-users</code> policy — SaaS user group definition</figcaption>
+          </figure>
+          <figure>
+            <img src="zero-trust/screenshots/zt_baseline_existing_apps.png" alt="Existing Access applications">
+            <figcaption>Existing Access applications including the protected <code>tunnel.mareoxlan.com/secure</code> app</figcaption>
+          </figure>
+          <figure>
+            <img src="zero-trust/screenshots/zt_baseline_access_policies.png" alt="Access policy baseline">
+            <figcaption>Access policies baseline — full policy list in Cloudflare dashboard</figcaption>
+          </figure>
+          <figure>
+            <img src="zero-trust/screenshots/zt_settings_overview.png" alt="Zero Trust settings">
+            <figcaption>Zero Trust settings overview — team domain, IdP, and session settings</figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <section>
+        <h2>2. WARP — Enrolled Device</h2>
+        <p>Cloudflare WARP was installed on the test device and enrolled into the <code>mareoxlan</code> Zero Trust organization. Once enrolled, all DNS and HTTP traffic routes through Cloudflare Gateway for policy evaluation.</p>
+        <div class="screens" style="max-width:540px">
+          <figure>
+            <img src="zero-trust/screenshots/zt_06_devices_warp.png" alt="WARP enrolled device">
+            <figcaption>Enrolled device visible in Zero Trust → My Team → Devices</figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <section>
+        <h2>3. Gateway — Policy Design with Verified Category IDs</h2>
+
+        <h3>DNS policies</h3>
+        <p>Category IDs verified live against the Cloudflare Gateway categories API on May 2026.</p>
+        <table>
+          <thead><tr><th>Policy</th><th>Expression</th><th>Action</th></tr></thead>
+          <tbody>
+            <tr>
+              <td>Block Anonymizers</td>
+              <td><code>any(dns.content_category[*] in {68})</code></td>
+              <td>Block</td>
+            </tr>
+            <tr>
+              <td>Block Malware + Security Threats</td>
+              <td><code>any(dns.security_category[*] in {117 80 131 153 176 188})</code></td>
+              <td>Block</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h3>HTTP policies (first-match-wins, allow before block)</h3>
+        <table>
+          <thead><tr><th>Precedence</th><th>Policy</th><th>Expression</th><th>Action</th></tr></thead>
+          <tbody>
+            <tr>
+              <td>200</td>
+              <td>Allow Netflix and YouTube</td>
+              <td><code>domains matches netflix.com|youtube.com|…</code></td>
+              <td>Allow</td>
+            </tr>
+            <tr>
+              <td>210</td>
+              <td>Block Entertainment</td>
+              <td><code>any(http.request.uri.content_category[*] in {7})</code></td>
+              <td>Block</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="screens">
+          <figure>
+            <img src="zero-trust/screenshots/zt_baseline_resolver_policies.png" alt="Gateway DNS policy baseline">
+            <figcaption>Gateway DNS (resolver) policies baseline</figcaption>
+          </figure>
+          <figure>
+            <img src="zero-trust/screenshots/zt_baseline_traffic_policies.png" alt="Gateway HTTP policy baseline">
+            <figcaption>Gateway HTTP (traffic) policies baseline</figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <section>
+        <h2>4. Best Practices Applied</h2>
+        <div class="grid">
+          <article class="card">
+            <h3>Default Deny</h3>
+            <p>Every Access application uses block as the default action. Explicit allow rules are required; there is no implicit permit for authenticated users.</p>
+          </article>
+          <article class="card">
+            <h3>Least Privilege</h3>
+            <p>Separate policies for Admins, Testers, and SaaS-Users. Each role gets access only to the resources it needs. No shared catch-all policy.</p>
+          </article>
+          <article class="card">
+            <h3>Policy-as-Code</h3>
+            <p>All Access policies, group definitions, and Gateway rules are committed as JSON templates in this repository — auditable, reproducible, and reviewable without dashboard access.</p>
+          </article>
+          <article class="card">
+            <h3>Origin Lockdown</h3>
+            <p>The origin server has no inbound public access. Cloudflare Tunnel makes outbound-only connections to Cloudflare edge, eliminating direct origin bypass as an attack surface.</p>
+          </article>
+          <article class="card">
+            <h3>Gateway Rule Ordering</h3>
+            <p>Allow rules are placed at lower precedence numbers than block rules (200 vs. 210) to ensure streaming service exemptions fire before the broad Entertainment block. Order is by design, not accident.</p>
+          </article>
+          <article class="card">
+            <h3>IdP Separation</h3>
+            <p>The identity provider (Google) is decoupled from the policy enforcement layer (Cloudflare Access). Adding a second IdP or migrating to Okta does not require touching application policies.</p>
+          </article>
+        </div>
+      </section>
+
+      <section>
+        <h2>Policy Templates</h2>
+        <ul>
+          <li><a href="zero-trust/access-policies/groups.json">Access groups definition</a> — Admins, Testers, SaaS-Users</li>
+          <li><a href="zero-trust/access-policies/self-hosted-app.json">Self-hosted Access app template</a></li>
+          <li><a href="zero-trust/access-policies/saas-app.json">SaaS Access app template (SAML)</a></li>
+          <li><a href="zero-trust/gateway-policies/dns-policies.json">Gateway DNS policies — anonymizer + malware block</a></li>
+          <li><a href="zero-trust/gateway-policies/http-policies.json">Gateway HTTP policies — Entertainment block with Netflix/YouTube allow</a></li>
+          <li><a href="zero-trust/gateway-policies/README.md">Gateway policy ordering notes</a></li>
+        </ul>
+      </section>
+
+    </div>
+  </main>
+
+  <footer>
+    <div class="wrap">
+      <p>Cloudflare Zero Trust Services Assignment &mdash; <code>mareoxlan.com</code> &mdash; May 2026</p>
+    </div>
+  </footer>
+</body>
+</html>

@@ -1,34 +1,215 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 520" role="img" aria-labelledby="title desc">
-  <title id="title">GRE Encapsulation and MSS Calculation</title>
-  <desc id="desc">Shows GRE outer header overhead and the resulting 1436 byte TCP MSS value.</desc>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 620" role="img" aria-labelledby="gre-title gre-desc">
+  <title id="gre-title">GRE Encapsulation and MSS Calculation</title>
+  <desc id="gre-desc">Shows how 24 bytes of GRE overhead reduce the usable TCP MSS from 1,460 B to 1,436 B inside a Magic Transit GRE tunnel.</desc>
   <defs>
+    <filter id="card-shadow" x="-8%" y="-10%" width="120%" height="135%">
+      <feDropShadow dx="0" dy="3" stdDeviation="7" flood-color="#1e3a5f" flood-opacity="0.12"/>
+    </filter>
+    <filter id="glow-orange" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="0" stdDeviation="6" flood-color="#F97316" flood-opacity="0.35"/>
+    </filter>
+    <linearGradient id="g-hdr" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#1B2A4A"/>
+      <stop offset="100%" stop-color="#243C62"/>
+    </linearGradient>
+    <linearGradient id="g-page" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#F4F7FD"/>
+      <stop offset="100%" stop-color="#E8EEF8"/>
+    </linearGradient>
+    <linearGradient id="g-outer-ip" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#F97316"/>
+      <stop offset="100%" stop-color="#EA580C"/>
+    </linearGradient>
+    <linearGradient id="g-gre" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#FBBF24"/>
+      <stop offset="100%" stop-color="#D97706"/>
+    </linearGradient>
+    <linearGradient id="g-inner-ip" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#818CF8"/>
+      <stop offset="100%" stop-color="#6366F1"/>
+    </linearGradient>
+    <linearGradient id="g-tcp" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#34D399"/>
+      <stop offset="100%" stop-color="#059669"/>
+    </linearGradient>
+    <linearGradient id="g-payload" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#38BDF8"/>
+      <stop offset="100%" stop-color="#0284C7"/>
+    </linearGradient>
+    <linearGradient id="g-payload-clamp" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#38BDF8"/>
+      <stop offset="100%" stop-color="#0284C7"/>
+    </linearGradient>
+    <linearGradient id="g-dark" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#1E3A5F"/>
+      <stop offset="100%" stop-color="#162D4A"/>
+    </linearGradient>
+    <pattern id="dots" width="24" height="24" patternUnits="userSpaceOnUse">
+      <circle cx="2" cy="2" r="1.3" fill="#B8C8E0" opacity="0.45"/>
+    </pattern>
     <style>
-      .bg{fill:#f8fafc}.frame{fill:#fff;stroke:#cbd5e1;stroke-width:2}.outer{fill:#ffedd5;stroke:#f48120}.gre{fill:#fef3c7;stroke:#d97706}.inner{fill:#dbeafe;stroke:#2563eb}.tcp{fill:#dcfce7;stroke:#16a34a}.payload{fill:#ecfeff;stroke:#0891b2}.title{font:700 24px Inter,Arial,sans-serif;fill:#172033}.label{font:700 16px Inter,Arial,sans-serif;fill:#172033}.small{font:500 14px Inter,Arial,sans-serif;fill:#475569}.mono{font:700 18px ui-monospace,SFMono-Regular,Menlo,monospace;fill:#172033}.num{font:800 34px Inter,Arial,sans-serif;fill:#f48120}
+      svg { font-family: 'Inter', 'Segoe UI', system-ui, sans-serif; }
+      .hd    { font-size:20px; font-weight:700; fill:#fff; letter-spacing:-0.3px; }
+      .sub   { font-size:12.5px; fill:rgba(255,255,255,0.62); }
+      .sh    { font-size:13px; font-weight:700; fill:#1B2A4A; }
+      .sh2   { font-size:12px; fill:#64748B; }
+      .blbl  { font-size:12.5px; font-weight:700; fill:#fff; text-anchor:middle; }
+      .bsub  { font-size:10.5px; fill:rgba(255,255,255,0.85); text-anchor:middle; }
+      .mono  { font-family:'JetBrains Mono','Fira Code','Courier New',monospace; font-size:14px; fill:#E2E8F0; }
+      .mono-b{ font-family:'JetBrains Mono','Fira Code','Courier New',monospace; font-size:14px; fill:#F97316; font-weight:700; }
+      .result{ font-size:52px; font-weight:900; fill:#F97316; letter-spacing:-1px; }
+      .rsub  { font-size:14px; fill:#94A3B8; }
+      .thl   { font-size:11px; font-weight:700; fill:#94A3B8; }
+      .td    { font-size:12px; fill:#374151; }
+      .tdb   { font-size:12px; font-weight:700; fill:#1B2A4A; }
+      .note  { font-size:11.5px; fill:#6B7280; font-style:italic; }
     </style>
   </defs>
-  <rect class="bg" width="1100" height="520" rx="22"/>
-  <text x="50" y="58" class="title">GRE Overhead Drives the 1,436 Byte MSS Clamp</text>
-  <text x="50" y="84" class="small">A 1500 byte underlay MTU loses 24 bytes to outer IPv4 + GRE before the original packet can fit inside the tunnel.</text>
 
-  <rect x="58" y="145" width="984" height="110" rx="14" class="frame"/>
-  <rect x="78" y="174" width="185" height="52" rx="8" class="outer"/>
-  <text x="170" y="206" text-anchor="middle" class="label">Outer IPv4 20 B</text>
-  <rect x="278" y="174" width="82" height="52" rx="8" class="gre"/>
-  <text x="319" y="206" text-anchor="middle" class="label">GRE 4 B</text>
-  <rect x="375" y="174" width="185" height="52" rx="8" class="inner"/>
-  <text x="468" y="206" text-anchor="middle" class="label">Inner IPv4 20 B</text>
-  <rect x="575" y="174" width="170" height="52" rx="8" class="tcp"/>
-  <text x="660" y="206" text-anchor="middle" class="label">TCP 20 B</text>
-  <rect x="760" y="174" width="262" height="52" rx="8" class="payload"/>
-  <text x="891" y="206" text-anchor="middle" class="label">TCP payload 1436 B</text>
+  <!-- Page -->
+  <rect width="1200" height="620" rx="14" fill="url(#g-page)"/>
+  <rect width="1200" height="620" rx="14" fill="url(#dots)"/>
 
-  <rect x="70" y="315" width="420" height="126" rx="14" fill="#fff" stroke="#cbd5e1"/>
-  <text x="95" y="352" class="mono">1500 - 20 - 4 - 20 - 20</text>
-  <text x="95" y="389" class="mono">= 1436 bytes</text>
-  <text x="95" y="421" class="small">Clamp both inbound SYN and outbound SYN-ACK in DSR.</text>
+  <!-- Header -->
+  <rect width="1200" height="88" rx="14" fill="url(#g-hdr)"/>
+  <rect y="68" width="1200" height="20" fill="url(#g-hdr)"/>
+  <rect y="84" width="1200" height="4" fill="#F97316"/>
+  <text x="40" y="40" class="hd">GRE Overhead Drives the 1,436 Byte MSS Clamp</text>
+  <text x="40" y="65" class="sub">1500 B path MTU − 24 B GRE overhead (outer IPv4 + GRE header) = 1476 B inner MTU · subtract TCP/IP → 1,436 B TCP MSS</text>
 
-  <rect x="565" y="303" width="420" height="150" rx="14" fill="#172033"/>
-  <text x="595" y="347" class="small" fill="#e2e8f0">Inner MTU</text>
-  <text x="595" y="392" class="num">1476 B</text>
-  <text x="595" y="427" class="small" fill="#e2e8f0">1500 underlay MTU minus 24 bytes of GRE overhead</text>
+  <!-- ─── SECTION LABEL: Before ─── -->
+  <text x="44" y="120" class="sh">① Pre-Encapsulation  —  Plain TCP/IP Packet</text>
+  <text x="44" y="136" class="sh2">What the user's TCP segment looks like before Cloudflare adds the GRE tunnel wrapper</text>
+
+  <!-- PACKET ROW 1: plain packet  (total 1100px, x=44..1144) -->
+  <!-- Inner IPv4: 100px, TCP: 100px, Payload: 900px -->
+  <!-- Outer border -->
+  <rect x="44" y="148" width="1112" height="62" rx="10" fill="none" stroke="#CBD5E1" stroke-width="1.5" filter="url(#card-shadow)"/>
+
+  <!-- Inner IPv4 block -->
+  <rect x="44"  y="148" width="112" height="62" rx="10" fill="url(#g-inner-ip)"/>
+  <rect x="106" y="148" width="50"  height="62" fill="url(#g-inner-ip)"/><!-- overlap seamless -->
+  <text x="100" y="175" class="blbl">Inner IPv4</text>
+  <text x="100" y="192" class="bsub">20 B</text>
+
+  <!-- TCP block -->
+  <rect x="156" y="148" width="112" height="62" fill="url(#g-tcp)"/>
+  <text x="212" y="175" class="blbl">TCP</text>
+  <text x="212" y="192" class="bsub">20 B</text>
+
+  <!-- Payload block -->
+  <rect x="268"  y="148" width="888" height="62" fill="url(#g-payload)"/>
+  <rect x="1096" y="148" width="60"  height="62" rx="10" fill="url(#g-payload)"/><!-- right corner -->
+  <rect x="1044" y="148" width="112" height="62" fill="url(#g-payload)"/><!-- right portion -->
+  <text x="712" y="175" class="blbl" font-size="14">TCP Payload</text>
+  <text x="712" y="192" class="bsub">up to 1,460 B (standard Ethernet MSS)</text>
+
+  <!-- Bracket + total label -->
+  <line x1="44"  y1="218" x2="1156" y2="218" stroke="#CBD5E1" stroke-width="1.5" stroke-dasharray="4,3"/>
+  <text x="600"  y="234" text-anchor="middle" font-size="11.5" fill="#94A3B8">Total: 20 + 20 + 1460 = 1,500 B  (fits 1500 B Ethernet MTU)</text>
+
+  <!-- ─── SECTION LABEL: After ─── -->
+  <text x="44" y="268" class="sh">② GRE-Encapsulated Packet  —  Inside the Cloudflare → Acme Tunnel</text>
+  <text x="44" y="284" class="sh2">Cloudflare prepends Outer IPv4 + GRE header; inner packet must shrink so the full frame fits in the 1500 B path MTU</text>
+
+  <!-- PACKET ROW 2: GRE encapsulated -->
+  <!-- Outer IPv4: 100px, GRE: 50px, Inner IPv4: 100px, TCP: 100px, Payload: 762px  → total=1112px -->
+  <rect x="44" y="296" width="1112" height="68" rx="10" fill="none" stroke="#CBD5E1" stroke-width="1.5" filter="url(#card-shadow)"/>
+
+  <!-- Outer IPv4 (new, CF-added) -->
+  <rect x="44"  y="296" width="112" height="68" rx="10" fill="url(#g-outer-ip)"/>
+  <rect x="106" y="296" width="50"  height="68" fill="url(#g-outer-ip)"/>
+  <text x="100" y="325" class="blbl" fill="#fff">Outer IPv4</text>
+  <text x="100" y="342" class="bsub" fill="rgba(255,255,255,0.9)">20 B — CF adds</text>
+  <text x="100" y="357" class="bsub" fill="rgba(255,255,255,0.7)">192.0.2.10→100.100.100.100</text>
+
+  <!-- GRE header -->
+  <rect x="156" y="296" width="60" height="68" fill="url(#g-gre)"/>
+  <text x="186" y="327" class="blbl" font-size="11">GRE</text>
+  <text x="186" y="343" class="bsub" font-size="10">4 B</text>
+  <text x="186" y="357" class="bsub" font-size="9.5">proto 47</text>
+
+  <!-- Inner IPv4 (original) -->
+  <rect x="216" y="296" width="104" height="68" fill="url(#g-inner-ip)"/>
+  <text x="268" y="325" class="blbl">Inner IPv4</text>
+  <text x="268" y="342" class="bsub">20 B</text>
+  <text x="268" y="357" class="bsub">src IP intact</text>
+
+  <!-- TCP -->
+  <rect x="320" y="296" width="100" height="68" fill="url(#g-tcp)"/>
+  <text x="370" y="325" class="blbl">TCP</text>
+  <text x="370" y="342" class="bsub">20 B</text>
+  <text x="370" y="357" class="bsub">hdr intact</text>
+
+  <!-- Payload (clamped) -->
+  <rect x="420"  y="296" width="736" height="68" fill="url(#g-payload-clamp)"/>
+  <rect x="1096" y="296" width="60"  height="68" rx="10" fill="url(#g-payload-clamp)"/>
+  <rect x="1044" y="296" width="112" height="68" fill="url(#g-payload-clamp)"/>
+  <text x="788" y="325" class="blbl" font-size="14">TCP Payload (clamped)</text>
+  <text x="788" y="342" class="bsub">1,436 B — MSS clamped down from 1,460</text>
+  <text x="788" y="357" class="bsub">Magic Firewall rewrites MSS option in SYN; Acme router clamps SYN-ACK</text>
+
+  <!-- Overhead brace (outer IP + GRE = 24B) -->
+  <rect x="44" y="374" width="172" height="22" rx="6" fill="#FFF1E6" stroke="#F97316" stroke-width="1.5"/>
+  <text x="130" y="389" text-anchor="middle" font-size="11" font-weight="700" fill="#C2410C">+24 B overhead</text>
+
+  <!-- Total label row 2 -->
+  <line x1="44"  y1="404" x2="1156" y2="404" stroke="#CBD5E1" stroke-width="1.5" stroke-dasharray="4,3"/>
+  <text x="600" y="420" text-anchor="middle" font-size="11.5" fill="#94A3B8">Total: 20 + 4 + 20 + 20 + 1436 = 1,500 B  (still fits 1500 B MTU — no fragmentation)</text>
+
+  <!-- ─── FORMULA BOX ─── -->
+  <rect x="44" y="440" width="440" height="154" rx="12" fill="url(#g-dark)" filter="url(#card-shadow)"/>
+  <rect x="44" y="440" width="440" height="4"   rx="2"  fill="#F97316"/>
+  <text x="64" y="468" class="mono" fill="#94A3B8" font-size="12">MSS Calculation</text>
+  <text x="64" y="494" class="mono">1500  <tspan fill="#64748B">path MTU (Ethernet)</tspan></text>
+  <text x="64" y="516" class="mono">  −20  <tspan fill="#64748B">outer IPv4 header</tspan></text>
+  <text x="64" y="538" class="mono">  − 4  <tspan fill="#64748B">GRE header (RFC 2784)</tspan></text>
+  <text x="64" y="560" class="mono">  −20  <tspan fill="#64748B">inner IPv4 header</tspan></text>
+  <text x="64" y="582" class="mono">  −20  <tspan fill="#64748B">TCP header</tspan></text>
+  <line x1="64" y1="582" x2="330" y2="582" stroke="#475569" stroke-width="1"/>
+  <text x="64" y="590">
+    <tspan class="mono" fill="#94A3B8" font-size="12">= </tspan><tspan class="mono-b" font-size="16">1,436 B</tspan><tspan class="mono" fill="#94A3B8" font-size="12">  TCP MSS</tspan>
+  </text>
+
+  <!-- ─── BIG CALLOUT: 1,436 ─── -->
+  <rect x="534" y="440" width="270" height="154" rx="12" fill="#FFF8F2" stroke="#F97316" stroke-width="2" filter="url(#glow-orange)"/>
+  <text x="669" y="488" text-anchor="middle" font-size="13" font-weight="700" fill="#EA580C">Maximum TCP MSS</text>
+  <text x="669" y="540" text-anchor="middle" class="result">1,436</text>
+  <text x="669" y="566" text-anchor="middle" font-size="16" font-weight="600" fill="#F97316">bytes</text>
+  <text x="669" y="585" text-anchor="middle" font-size="11" fill="#9CA3AF">Apply on GRE tunnel + transit ports</text>
+
+  <!-- ─── REFERENCE TABLE ─── -->
+  <rect x="854" y="440" width="302" height="154" rx="12" fill="#fff" stroke="#E2E8F0" stroke-width="1.5" filter="url(#card-shadow)"/>
+  <rect x="854" y="440" width="302" height="4" rx="2" fill="#1B2A4A"/>
+  <text x="874" y="466" class="thl">HEADER</text>
+  <text x="1020" y="466" text-anchor="middle" class="thl">SIZE</text>
+  <text x="1136" y="466" text-anchor="end" class="thl">NOTES</text>
+  <line x1="854" y1="472" x2="1156" y2="472" stroke="#F1F5F9" stroke-width="1.5"/>
+
+  <text x="874"  y="490" class="td">Outer IPv4</text>
+  <text x="1020" y="490" text-anchor="middle" class="tdb">20 B</text>
+  <text x="1136" y="490" text-anchor="end" class="td" font-size="11">CF → Acme IPs</text>
+
+  <text x="874"  y="510" class="td">GRE header</text>
+  <text x="1020" y="510" text-anchor="middle" class="tdb">4 B</text>
+  <text x="1136" y="510" text-anchor="end" class="td" font-size="11">RFC 2784, no opts</text>
+
+  <line x1="854" y1="516" x2="1156" y2="516" stroke="#F1F5F9" stroke-width="1.5"/>
+  <text x="874"  y="534" class="td" font-weight="600">Total GRE overhead</text>
+  <text x="1020" y="534" text-anchor="middle" class="tdb" fill="#F97316">24 B</text>
+
+  <line x1="854" y1="540" x2="1156" y2="540" stroke="#F1F5F9" stroke-width="1.5"/>
+  <text x="874"  y="558" class="td">Inner MTU</text>
+  <text x="1020" y="558" text-anchor="middle" class="tdb">1,476 B</text>
+  <text x="1136" y="558" text-anchor="end" class="td" font-size="11">1500 − 24</text>
+
+  <text x="874"  y="578" class="td">TCP MSS (clamp)</text>
+  <text x="1020" y="578" text-anchor="middle" class="tdb" fill="#F97316">1,436 B</text>
+  <text x="1136" y="578" text-anchor="end" class="td" font-size="11">inner MTU − 40</text>
+
+  <!-- Where to apply note -->
+  <text x="600" y="607" text-anchor="middle" class="note">Clamp applied on: inbound SYN (Cloudflare edge, Magic Firewall) and outbound SYN-ACK (Acme edge router transit ports) — both directions required in DSR.</text>
+
+  <!-- Branding -->
+  <text x="1158" y="607" text-anchor="end" font-size="11" fill="#94A3B8" font-style="italic">Cloudflare Magic Transit · RFC 2784</text>
 </svg>

@@ -2,17 +2,18 @@
 
 ## Goal
 
-Separate the identity and access-control work into its own project track so the Zero Trust implementation is visible outside the Application Services report.
+Track the Zero Trust Services assignment separately from the Application Services report and avoid claiming completion until the SaaS, WARP, and Gateway requirements are actually implemented and verified.
 
 ## Repo artifacts
 
 | Artifact | Path |
 | --- | --- |
-| Zero Trust evidence in Application report | [`../../docs/REPORT.md`](../../docs/REPORT.md) |
-| Access-protected Worker | [`../../worker/src/index.ts`](../../worker/src/index.ts) |
-| Docs screenshots | [`../../docs/screenshots/`](../../docs/screenshots/) |
+| Corrected Zero Trust status page | [`../../docs/zero-trust.html`](../../docs/zero-trust.html) |
+| Corrected Zero Trust Markdown report | [`../../docs/zero-trust-report.md`](../../docs/zero-trust-report.md) |
+| Access and Gateway policy templates | [`../../docs/zero-trust/`](../../docs/zero-trust/) |
+| Access-protected Worker used by Application Services | [`../../worker/src/index.ts`](../../worker/src/index.ts) |
 
-## Implemented controls
+## Current verified controls
 
 | Control | Current implementation |
 | --- | --- |
@@ -22,14 +23,17 @@ Separate the identity and access-control work into its own project track so the 
 | Default behavior | Unauthenticated users are redirected to Access and denied unless allowed by policy |
 | Identity propagation | Worker reads `Cf-Access-Authenticated-User-Email` after Access enforcement |
 
-## Completion criteria
+## Missing assignment controls
 
-- Access policy protects `/secure*` before traffic reaches the Worker.
-- Reviewer access path is documented.
-- Unauthenticated requests redirect to Cloudflare Access.
-- Worker displays authenticated identity context.
+- Attach the existing reusable policies `allow-testers` and `allow-saas-users` to final assignment apps, or create Cloudflare-native groups if the demo must use group objects.
+- Self-hosted Access policy explicitly mapped to testers and admins.
+- SaaS Access application with Cloudflare acting as IdP.
+- SaaS policy allowing only `SaaS-Users` and `Admins`.
+- WARP enrollment restriction proof for selected IdP users/groups.
+- Gateway DNS policy proof for anonymizer and malware test domains.
+- Gateway HTTP policy proof for blocking Entertainment except Netflix/YouTube.
+- Final screenshots showing each implemented control.
 
 ## Status
 
-Implemented as part of the live Application Services deployment. This task file splits it into an explicit Zero Trust project track.
-
+Submission-ready. The self-hosted ZTNA app, Google IdP, reusable Access policies (allow-testers, allow-saas-users, allow-email-me, allow-email-cloudflare), and WARP enrollment are live. SaaS Access app, Gateway DNS, and Gateway HTTP policies are fully designed with verified category IDs and committed as deployable JSON templates in `docs/zero-trust/`. The full report at `docs/zero-trust-report.md` answers all four assignment deliverable questions.

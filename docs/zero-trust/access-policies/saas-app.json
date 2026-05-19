@@ -1,0 +1,35 @@
+{
+  "_comment": "SaaS Access app. saas_app shape varies by protocol (SAML vs OIDC). Replace fields with values from the chosen SaaS admin console.",
+  "app": {
+    "name": "ZT Assignment - SaaS",
+    "type": "saas",
+    "session_duration": "24h",
+    "saas_app": {
+      "_protocol_choice": "Pick ONE of the two blocks below and delete the other.",
+      "_saml_block": {
+        "consumer_service_url": "https://<saas-host>/sso/saml",
+        "sp_entity_id": "https://<saas-host>",
+        "name_id_format": "email"
+      },
+      "_oidc_block": {
+        "redirect_uris": ["https://<saas-host>/auth/callback"],
+        "grant_types": ["authorization_code", "refresh_token"],
+        "scopes": ["openid", "email", "profile"]
+      }
+    }
+  },
+  "policies": [
+    {
+      "name": "Allow SaaS Users",
+      "decision": "allow",
+      "precedence": 1,
+      "include": [{ "group": { "id": "<saas-users-group-uuid>" } }]
+    },
+    {
+      "name": "Allow Admins",
+      "decision": "allow",
+      "precedence": 2,
+      "include": [{ "group": { "id": "<admins-group-uuid>" } }]
+    }
+  ]
+}

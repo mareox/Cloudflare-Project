@@ -1,6 +1,6 @@
 # Cloudflare Projects
 
-Public submission repo for Cloudflare application and network services assignments.
+Public submission repo for Cloudflare application, network, and Zero Trust assignment work.
 
 ## Project task split
 
@@ -11,7 +11,7 @@ The repo is divided into three Cloudflare project tracks under
 | --- | --- |
 | [`Application_Services`](_cloudflare-projects/Application_Services/TASK.md) | Origin service, Tunnel, Worker, R2, and Application Services report. |
 | [`Network_Services`](_cloudflare-projects/Network_Services/TASK.md) | Magic Transit written report, diagrams, and exported document artifacts. |
-| [`Zero_Trust`](_cloudflare-projects/Zero_Trust/TASK.md) | Cloudflare Access, Google IdP, reviewer allow policy, and protected `/secure*` routes. |
+| [`Zero_Trust`](_cloudflare-projects/Zero_Trust/TASK.md) | Zero Trust report, Access/Gateway policy-as-code templates, WARP enrollment, and SaaS integration design. |
 
 ## Live application
 
@@ -39,12 +39,15 @@ HTML source code. Use the GitHub Pages links for rendered HTML review:
 - Rendered Network Services HTML report: <https://mareox.github.io/Cloudflare-Project/network.html>
 - Network Services Markdown report: [`docs/network-report.md`](docs/network-report.md)
 - Network Services DOCX report: [`docs/network-report.docx`](docs/network-report.docx)
+- Zero Trust HTML report: <https://mareox.github.io/Cloudflare-Project/zero-trust.html>
+- Zero Trust Markdown report: [`docs/zero-trust-report.md`](docs/zero-trust-report.md)
 
 If GitHub Pages is enabled for this repo with source set to `main` and
 `/docs`, the HTML version renders at:
 
 - <https://mareox.github.io/Cloudflare-Project/>
 - <https://mareox.github.io/Cloudflare-Project/network.html>
+- <https://mareox.github.io/Cloudflare-Project/zero-trust.html>
 
 ## Written report
 
@@ -61,6 +64,7 @@ It addresses:
 3. Product use cases.
 4. Knowledge gaps filled during the process.
 5. Target customer experience.
+6. Best practices applied (TLS, origin lockdown, security headers, output escaping).
 
 The Network Services assignment answers are also published in this repo:
 
@@ -71,6 +75,18 @@ The Network Services assignment answers are also published in this repo:
 It addresses Magic Transit BYOIP onboarding, external routing updates, GRE
 overhead, MSS clamping, smaller-than-/24 overlay routing, DSR firewall
 considerations, packet flow, and firewall rule debugging.
+
+The Zero Trust assignment report covers all seven requirements:
+
+- HTML report: <https://mareox.github.io/Cloudflare-Project/zero-trust.html>
+- Markdown report: [`docs/zero-trust-report.md`](docs/zero-trust-report.md)
+- Policy-as-code templates: [`docs/zero-trust/`](docs/zero-trust/)
+
+It documents the live Access-protected self-hosted app, WARP enrollment,
+reusable Access policies (allow-testers, allow-saas-users), and fully
+specified Gateway DNS and HTTP policies with verified category IDs. The
+SaaS Access application is designed with a deployable JSON template and
+step-by-step configuration instructions.
 
 ## Repository layout
 
@@ -86,6 +102,9 @@ considerations, packet flow, and firewall rule debugging.
 │   ├── network.html
 │   ├── network-report.md
 │   ├── network-report.docx
+│   ├── zero-trust.html
+│   ├── zero-trust-report.md
+│   ├── zero-trust/
 │   ├── assets/
 │   └── screenshots/
 ├── origin-server/

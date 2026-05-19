@@ -1,60 +1,195 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 640" role="img" aria-labelledby="title desc">
-  <title id="title">Magic Transit DSR Packet Flow</title>
-  <desc id="desc">Forward traffic enters Cloudflare, is GRE encapsulated toward Acme, and response traffic returns directly to the user.</desc>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1300 710" role="img" aria-labelledby="mt-title mt-desc">
+  <title id="mt-title">Magic Transit DSR Packet Flow</title>
+  <desc id="mt-desc">Forward traffic scrubbed by Cloudflare, GRE-encapsulated to Acme, return traffic bypasses Cloudflare via Direct Server Return.</desc>
   <defs>
-    <marker id="arrow-orange" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto">
-      <path d="M0,0 L12,6 L0,12 Z" fill="#f48120"/>
+    <filter id="card-shadow" x="-10%" y="-10%" width="130%" height="140%">
+      <feDropShadow dx="0" dy="4" stdDeviation="8" flood-color="#1e3a5f" flood-opacity="0.13"/>
+    </filter>
+    <filter id="badge-glow" x="-30%" y="-30%" width="160%" height="160%">
+      <feDropShadow dx="0" dy="1" stdDeviation="3" flood-color="#000" flood-opacity="0.3"/>
+    </filter>
+    <linearGradient id="g-hdr" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#1B2A4A"/>
+      <stop offset="100%" stop-color="#243C62"/>
+    </linearGradient>
+    <linearGradient id="g-page" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#F4F7FD"/>
+      <stop offset="100%" stop-color="#E8EEF8"/>
+    </linearGradient>
+    <linearGradient id="g-user" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#7C3AED"/>
+      <stop offset="100%" stop-color="#5B21B6"/>
+    </linearGradient>
+    <linearGradient id="g-cf" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#F97316"/>
+      <stop offset="100%" stop-color="#EA580C"/>
+    </linearGradient>
+    <linearGradient id="g-acme" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#0EA5E9"/>
+      <stop offset="100%" stop-color="#0284C7"/>
+    </linearGradient>
+    <linearGradient id="g-server" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#10B981"/>
+      <stop offset="100%" stop-color="#059669"/>
+    </linearGradient>
+    <pattern id="dots" width="24" height="24" patternUnits="userSpaceOnUse">
+      <circle cx="2" cy="2" r="1.3" fill="#B8C8E0" opacity="0.45"/>
+    </pattern>
+    <marker id="arr-orange" viewBox="0 0 12 12" refX="10" refY="6" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M1,1 L11,6 L1,11 Z" fill="#F97316"/>
     </marker>
-    <marker id="arrow-blue" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto">
-      <path d="M0,0 L12,6 L0,12 Z" fill="#2563eb"/>
+    <marker id="arr-blue" viewBox="0 0 12 12" refX="10" refY="6" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M1,1 L11,6 L1,11 Z" fill="#0284C7"/>
     </marker>
-    <marker id="arrow-green" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto">
-      <path d="M0,0 L12,6 L0,12 Z" fill="#0f766e"/>
+    <marker id="arr-green" viewBox="0 0 12 12" refX="10" refY="6" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M1,1 L11,6 L1,11 Z" fill="#059669"/>
     </marker>
+    <clipPath id="cp-user"><rect x="44" y="128" width="174" height="202" rx="13"/></clipPath>
+    <clipPath id="cp-cf"><rect x="268" y="108" width="252" height="222" rx="13"/></clipPath>
+    <clipPath id="cp-acme"><rect x="570" y="113" width="234" height="207" rx="13"/></clipPath>
+    <clipPath id="cp-srv"><rect x="876" y="382" width="200" height="168" rx="13"/></clipPath>
     <style>
-      .bg{fill:#f8fafc}.box{fill:#fff;stroke:#cbd5e1;stroke-width:2}.cf{fill:#fff7ed;stroke:#f48120}.acme{fill:#ecfeff;stroke:#0891b2}.user{fill:#eef2ff;stroke:#4f46e5}.edge{fill:#f0fdf4;stroke:#16a34a}.title{font:700 24px Inter,Arial,sans-serif;fill:#172033}.label{font:700 17px Inter,Arial,sans-serif;fill:#172033}.small{font:500 14px Inter,Arial,sans-serif;fill:#475569}.tiny{font:500 12px Inter,Arial,sans-serif;fill:#64748b}.orange{stroke:#f48120;stroke-width:5;fill:none;marker-end:url(#arrow-orange)}.blue{stroke:#2563eb;stroke-width:4;fill:none;marker-end:url(#arrow-blue);stroke-dasharray:10 8}.green{stroke:#0f766e;stroke-width:5;fill:none;marker-end:url(#arrow-green)}
+      svg { font-family: 'Inter', 'Segoe UI', system-ui, sans-serif; }
+      .hd   { font-size:20px; font-weight:700; fill:#fff; letter-spacing:-0.3px; }
+      .sub  { font-size:12.5px; fill:rgba(255,255,255,0.62); }
+      .chd  { font-size:13.5px; font-weight:700; fill:#fff; }
+      .csub { font-size:11px;   fill:rgba(255,255,255,0.82); }
+      .cli  { font-size:11.5px; fill:#374151; }
+      .cli2 { font-size:11px;   fill:#9CA3AF; }
+      .bdg  { font-size:12px;   font-weight:700; fill:#fff; }
+      .albl { font-size:10px;   font-weight:600; fill:#374151; }
+      .legl { font-size:12px;   fill:#64748B; }
     </style>
   </defs>
-  <rect class="bg" width="1200" height="640" rx="22"/>
-  <text x="60" y="58" class="title">Cloudflare Magic Transit with Direct Server Return</text>
-  <text x="60" y="84" class="small">Public route: 203.0.113.0/24, origin AS12345. Forward path is scrubbed and GRE-encapsulated; return path bypasses Cloudflare.</text>
 
-  <rect x="70" y="180" width="190" height="108" rx="14" class="box user"/>
-  <text x="165" y="218" text-anchor="middle" class="label">User</text>
-  <text x="165" y="244" text-anchor="middle" class="small">public client IP</text>
-  <text x="165" y="266" text-anchor="middle" class="tiny">TCP ephemeral -&gt; 443</text>
+  <!-- Page -->
+  <rect width="1300" height="710" rx="14" fill="url(#g-page)"/>
+  <rect width="1300" height="710" rx="14" fill="url(#dots)"/>
 
-  <rect x="390" y="150" width="240" height="168" rx="14" class="box cf"/>
-  <text x="510" y="190" text-anchor="middle" class="label">Cloudflare Edge</text>
-  <text x="510" y="216" text-anchor="middle" class="small">Anycast ingress</text>
-  <text x="510" y="240" text-anchor="middle" class="tiny">DDoS scrub + Magic Firewall</text>
-  <text x="510" y="262" text-anchor="middle" class="tiny">MSS clamp 1460 -&gt; 1436</text>
-  <text x="510" y="284" text-anchor="middle" class="tiny">Outer GRE src 192.0.2.10</text>
+  <!-- Header -->
+  <rect width="1300" height="88" rx="14" fill="url(#g-hdr)"/>
+  <rect y="68" width="1300" height="20" fill="url(#g-hdr)"/>
+  <rect y="84" width="1300" height="4" fill="#F97316"/>
+  <text x="40" y="40" class="hd">Cloudflare Magic Transit — Direct Server Return (DSR) Packet Flow</text>
+  <text x="40" y="65" class="sub">Prefix 203.0.113.0/24 · Origin AS12345 · Anycast GRE tunnels · Stateless ingress scrubbing · Asymmetric egress (no CF egress cost)</text>
 
-  <rect x="760" y="160" width="230" height="148" rx="14" class="box acme"/>
-  <text x="875" y="198" text-anchor="middle" class="label">Acme Edge Router</text>
-  <text x="875" y="224" text-anchor="middle" class="small">GRE terminator</text>
-  <text x="875" y="248" text-anchor="middle" class="tiny">100.100.100.100</text>
-  <text x="875" y="270" text-anchor="middle" class="tiny">decapsulates + forwards</text>
+  <!-- ── CARD: End User ── -->
+  <g filter="url(#card-shadow)">
+    <g clip-path="url(#cp-user)">
+      <rect x="44" y="128" width="174" height="202" fill="#FAFBFF"/>
+      <rect x="44" y="128" width="174" height="50"  fill="url(#g-user)"/>
+    </g>
+    <rect x="44" y="128" width="174" height="202" rx="13" fill="none" stroke="#7C3AED" stroke-width="1.5" stroke-opacity="0.35"/>
+  </g>
+  <text x="131" y="157" text-anchor="middle" class="chd">End User</text>
+  <text x="131" y="173" text-anchor="middle" class="csub">Any ISP / public client</text>
+  <text x="62"  y="205" class="cli">● Public source IP</text>
+  <text x="62"  y="224" class="cli">● TCP ephemeral → :443</text>
+  <text x="62"  y="243" class="cli">● BGP anycast routes SYN</text>
+  <text x="62"  y="262" class="cli">  to nearest CF PoP</text>
+  <text x="62"  y="295" class="cli2">No user config required</text>
+  <text x="62"  y="314" class="cli2">Client IP preserved end-to-end</text>
+  <!-- Badge -->
+  <circle cx="44" cy="128" r="16" fill="#1B2A4A" stroke="#fff" stroke-width="2" filter="url(#badge-glow)"/>
+  <text x="44" y="133" text-anchor="middle" class="bdg">①</text>
 
-  <rect x="910" y="410" width="210" height="112" rx="14" class="box edge"/>
-  <text x="1015" y="450" text-anchor="middle" class="label">Web Server</text>
-  <text x="1015" y="476" text-anchor="middle" class="small">203.0.113.10</text>
-  <text x="1015" y="498" text-anchor="middle" class="tiny">sees original client IP</text>
+  <!-- ── CARD: CF Edge ── -->
+  <g filter="url(#card-shadow)">
+    <g clip-path="url(#cp-cf)">
+      <rect x="268" y="108" width="252" height="222" fill="#FFF8F2"/>
+      <rect x="268" y="108" width="252" height="50"  fill="url(#g-cf)"/>
+    </g>
+    <rect x="268" y="108" width="252" height="222" rx="13" fill="none" stroke="#F97316" stroke-width="1.5" stroke-opacity="0.45"/>
+  </g>
+  <text x="394" y="137" text-anchor="middle" class="chd">Cloudflare Anycast Edge</text>
+  <text x="394" y="153" text-anchor="middle" class="csub">192.0.2.10 / 192.0.3.10</text>
+  <text x="285" y="185" class="cli">● DDoS scrub + rate limiting</text>
+  <text x="285" y="204" class="cli">● Magic Firewall (stateless L3/L4)</text>
+  <text x="285" y="223" class="cli">● MSS clamp SYN → 1,436 B</text>
+  <text x="285" y="242" class="cli">● GRE encapsulate (outer IP + 4 B)</text>
+  <text x="285" y="261" class="cli">● Inner src IP preserved (BYOIP)</text>
+  <text x="285" y="291" class="cli2">GRE src: 192.0.2.10 → 100.100.100.100</text>
+  <text x="285" y="309" class="cli2">AS13335 announces 203.0.113.0/24</text>
+  <!-- Badge -->
+  <circle cx="268" cy="108" r="16" fill="#1B2A4A" stroke="#fff" stroke-width="2" filter="url(#badge-glow)"/>
+  <text x="268" y="113" text-anchor="middle" class="bdg">②</text>
 
-  <path class="orange" d="M260 232 C315 232 333 232 390 232"/>
-  <text x="325" y="211" text-anchor="middle" class="tiny">plain IP to 203.0.113.10</text>
+  <!-- ── CARD: Acme Router ── -->
+  <g filter="url(#card-shadow)">
+    <g clip-path="url(#cp-acme)">
+      <rect x="570" y="113" width="234" height="207" fill="#F0F9FF"/>
+      <rect x="570" y="113" width="234" height="50"  fill="url(#g-acme)"/>
+    </g>
+    <rect x="570" y="113" width="234" height="207" rx="13" fill="none" stroke="#0284C7" stroke-width="1.5" stroke-opacity="0.45"/>
+  </g>
+  <text x="687" y="142" text-anchor="middle" class="chd">Acme Edge Router</text>
+  <text x="687" y="158" text-anchor="middle" class="csub">100.100.100.100 (GRE peer)</text>
+  <text x="587" y="190" class="cli">● GRE decapsulate outer IP + hdr</text>
+  <text x="587" y="209" class="cli">● MSS clamp SYN-ACK → 1,436 B</text>
+  <text x="587" y="228" class="cli">● Route inner packet to LAN</text>
+  <text x="587" y="247" class="cli">● On-prem firewall sees both dirs</text>
+  <text x="587" y="277" class="cli2">Sub-/24 prefixes steerable per tunnel</text>
+  <text x="587" y="295" class="cli2">e.g. 203.0.113.0/29 → GRE1</text>
+  <!-- Badge -->
+  <circle cx="570" cy="113" r="16" fill="#1B2A4A" stroke="#fff" stroke-width="2" filter="url(#badge-glow)"/>
+  <text x="570" y="118" text-anchor="middle" class="bdg">③</text>
 
-  <path class="blue" d="M630 232 C690 232 700 232 760 232"/>
-  <text x="695" y="208" text-anchor="middle" class="tiny">GRE proto 47</text>
-  <text x="695" y="252" text-anchor="middle" class="tiny">inner src preserved</text>
+  <!-- ── CARD: Web Server ── -->
+  <g filter="url(#card-shadow)">
+    <g clip-path="url(#cp-srv)">
+      <rect x="876" y="382" width="200" height="168" fill="#F0FDF6"/>
+      <rect x="876" y="382" width="200" height="50"  fill="url(#g-server)"/>
+    </g>
+    <rect x="876" y="382" width="200" height="168" rx="13" fill="none" stroke="#059669" stroke-width="1.5" stroke-opacity="0.45"/>
+  </g>
+  <text x="976" y="411" text-anchor="middle" class="chd">Web Server</text>
+  <text x="976" y="427" text-anchor="middle" class="csub">203.0.113.10</text>
+  <text x="893" y="459" class="cli">● Sees original client IP</text>
+  <text x="893" y="478" class="cli">● Responds via default route</text>
+  <text x="893" y="497" class="cli">● Egress bypasses Cloudflare</text>
+  <text x="893" y="527" class="cli2">DSR: lower egress cost,</text>
+  <text x="893" y="542" class="cli2">no CF stateful return tracking</text>
+  <!-- Badge -->
+  <circle cx="876" cy="382" r="16" fill="#1B2A4A" stroke="#fff" stroke-width="2" filter="url(#badge-glow)"/>
+  <text x="876" y="387" text-anchor="middle" class="bdg">④</text>
 
-  <path class="orange" d="M875 308 C900 355 940 382 1002 410"/>
-  <text x="955" y="350" class="tiny">plain IP after decap</text>
+  <!-- ── ARROWS ── -->
 
-  <path class="green" d="M910 470 C690 590 325 590 175 288"/>
-  <text x="550" y="584" text-anchor="middle" class="small">Return path: direct to user through Acme upstream ISP, no Cloudflare in line</text>
+  <!-- A1: User → CF (plain IP, orange solid) -->
+  <line x1="220" y1="218" x2="264" y2="218" stroke="#F97316" stroke-width="3.5" marker-end="url(#arr-orange)"/>
+  <rect x="219" y="199" width="48" height="16" rx="8" fill="#FFF7ED" stroke="#F97316" stroke-width="1"/>
+  <text x="243" y="211" text-anchor="middle" class="albl" fill="#C2410C">plain IP</text>
 
-  <rect x="66" y="552" width="352" height="46" rx="10" fill="#fff" stroke="#cbd5e1"/>
-  <text x="86" y="581" class="small">DSR tradeoff: lower egress cost, but Cloudflare cannot track stateful return flows.</text>
+  <!-- A2: CF → Acme (GRE, blue dashed) -->
+  <line x1="522" y1="218" x2="566" y2="218" stroke="#0284C7" stroke-width="3.5" stroke-dasharray="9,5" marker-end="url(#arr-blue)"/>
+  <rect x="519" y="199" width="52" height="16" rx="8" fill="#E0F2FE" stroke="#0284C7" stroke-width="1"/>
+  <text x="545" y="211" text-anchor="middle" class="albl" fill="#0369A1">GRE tun</text>
+
+  <!-- A3: Acme Router → Web Server (orange, curved) -->
+  <path d="M687,322 C750,365 822,378 873,420" stroke="#F97316" stroke-width="3" fill="none" marker-end="url(#arr-orange)"/>
+  <rect x="742" y="348" width="66" height="16" rx="8" fill="#FFF7ED" stroke="#F97316" stroke-width="1"/>
+  <text x="775" y="360" text-anchor="middle" class="albl" fill="#C2410C">decap'd IP</text>
+
+  <!-- A4: DSR Return (green dashed arc) -->
+  <path d="M876,466 C720,576 348,598 148,328" stroke="#059669" stroke-width="3" fill="none" stroke-dasharray="11,6" marker-end="url(#arr-green)"/>
+
+  <!-- Return label -->
+  <rect x="306" y="568" width="396" height="56" rx="11" fill="#ECFDF5" stroke="#059669" stroke-width="1.5"/>
+  <text x="504" y="590" text-anchor="middle" font-size="13" font-weight="700" fill="#065F46">⑤  DSR Return Path (Egress)</text>
+  <text x="504" y="609" text-anchor="middle" font-size="11.5" fill="#374151">Server → Acme upstream ISP → Internet → User</text>
+  <text x="504" y="621" text-anchor="middle" font-size="10.5" fill="#6B7280">Cloudflare not in egress · no CF egress bandwidth cost · no stateful return tracking</text>
+  <circle cx="306" cy="596" r="14" fill="#059669" stroke="#fff" stroke-width="2"/>
+  <text x="306" y="601" text-anchor="middle" class="bdg">⑤</text>
+
+  <!-- ── LEGEND ── -->
+  <rect x="40" y="652" width="670" height="38" rx="9" fill="rgba(255,255,255,0.82)" stroke="#E2E8F0"/>
+  <line x1="60"  y1="671" x2="100" y2="671" stroke="#F97316" stroke-width="3.5"/>
+  <text x="108" y="675" class="legl">Forward path (plain IP)</text>
+  <line x1="248" y1="671" x2="288" y2="671" stroke="#0284C7" stroke-width="3.5" stroke-dasharray="8,4"/>
+  <text x="296" y="675" class="legl">GRE tunnel (encapsulated, proto 47)</text>
+  <line x1="488" y1="671" x2="528" y2="671" stroke="#059669" stroke-width="3" stroke-dasharray="10,5"/>
+  <text x="536" y="675" class="legl">DSR return (bypasses Cloudflare)</text>
+
+  <!-- Branding -->
+  <text x="1258" y="673" text-anchor="end" font-size="11" fill="#94A3B8" font-style="italic">Cloudflare Magic Transit · AS13335</text>
 </svg>

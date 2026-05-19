@@ -1,6 +1,6 @@
 # Cloudflare Project Submissions
 
-This folder contains the written deliverables for the Cloudflare Application Services and Network Services assignments.
+This folder contains the written deliverables for the Cloudflare Application Services, Network Services, and Zero Trust assignment tracks.
 
 Project task tracking is split under [`../_cloudflare-projects/`](../_cloudflare-projects/):
 
@@ -19,6 +19,8 @@ Project task tracking is split under [`../_cloudflare-projects/`](../_cloudflare
 | [`network-report.md`](network-report.md) | You want the GitHub-native Network Services report. |
 | [Network Services HTML](https://mareox.github.io/Cloudflare-Project/network.html) | You want the rendered HTML Network Services report. |
 | [`network-report.docx`](network-report.docx) | You want the DOCX source for the Network Services report. |
+| [`zero-trust-report.md`](zero-trust-report.md) | You want the corrected GitHub-native Zero Trust status report. |
+| [Zero Trust HTML](https://mareox.github.io/Cloudflare-Project/zero-trust.html) | You want the rendered Zero Trust status page. |
 
 GitHub does not render `index.html` in the normal repository file viewer. It shows the source code. To render the HTML page, enable GitHub Pages for this repository with:
 
@@ -35,6 +37,10 @@ After GitHub Pages publishes, the HTML page should be available at:
 The Network Services page should be available at:
 
 <https://mareox.github.io/Cloudflare-Project/network.html>
+
+The corrected Zero Trust page should be available at:
+
+<https://mareox.github.io/Cloudflare-Project/zero-trust.html>
 
 ## Deliverables covered
 
@@ -55,8 +61,18 @@ Network Services:
 5. Asymmetric routing and firewall migration considerations.
 6. Packet-flow diagram and firewall debugging answers.
 
+Zero Trust:
+
+1. Current verified Access, WARP, and Gateway state.
+2. Clear correction that the assignment is not complete.
+3. Remaining steps for attaching reusable Access policies, SaaS Access, WARP enrollment, DNS filtering, and HTTP filtering.
+4. Reusable Access and Gateway policy templates.
+5. Baseline screenshots that still need final proof replacements.
+
 ## Screenshots
 
 The Application Services Markdown report embeds screenshots from [`screenshots/`](screenshots/), using paths relative to this folder so they render correctly in GitHub.
 
 The Network Services HTML report embeds SVG diagrams from [`assets/`](assets/), and a rendered preview screenshot is available at [`screenshots/network_report_preview.png`](screenshots/network_report_preview.png).
+
+The Zero Trust status page embeds baseline screenshots from [`zero-trust/screenshots/`](zero-trust/screenshots/) and links policy templates from [`zero-trust/`](zero-trust/).

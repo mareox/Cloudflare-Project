@@ -292,6 +292,7 @@
         <a class="button" href="https://tunnel.mareoxlan.com/secure">Open secure app</a>
         <a class="button" href="https://tunnel.mareoxlan.com/secure/us">Open flag route</a>
         <a class="button" href="network.html">Network report</a>
+        <a class="button" href="zero-trust.html">Zero Trust report</a>
         <a class="button" href="https://github.com/mareox/Cloudflare-Project#readme">View README</a>
       </div>
     </div>
@@ -466,8 +467,39 @@ npx wrangler r2 object get country-flags/us.svg --remote --pipe</code></pre>
 
       <section>
         <h2>Customer Experience</h2>
-        <p>A target customer would find the result compelling because a private internal app becomes internet-accessible without opening inbound firewall paths. Access adds identity controls at the edge, Workers add custom behavior without changing the origin, and R2 keeps static assets private.</p>
-        <p class="note">The main setup friction is product boundary alignment: DNS points to Tunnel, Tunnel points to the origin, Access owns the protected path, Worker route patterns must match that path, and R2 is available only through the binding. Once that request path is understood, the solution is clean and repeatable.</p>
+        <p>A target customer would find the security outcome immediately compelling: a private internal app becomes internet-accessible without exposing the origin IP, without opening inbound firewall rules, and without a VPN. Access adds identity controls at the edge before the request reaches the Worker or origin. Workers add custom logic without changing the origin server. R2 stores assets privately and serves them only through the Worker binding.</p>
+        <p class="note">The main setup friction is product-boundary alignment. DNS points to Tunnel, Tunnel points to the origin, Access owns the protected path, Worker route patterns must match that path, and R2 is available only through the binding. A misconfigured route pattern (e.g., <code>/secure</code> without the trailing <code>/*</code>) causes the Worker to miss sub-paths. These are one-time configuration steps with good error messages, and a clear onboarding sequence resolves them quickly.</p>
+        <p>The long-term value is high for internal tooling, partner portals, admin applications, and lightweight SaaS products. Adding a second protected application or a new Worker route is incrementally simpler after the first deployment — each new service reuses the existing Tunnel, IdP, and R2 bucket.</p>
+      </section>
+
+      <section>
+        <h2>Best Practices Applied</h2>
+        <div class="grid">
+          <article class="card">
+            <h3>Full Strict TLS</h3>
+            <p>Cloudflare validates the origin certificate chain. Prevents MITM between Cloudflare and the origin even if the origin IP were somehow discovered.</p>
+          </article>
+          <article class="card">
+            <h3>No inbound firewall holes</h3>
+            <p>The origin runs behind Cloudflare Tunnel. <code>cloudflared</code> makes outbound-only connections — no public IP, no open port on the host.</p>
+          </article>
+          <article class="card">
+            <h3>Default deny on Access</h3>
+            <p>The Access app blocks by default. Only explicitly listed identities receive a JWT. No implicit permit for authenticated users.</p>
+          </article>
+          <article class="card">
+            <h3>Private R2 with Worker binding</h3>
+            <p>The <code>country-flags</code> bucket has no public access. The Worker R2 binding is the only read path — no access keys or signed URLs in code.</p>
+          </article>
+          <article class="card">
+            <h3>Security response headers</h3>
+            <p>All HTML responses carry <code>X-Content-Type-Options</code>, <code>X-Frame-Options: DENY</code>, <code>Referrer-Policy</code>, <code>Permissions-Policy</code>, and a strict <code>Content-Security-Policy</code>.</p>
+          </article>
+          <article class="card">
+            <h3>HTML output escaping</h3>
+            <p>All user-controlled values (email, country, timestamp) are escaped through <code>escapeHtml()</code> before HTML insertion, preventing reflected XSS.</p>
+          </article>
+        </div>
       </section>
     </div>
   </main>

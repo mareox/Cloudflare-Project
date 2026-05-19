@@ -1,0 +1,29 @@
+{
+  "_comment": "Cloudflare Access groups for the Zero Trust assignment. POST these to /accounts/{account_id}/access/groups. Adjust 'include' arrays to add real emails or IdP group claims.",
+  "groups": [
+    {
+      "name": "Admins",
+      "include": [
+        { "email": { "email": "mareox@gmail.com" } }
+      ],
+      "is_default": false
+    },
+    {
+      "name": "Testers",
+      "include": [
+        { "email": { "email": "mareox@gmail.com" } },
+        { "email": { "email": "tester+a@example.com" } },
+        { "email": { "email": "tester+b@example.com" } }
+      ],
+      "is_default": false
+    },
+    {
+      "name": "SaaS-Users",
+      "include": [
+        { "email": { "email": "mareox@gmail.com" } },
+        { "email": { "email": "saas-user@example.com" } }
+      ],
+      "is_default": false
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "_comment": "Gateway DNS firewall policies. POST to /accounts/{account_id}/gateway/rules. Category IDs verified live against /accounts/{account_id}/gateway/categories on 2026-05-06.",
+  "policies": [
+    {
+      "name": "Block Anonymizers",
+      "description": "Assignment Z-DNS-1: block Anonymizer category (VPN/proxy/Tor)",
+      "precedence": 100,
+      "enabled": true,
+      "filters": ["dns"],
+      "action": "block",
+      "traffic": "any(dns.content_category[*] in {68})",
+      "_traffic_decoded": {
+        "68": "Anonymizer (child of 'Security threats' parent id 21)"
+      }
+    },
+    {
+      "name": "Block Malware and related security threats",
+      "description": "Assignment Z-DNS-2: block Malware, C2/Botnet, Phishing, Spyware, DGA",
+      "precedence": 110,
+      "enabled": true,
+      "filters": ["dns"],
+      "action": "block",
+      "traffic": "any(dns.security_category[*] in {117 80 131 153 176 188})",
+      "_traffic_decoded": {
+        "117": "Malware",
+        "80":  "Command and Control & Botnet",
+        "131": "Phishing",
+        "153": "Spyware",
+        "176": "DGA Domains",
+        "188": "Potentially unwanted software"
+      }
+    }
+  ]
+}

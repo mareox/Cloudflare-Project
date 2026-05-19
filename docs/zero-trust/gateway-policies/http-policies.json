@@ -1,0 +1,26 @@
+{
+  "_comment": "Gateway HTTP policies. ORDER MATTERS — first-match-wins. Allow Netflix/YouTube must precede the Entertainment block. Entertainment parent category id verified live 2026-05-06.",
+  "policies": [
+    {
+      "name": "Allow Netflix and YouTube",
+      "description": "Assignment Z-HTTP-1: allowlist of streaming services that should remain reachable",
+      "precedence": 200,
+      "enabled": true,
+      "filters": ["http"],
+      "action": "allow",
+      "traffic": "any(http.request.domains[*] matches \".*(netflix\\.com|nflxvideo\\.net|nflximg\\.net|youtube\\.com|youtu\\.be|googlevideo\\.com|ytimg\\.com|ggpht\\.com)$\")"
+    },
+    {
+      "name": "Block Entertainment",
+      "description": "Assignment Z-HTTP-2: block the Entertainment content category (parent — covers all 'Video Streaming' etc. children)",
+      "precedence": 210,
+      "enabled": true,
+      "filters": ["http"],
+      "action": "block",
+      "traffic": "any(http.request.uri.content_category[*] in {7})",
+      "_traffic_decoded": {
+        "7": "Entertainment (parent — includes child id 92 'Entertainment' and id 164 'Video Streaming')"
+      }
+    }
+  ]
+}

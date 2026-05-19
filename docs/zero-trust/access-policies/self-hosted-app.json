@@ -1,0 +1,25 @@
+{
+  "_comment": "Self-hosted Access app for the Zero Trust assignment. Replace 'domain' with the chosen hostname (e.g. utka.mareoxlan.com). Replace group UUIDs after creating groups.",
+  "app": {
+    "name": "ZT Assignment - Self-Hosted",
+    "domain": "TBD.mareoxlan.com",
+    "type": "self_hosted",
+    "session_duration": "24h",
+    "auto_redirect_to_identity": false,
+    "allowed_idps": ["<google-idp-uuid>", "<onetimepin-idp-uuid>"]
+  },
+  "policies": [
+    {
+      "name": "Allow Testers",
+      "decision": "allow",
+      "precedence": 1,
+      "include": [{ "group": { "id": "<testers-group-uuid>" } }]
+    },
+    {
+      "name": "Allow Admins",
+      "decision": "allow",
+      "precedence": 2,
+      "include": [{ "group": { "id": "<admins-group-uuid>" } }]
+    }
+  ]
+}
