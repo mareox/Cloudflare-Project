@@ -151,6 +151,12 @@
     footer { padding: 28px 24px; border-top: 1px solid var(--line); color: var(--muted); background: white; }
     footer a { color: var(--muted); }
     footer a:hover { color: var(--ink); }
+    .assign-row { display: flex; flex-wrap: wrap; gap: 18px; margin-top: 18px; align-items: center; }
+    .assign-label { color: #FFD0A0; font-size: 12px; font-weight: 800; letter-spacing: .07em; text-transform: uppercase; white-space: nowrap; }
+    .assign-task { color: rgba(255,255,255,.85); font-size: 14px; white-space: nowrap; }
+    .assign-task strong { color: white; font-weight: 600; }
+    .assign-task a { color: #FFD0A0; font-weight: 700; }
+    .assign-task a:hover { color: white; text-decoration: underline; }
     @media (max-width: 720px) {
       h1 { font-size: 32px; }
       .hero-copy { font-size: 16px; }
@@ -191,6 +197,12 @@
         <a class="button" href="zero-trust/gateway-policies/dns-policies.json">Gateway DNS JSON</a>
         <a class="button" href="index.html">App Services</a>
         <a class="button" href="network.html">Network</a>
+      </div>
+      <div class="assign-row">
+        <span class="assign-label">Assignment answers</span>
+        <span class="assign-task"><strong>Task A</strong> — Technical requirements summary &nbsp;<a href="zero-trust/assignment-answers/task-a-technical-requirements-summary.md">MD</a> / <a href="zero-trust/assignment-answers/task-a-technical-requirements-summary.pdf">PDF</a></span>
+        <span class="assign-task"><strong>Task B</strong> — Lessons learned and issues encountered &nbsp;<a href="zero-trust/assignment-answers/task-b-lessons-issues.md">MD</a> / <a href="zero-trust/assignment-answers/task-b-lessons-issues.pdf">PDF</a></span>
+        <span class="assign-task"><strong>Task C</strong> — Best practices applied &nbsp;<a href="zero-trust/assignment-answers/task-c-best-practices.md">MD</a> / <a href="zero-trust/assignment-answers/task-c-best-practices.pdf">PDF</a></span>
       </div>
     </div>
   </header>

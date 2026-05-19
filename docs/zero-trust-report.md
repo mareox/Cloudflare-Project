@@ -4,6 +4,14 @@
 **Team domain:** `mareoxlan.cloudflareaccess.com`  
 **Last verified:** May 18, 2026
 
+## Assignment Deliverables
+
+| Task | MD | PDF |
+|---|---|---|
+| Task A — Technical requirements summary | [MD](zero-trust/assignment-answers/task-a-technical-requirements-summary.md) | [PDF](zero-trust/assignment-answers/task-a-technical-requirements-summary.pdf) |
+| Task B — Lessons learned and issues encountered | [MD](zero-trust/assignment-answers/task-b-lessons-issues.md) | [PDF](zero-trust/assignment-answers/task-b-lessons-issues.pdf) |
+| Task C — Best practices applied | [MD](zero-trust/assignment-answers/task-c-best-practices.md) | [PDF](zero-trust/assignment-answers/task-c-best-practices.pdf) |
+
 ---
 
 ## 2a — Implementation Summary

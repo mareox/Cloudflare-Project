@@ -8,13 +8,13 @@ Track the Zero Trust Services assignment separately from the Application Service
 
 | Artifact | Path |
 | --- | --- |
-| Corrected Zero Trust status page | [`../../docs/zero-trust.html`](https://mareox.github.io/Cloudflare-Project/zero-trust.html) |
-| Corrected Zero Trust Markdown report | [`../../docs/zero-trust-report.md`](../../docs/zero-trust-report.md) |
-| Task A - Technical requirements summary | [`MD`](../../docs/zero-trust/assignment-answers/task-a-technical-requirements-summary.md) / [`PDF`](../../docs/zero-trust/assignment-answers/task-a-technical-requirements-summary.pdf) |
-| Task B - Lessons learned and issues encountered | [`MD`](../../docs/zero-trust/assignment-answers/task-b-lessons-issues.md) / [`PDF`](../../docs/zero-trust/assignment-answers/task-b-lessons-issues.pdf) |
-| Task C - Best practices applied | [`MD`](../../docs/zero-trust/assignment-answers/task-c-best-practices.md) / [`PDF`](../../docs/zero-trust/assignment-answers/task-c-best-practices.pdf) |
-| Access and Gateway policy templates | [`../../docs/zero-trust/`](../../docs/zero-trust/) |
-| Access-protected Worker used by Application Services | [`../../worker/src/index.ts`](../../worker/src/index.ts) |
+| Corrected Zero Trust status page | [`../docs/zero-trust.html`](https://mareox.github.io/Cloudflare-Project/zero-trust.html) |
+| Corrected Zero Trust Markdown report | [`../docs/zero-trust-report.md`](../docs/zero-trust-report.md) |
+| Task A - Technical requirements summary | [`MD`](../docs/zero-trust/assignment-answers/task-a-technical-requirements-summary.md) / [`PDF`](../docs/zero-trust/assignment-answers/task-a-technical-requirements-summary.pdf) |
+| Task B - Lessons learned and issues encountered | [`MD`](../docs/zero-trust/assignment-answers/task-b-lessons-issues.md) / [`PDF`](../docs/zero-trust/assignment-answers/task-b-lessons-issues.pdf) |
+| Task C - Best practices applied | [`MD`](../docs/zero-trust/assignment-answers/task-c-best-practices.md) / [`PDF`](../docs/zero-trust/assignment-answers/task-c-best-practices.pdf) |
+| Access and Gateway policy templates | [`../docs/zero-trust/`](../docs/zero-trust/) |
+| Access-protected Worker used by Application Services | [`../worker/src/index.ts`](../worker/src/index.ts) |
 
 ## Current verified controls
 
