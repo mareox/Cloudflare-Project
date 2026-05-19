@@ -9,15 +9,35 @@
   <link rel="stylesheet" href="shared.css">
   <style>
     /* ─ Network-page specifics ─ */
-    .toc { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 12px; margin: 0 0 30px; }
-    .tile { background: white; border: 1px solid var(--line); border-radius: var(--r); padding: 16px; box-shadow: 0 8px 22px rgba(24,33,47,.05); text-decoration: none; color: var(--ink); display: block; transition: box-shadow .14s; }
-    .tile:hover { box-shadow: 0 12px 30px rgba(24,33,47,.1); text-decoration: none; }
-    .tile strong { display: block; margin-bottom: 4px; font-weight: 600; }
-    .tile span { color: var(--muted); font-size: 14px; }
-    .callout { margin: 26px 0; padding: 18px; border-left: 5px solid var(--accent); background: #FFF0E6; border-radius: 0 var(--r) var(--r) 0; }
-    .diagram { margin: 18px 0 24px; border: 1px solid var(--line); border-radius: var(--r); background: white; overflow: hidden; box-shadow: 0 10px 24px rgba(24,33,47,.06); }
+    .toc { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 10px; margin: 0 0 32px; }
+    .tile {
+      background: white;
+      border: 1px solid var(--line);
+      border-left: 3px solid var(--accent);
+      border-radius: var(--r);
+      padding: 15px 18px;
+      box-shadow: var(--sh-sm);
+      text-decoration: none;
+      color: var(--ink);
+      display: block;
+      transition: box-shadow .14s, border-left-color .14s;
+    }
+    .tile:hover { box-shadow: var(--sh-md); border-left-color: var(--accent-dk); text-decoration: none; }
+    .tile strong { display: block; margin-bottom: 3px; font-weight: 700; font-size: 12px; font-family: var(--mono); text-transform: uppercase; letter-spacing: .07em; color: var(--ink-mid); }
+    .tile span { color: var(--muted); font-size: 13px; }
+    .callout {
+      margin: 24px 0;
+      padding: 15px 18px;
+      border-left: 3px solid var(--accent);
+      background: var(--soft);
+      border-radius: 0 var(--r) var(--r) 0;
+      font-size: 14.5px;
+    }
+    .callout strong { color: var(--ink); }
+    .diagram { margin: 18px 0 24px; border: 1px solid var(--line); border-radius: var(--r); background: white; overflow: hidden; box-shadow: var(--sh-md); }
     .diagram img { display: block; width: 100%; height: auto; }
-    .meta { color: var(--muted); font-weight: 600; margin-bottom: 6px; }
+    .meta { color: var(--muted); font-size: 13px; font-family: var(--mono); margin-bottom: 6px; }
+    .meta strong { color: var(--ink-mid); }
   </style>
 </head>
 <body>
@@ -44,8 +64,21 @@
       <h1>Magic Transit Onboarding for Acme Corp</h1>
       <p class="hero-copy">Short answers for BYOIP, GRE, MSS, DSR, and the firewall questions.</p>
       <div class="actions">
-        <a class="button primary" href="network-report.md">Read Markdown</a>
-        <a class="button" href="https://github.com/mareox/Cloudflare-Project" target="_blank" rel="noopener">GitHub</a>
+        <div class="action-group">
+          <p class="group-label">Resources</p>
+          <div class="group-buttons">
+            <a class="button primary" href="network-report.md">Read Markdown</a>
+            <a class="button" href="https://github.com/mareox/Cloudflare-Project" target="_blank" rel="noopener">GitHub</a>
+          </div>
+        </div>
+        <div class="action-sep"></div>
+        <div class="action-group">
+          <p class="group-label">Reports</p>
+          <div class="group-buttons">
+            <a class="button report" href="index.html">App Services</a>
+            <a class="button report" href="zero-trust.html">Zero Trust</a>
+          </div>
+        </div>
       </div>
     </div>
   </header>
