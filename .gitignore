@@ -8,3 +8,4 @@ build/
 .wrangler/
 .dev.vars
 .omc/
+.omx/
