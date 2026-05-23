@@ -37,6 +37,15 @@
     .task-links { display: flex; gap: 5px; flex-shrink: 0; }
     .task-links a { display: inline-flex; align-items: center; padding: 3px 9px; border-radius: 4px; background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.11); color: rgba(255,255,255,.5); font-size: 10px; font-weight: 700; letter-spacing: .07em; text-transform: uppercase; font-family: var(--mono); transition: background .12s, color .12s, border-color .12s; }
     .task-links a:hover { background: rgba(255,255,255,.14); color: white; border-color: rgba(255,255,255,.24); text-decoration: none; }
+    /* ─ Architecture flow diagram ─ */
+    .arch-note { margin: 0 0 14px; font-size: 14px; color: var(--muted); max-width: 760px; }
+    .arch-note b { color: var(--ink-mid); font-weight: 600; }
+    .arch { margin: 0 0 8px; border: 1px solid var(--line); border-radius: var(--r-lg); background: #fff; box-shadow: var(--sh-sm); overflow-x: auto; }
+    .arch svg { display: block; width: 100%; min-width: 820px; height: auto; }
+    .arch-cap { display: flex; flex-wrap: wrap; gap: 7px 18px; align-items: center; padding: 10px 16px; border-top: 1px solid var(--line); font-family: var(--mono); font-size: 11.5px; color: var(--muted); }
+    .arch-cap .k { display: inline-flex; align-items: center; gap: 7px; }
+    .arch-cap .k i { display: inline-block; width: 22px; border-top: 2px solid var(--accent); }
+    .arch-cap .k i.d { border-top-style: dashed; }
   </style>
 </head>
 <body>
@@ -171,6 +180,104 @@
 
       <section>
         <h2>Architecture Overview</h2>
+        <p class="arch-note">Two enforcement planes live on Cloudflare's edge: <b>Access</b> gates the application by identity, <b>Gateway</b> filters all enrolled-device traffic. The origin is reachable only through an outbound-only Tunnel, and the identity provider sits outside the trust boundary.</p>
+        <div class="arch" role="group" aria-label="Zero Trust architecture diagram">
+          <svg viewBox="0 0 980 452" role="img" xmlns="http://www.w3.org/2000/svg"
+               aria-label="A user browser and a WARP-enrolled device connect to the Cloudflare global edge. Access verifies identity (via external Google OAuth) and proxies authenticated requests to a private homelab Worker origin over an outbound-only Tunnel. Gateway filters all device DNS and HTTP traffic before filtered internet egress."
+               font-family="'IBM Plex Sans', ui-sans-serif, system-ui, sans-serif">
+            <defs>
+              <marker id="aO"  markerWidth="9" markerHeight="9" refX="6.5" refY="3" orient="auto" markerUnits="userSpaceOnUse"><path d="M0 0L7 3L0 6Z" fill="#F6821F"/></marker>
+              <marker id="aB"  markerWidth="9" markerHeight="9" refX="6.5" refY="3" orient="auto" markerUnits="userSpaceOnUse"><path d="M0 0L7 3L0 6Z" fill="#5B9BFF"/></marker>
+              <marker id="aBs" markerWidth="9" markerHeight="9" refX="0.5" refY="3" orient="auto" markerUnits="userSpaceOnUse"><path d="M7 0L0 3L7 6Z" fill="#5B9BFF"/></marker>
+            </defs>
+
+            <!-- Cloudflare global edge band -->
+            <rect x="212" y="72" width="506" height="360" rx="12" fill="#0C1C35" stroke="#21456e"/>
+            <g transform="translate(236,80) scale(0.16)"><circle cx="50" cy="50" r="50" fill="#F6821F"/><path d="M65 42c0-8.284-6.716-15-15-15s-15 6.716-15 15c0 .34.012.678.035 1.013C30.88 44.557 27 49.104 27 54.5 27 60.299 31.701 65 37.5 65h25C68.851 65 73 60.851 73 55.75c0-4.418-3.017-8.13-7.1-9.196C65.956 45.086 65 43.621 65 42z" fill="#fff"/></g>
+            <text x="258" y="94" fill="#FFAD5A" font-family="'IBM Plex Mono',monospace" font-size="11" font-weight="700" letter-spacing="1.3">CLOUDFLARE GLOBAL EDGE</text>
+
+            <!-- arrows (drawn under boxes) -->
+            <line x1="174" y1="186" x2="231" y2="186" stroke="#F6821F" stroke-width="2" marker-end="url(#aO)"/>
+            <line x1="456" y1="62"  x2="456" y2="138" stroke="#5B9BFF" stroke-width="2" marker-end="url(#aB)" marker-start="url(#aBs)"/>
+            <line x1="474" y1="186" x2="497" y2="186" stroke="#F6821F" stroke-width="2" marker-end="url(#aO)"/>
+            <line x1="694" y1="178" x2="753" y2="178" stroke="#F6821F" stroke-width="2" marker-end="url(#aO)"/>
+            <line x1="754" y1="198" x2="697" y2="198" stroke="#F6821F" stroke-width="2" stroke-dasharray="5 4" marker-end="url(#aO)"/>
+            <line x1="174" y1="372" x2="231" y2="372" stroke="#F6821F" stroke-width="2" marker-end="url(#aO)"/>
+            <line x1="694" y1="362" x2="753" y2="362" stroke="#F6821F" stroke-width="2" marker-end="url(#aO)"/>
+
+            <!-- arrow labels -->
+            <text x="202" y="178" text-anchor="middle" fill="#5A7088" font-family="'IBM Plex Mono',monospace" font-size="9.5">HTTPS</text>
+            <text x="464" y="106" fill="#1558D6" font-family="'IBM Plex Mono',monospace" font-size="9.5">OAuth 2.0</text>
+            <text x="203" y="362" text-anchor="middle" fill="#5A7088" font-family="'IBM Plex Mono',monospace" font-size="9">DNS · HTTP</text>
+            <text x="724" y="354" text-anchor="middle" fill="#5A7088" font-family="'IBM Plex Mono',monospace" font-size="9.5">egress</text>
+
+            <!-- Google IdP (external, outside the band) -->
+            <rect x="356" y="8" width="200" height="52" rx="8" fill="#fff" stroke="#C4D2E2"/>
+            <rect x="356" y="18" width="4" height="32" rx="2" fill="#1558D6"/>
+            <text x="374" y="32" fill="#0C1928" font-size="13.5" font-weight="600">Google IdP</text>
+            <text x="374" y="49" fill="#576575" font-size="11">OAuth 2.0 · external</text>
+
+            <!-- User / Browser -->
+            <rect x="24" y="142" width="150" height="88" rx="8" fill="#fff" stroke="#C4D2E2"/>
+            <rect x="24" y="154" width="4" height="64" rx="2" fill="#1558D6"/>
+            <text x="42" y="174" fill="#0C1928" font-size="14.5" font-weight="600">User</text>
+            <text x="42" y="192" fill="#576575" font-size="11">Browser session</text>
+            <text x="42" y="210" fill="#5A7088" font-family="'IBM Plex Mono',monospace" font-size="10">GET /secure</text>
+
+            <!-- WARP device -->
+            <rect x="24" y="330" width="150" height="84" rx="8" fill="#fff" stroke="#C4D2E2"/>
+            <rect x="24" y="342" width="4" height="60" rx="2" fill="#1558D6"/>
+            <text x="42" y="362" fill="#0C1928" font-size="13.5" font-weight="600">Enrolled device</text>
+            <text x="42" y="380" fill="#576575" font-size="11">WARP client</text>
+            <text x="42" y="398" fill="#5A7088" font-family="'IBM Plex Mono',monospace" font-size="9.5">team · mareoxlan</text>
+
+            <!-- Access -->
+            <rect x="236" y="140" width="238" height="94" rx="8" fill="#102943" stroke="#2c517d"/>
+            <rect x="236" y="152" width="4" height="70" rx="2" fill="#F6821F"/>
+            <text x="254" y="168" fill="#fff" font-size="14.5" font-weight="600">Cloudflare Access</text>
+            <text x="254" y="186" fill="#9DB2CC" font-size="11">Identity gate · default-deny</text>
+            <text x="254" y="205" fill="#7E97B5" font-family="'IBM Plex Mono',monospace" font-size="10">verify JWT · 302 → login</text>
+
+            <!-- Tunnel -->
+            <rect x="500" y="150" width="194" height="80" rx="8" fill="#102943" stroke="#2c517d"/>
+            <rect x="500" y="162" width="4" height="56" rx="2" fill="#F6821F"/>
+            <text x="518" y="178" fill="#fff" font-size="13.5" font-weight="600">Cloudflare Tunnel</text>
+            <text x="518" y="196" fill="#7E97B5" font-family="'IBM Plex Mono',monospace" font-size="10.5">cloudflared</text>
+            <text x="518" y="214" fill="#FFAD5A" font-family="'IBM Plex Mono',monospace" font-size="10">outbound-only</text>
+
+            <!-- Gateway -->
+            <rect x="236" y="306" width="458" height="112" rx="8" fill="#102943" stroke="#2c517d"/>
+            <rect x="236" y="318" width="4" height="88" rx="2" fill="#F6821F"/>
+            <text x="254" y="332" fill="#fff" font-size="14.5" font-weight="600">Cloudflare Gateway</text>
+            <text x="254" y="348" fill="#9DB2CC" font-size="11">Secure Web Gateway (SWG)</text>
+            <rect x="254" y="362" width="42" height="20" rx="4" fill="#13314f" stroke="#2c517d"/>
+            <text x="275" y="376" text-anchor="middle" fill="#9DB2CC" font-family="'IBM Plex Mono',monospace" font-size="10" font-weight="600">DNS</text>
+            <text x="306" y="376" font-size="11"><tspan fill="#FF9B8E">block</tspan><tspan fill="#C3D4E8"> Anonymizer · Malware / C2 / Phishing</tspan></text>
+            <rect x="254" y="390" width="42" height="20" rx="4" fill="#13314f" stroke="#2c517d"/>
+            <text x="275" y="404" text-anchor="middle" fill="#9DB2CC" font-family="'IBM Plex Mono',monospace" font-size="10" font-weight="600">HTTP</text>
+            <text x="306" y="404" font-size="11"><tspan fill="#FF9B8E">block</tspan><tspan fill="#C3D4E8"> Entertainment · </tspan><tspan fill="#6FD3AC">allow</tspan><tspan fill="#C3D4E8"> Netflix / YouTube</tspan></text>
+
+            <!-- Origin -->
+            <rect x="756" y="138" width="202" height="94" rx="8" fill="#fff" stroke="#C4D2E2"/>
+            <rect x="756" y="150" width="4" height="70" rx="2" fill="#0A7A5A"/>
+            <text x="774" y="166" fill="#0C1928" font-size="14.5" font-weight="600">Origin</text>
+            <text x="774" y="184" fill="#576575" font-size="11">Worker · private homelab</text>
+            <rect x="774" y="196" width="9" height="7" rx="1.5" fill="none" stroke="#0A7A5A" stroke-width="1.3"/>
+            <path d="M775.6 196v-1.6a2.9 2.9 0 0 1 5.8 0V196" fill="none" stroke="#0A7A5A" stroke-width="1.3"/>
+            <text x="789" y="203" fill="#0A7A5A" font-family="'IBM Plex Mono',monospace" font-size="10">no inbound ports</text>
+
+            <!-- Internet -->
+            <rect x="756" y="322" width="202" height="84" rx="8" fill="#fff" stroke="#C4D2E2"/>
+            <rect x="756" y="334" width="4" height="60" rx="2" fill="#94A8BE"/>
+            <text x="774" y="354" fill="#0C1928" font-size="14.5" font-weight="600">Internet</text>
+            <text x="774" y="372" fill="#576575" font-size="11">filtered egress</text>
+          </svg>
+          <div class="arch-cap">
+            <span class="k"><i></i> request path</span>
+            <span class="k"><i class="d"></i> outbound-only Tunnel</span>
+            <span>Google IdP sits outside the trust boundary</span>
+          </div>
+        </div>
         <div class="grid">
           <article class="card">
             <div class="status done">Live — Self-Hosted ZTNA</div>
