@@ -9,3 +9,13 @@ build/
 .dev.vars
 .omc/
 .omx/
+
+# workspace security audit standard patterns
+.env
+.env.*
+!.env.example
+credentials
+*.key
+*.pem
+token
+*.token
