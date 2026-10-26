@@ -9,8 +9,7 @@ Public submission repo for Cloudflare application, network, and Zero Trust assig
 ## Quickstart
 
 ```bash
-cd Cloudflare-Project && ls              # survey the scripts before running anything
-bash <script>.sh --help      # most scripts are self-documenting
+cd Cloudflare-Project && ls              # survey the three project tracks; each <track>/TASK.md defines the work
 ```
 
 Read the repo README.md for tool-specific usage. Run scripts only after
